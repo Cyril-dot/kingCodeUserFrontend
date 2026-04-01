@@ -135,28 +135,23 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);background
 [data-theme="light"] .trust-pill{color:var(--t2);background:rgba(21,101,192,0.06);border-color:rgba(21,101,192,0.18)}
 
 /* LIVE CAROUSEL */
-.live-carousel-section{background:linear-gradient(90deg,rgba(34,197,94,0.10) 0%,rgba(0,13,26,0.0) 100%);border-bottom:2px solid rgba(34,197,94,0.18);padding:10px 0;overflow:hidden;position:relative}
-[data-theme="light"] .live-carousel-section{background:linear-gradient(90deg,rgba(22,163,74,0.07) 0%,rgba(240,246,255,0.0) 100%);border-bottom:2px solid rgba(22,163,74,0.18)}
-.lc-inner{max-width:1260px;margin:0 auto;padding:0 12px;display:flex;align-items:center;gap:8px}
-.lc-viewport{flex:1;overflow:hidden;min-width:0}
-.lc-track{display:flex;gap:10px;transition:transform .38s cubic-bezier(.4,0,.2,1);will-change:transform}
-.lc-arrow{background:rgba(34,197,94,0.10);border:1px solid rgba(34,197,94,0.25);border-radius:7px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s;padding:0}
-.lc-arrow:hover{background:var(--green);border-color:var(--green)}
-.lc-arrow:hover .mi{color:#fff}
-.lc-arrow .mi{font-size:16px;color:var(--green)}
-.lc-card{background:var(--bg2);border:1px solid rgba(34,197,94,0.20);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:12px;flex-shrink:0;width:220px;position:relative;overflow:hidden;cursor:default;transition:border-color .15s}
-.lc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent)}
-.lc-card:hover{border-color:rgba(34,197,94,0.45)}
+.live-carousel-section{background:var(--bg1);border-bottom:1px solid var(--border);padding:10px 0;overflow:hidden;position:relative}
+.lc-inner{max-width:1260px;margin:0 auto;padding:0;overflow:hidden}
+.lc-viewport{overflow:hidden;width:100%}
+.lc-track{display:flex;gap:10px;will-change:transform;padding:2px 12px}
+.lc-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:12px;flex-shrink:0;width:210px;position:relative;overflow:hidden;cursor:default;transition:border-color .15s}
+.lc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accentBright),transparent)}
+.lc-card:hover{border-color:var(--borderAcc)}
 .lc-teams{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
 .lc-team{display:flex;align-items:center;gap:7px;min-width:0}
-.lc-init{width:20px;height:20px;border-radius:50%;background:var(--whiteBg2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--t3)}
+.lc-init{width:20px;height:20px;border-radius:50%;background:var(--accentBg);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--accentBright)}
 .lc-tname{font-size:13px;font-weight:600;color:var(--t1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .lc-score-col{display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0}
-.lc-score{font-family:var(--ffC);font-size:22px;font-weight:800;color:#fff;line-height:1;text-align:center;min-width:32px}
+.lc-score{font-family:var(--ffC);font-size:20px;font-weight:800;color:var(--accentBright);line-height:1;text-align:center;min-width:32px}
 .lc-min-wrap{display:flex;align-items:center;gap:3px}
-.lc-min-dot{width:5px;height:5px;background:var(--green);border-radius:50%;animation:lcpulse 1.6s infinite;flex-shrink:0}
-.lc-min{font-size:10px;font-weight:700;color:var(--green)}
-.lc-no-live{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--t3);padding:4px 0}
+.lc-min-dot{width:5px;height:5px;background:var(--accentBright);border-radius:50%;animation:lcpulse 1.6s infinite;flex-shrink:0}
+.lc-min{font-size:10px;font-weight:700;color:var(--accentBright)}
+.lc-no-live{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--t3);padding:4px 12px}
 .lc-no-live .mi{font-size:16px}
 @keyframes lcpulse{0%,100%{opacity:1}50%{opacity:.3}}
 
@@ -448,23 +443,17 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
   </div>
 </div>
 
-<!-- LIVE GAMES CAROUSEL — games only, no label/count -->
+<!-- LIVE GAMES CAROUSEL — auto-scroll, no buttons, blue/white theme -->
 <div class="live-carousel-section" id="liveCarouselSection">
   <div class="lc-inner">
-    <button class="lc-arrow" id="lcLeft" onclick="slideCarousel(-1)" aria-label="Previous">
-      <span class="mi">chevron_left</span>
-    </button>
     <div class="lc-viewport" id="lcViewport">
       <div class="lc-track" id="lcTrack">
         <div class="lc-no-live">
           <span class="mi">sports_soccer</span>
-          <span>Loading live games…</span>
+          <span>Loading games…</span>
         </div>
       </div>
     </div>
-    <button class="lc-arrow" id="lcRight" onclick="slideCarousel(1)" aria-label="Next">
-      <span class="mi">chevron_right</span>
-    </button>
   </div>
 </div>
 
@@ -679,9 +668,9 @@ async function fetchBalance(){
 
 // ── LIVE CAROUSEL ─────────────────────────────────────────────────────────────
 let lcGames = [];
-let lcOffset = 0;
-const LC_CARD_WIDTH = 230;
-let lcAutoTimer = null;
+let lcAnimId = null;
+let lcPos = 0;
+const LC_SPEED = 0.6; // px per frame
 
 async function loadLiveCarousel() {
   try {
@@ -706,11 +695,10 @@ async function loadLiveCarousel() {
 
 function renderCarousel() {
   const track = document.getElementById('lcTrack');
-  // If no live games, build cards from allMatches fixtures instead
   let cards = lcGames;
   let isLive = true;
   if (!cards.length && allMatches.length) {
-    cards = allMatches.slice(0, 10).map(m => ({
+    cards = allMatches.slice(0, 20).map(m => ({
       homeTeam: m._ht, awayTeam: m._at,
       homeLogo: m._hc, awayLogo: m._ac,
       homeScore: m._hs, awayScore: m._as,
@@ -721,20 +709,16 @@ function renderCarousel() {
     }));
     isLive = false;
   }
-  if (!cards.length) { renderCarouselEmpty(); return; }
-  lcOffset = 0;
+  if (!cards.length) {
+    track.innerHTML = '<div class="lc-no-live"><span class="mi">sports_soccer</span><span>No fixtures available</span></div>';
+    return;
+  }
+  // Duplicate cards for seamless infinite loop
+  const cardHtml = cards.map(g => buildLcCard(g, isLive)).join('');
+  track.innerHTML = cardHtml + cardHtml;
   track.style.transform = 'translateX(0)';
-  track.innerHTML = cards.map(g => buildLcCard(g, isLive)).join('');
-  document.getElementById('lcLeft').style.visibility = '';
-  document.getElementById('lcRight').style.visibility = '';
-  startCarouselAuto();
-}
-
-function renderCarouselEmpty() {
-  const track = document.getElementById('lcTrack');
-  track.innerHTML = `<div class="lc-no-live"><span class="mi">sports_soccer</span><span>No fixtures available</span></div>`;
-  document.getElementById('lcLeft').style.visibility = 'hidden';
-  document.getElementById('lcRight').style.visibility = 'hidden';
+  lcPos = 0;
+  startCarouselAuto(track);
 }
 
 function buildLcCard(g, isLive) {
@@ -756,7 +740,6 @@ function buildLcCard(g, isLive) {
     ? `<img src="${awayCrest}" style="width:20px;height:20px;border-radius:50%;object-fit:contain;flex-shrink:0" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt=""><div class="lc-init" style="display:none">${awayInitial}</div>`
     : `<div class="lc-init">${awayInitial}</div>`;
 
-  // Score or upcoming time
   let scoreHtml, bottomHtml;
   if (hs !== null && as !== null) {
     scoreHtml = `<div class="lc-score">${hs}–${as}</div>`;
@@ -775,31 +758,28 @@ function buildLcCard(g, isLive) {
       <div class="lc-team">${homeCrestHtml}<span class="lc-tname">${homeName}</span></div>
       <div class="lc-team">${awayCrestHtml}<span class="lc-tname">${awayName}</span></div>
     </div>
-    <div class="lc-score-col">
-      ${scoreHtml}
-      ${bottomHtml}
-    </div>
+    <div class="lc-score-col">${scoreHtml}${bottomHtml}</div>
   </div>`;
 }
 
-function slideCarousel(dir) {
-  const viewport = document.getElementById('lcViewport');
-  const track = document.getElementById('lcTrack');
-  const viewW = viewport.offsetWidth;
-  const totalW = track.scrollWidth;
-  const maxOffset = Math.max(0, totalW - viewW);
-  lcOffset += dir * LC_CARD_WIDTH;
-  if (lcOffset > maxOffset) lcOffset = 0;
-  if (lcOffset < 0) lcOffset = maxOffset;
-  track.style.transform = `translateX(-${lcOffset}px)`;
-}
-
-function startCarouselAuto() {
-  if (lcAutoTimer) clearInterval(lcAutoTimer);
-  lcAutoTimer = setInterval(() => slideCarousel(1), 3000);
+function startCarouselAuto(track) {
+  if (lcAnimId) cancelAnimationFrame(lcAnimId);
+  let paused = false;
   const vp = document.getElementById('lcViewport');
-  vp.onmouseenter = () => clearInterval(lcAutoTimer);
-  vp.onmouseleave = () => { lcAutoTimer = setInterval(() => slideCarousel(1), 3000); };
+  vp.onmouseenter = () => { paused = true; };
+  vp.onmouseleave = () => { paused = false; };
+
+  function step() {
+    if (!paused) {
+      lcPos += LC_SPEED;
+      // half = width of one set of cards (total/2 since we duplicated)
+      const half = track.scrollWidth / 2;
+      if (lcPos >= half) lcPos = 0;
+      track.style.transform = `translateX(-${lcPos}px)`;
+    }
+    lcAnimId = requestAnimationFrame(step);
+  }
+  lcAnimId = requestAnimationFrame(step);
 }
 
 setInterval(loadLiveCarousel, 60 * 1000);
