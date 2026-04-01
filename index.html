@@ -644,8 +644,7 @@ function logout(){['primestakes_token','primestakes_user'].forEach(k=>{localStor
 
 window.addEventListener('load', () => {
   applyAuthState();
-  loadMatches();
-  loadLiveCarousel();
+  loadMatches().then(() => loadLiveCarousel());
   startWinnerPopups();
 });
 
@@ -698,34 +697,51 @@ async function loadLiveCarousel() {
     else if (Array.isArray(data.matches)) games = data.matches;
     else if (Array.isArray(data.games)) games = data.games;
     lcGames = games;
-    renderCarousel();
   } catch(e) {
     console.warn('[LiveCarousel] Fetch failed:', e.message);
-    renderCarouselEmpty();
+    lcGames = [];
   }
+  renderCarousel();
 }
 
 function renderCarousel() {
   const track = document.getElementById('lcTrack');
-  if (!lcGames.length) { renderCarouselEmpty(); return; }
+  // If no live games, build cards from allMatches fixtures instead
+  let cards = lcGames;
+  let isLive = true;
+  if (!cards.length && allMatches.length) {
+    cards = allMatches.slice(0, 10).map(m => ({
+      homeTeam: m._ht, awayTeam: m._at,
+      homeLogo: m._hc, awayLogo: m._ac,
+      homeScore: m._hs, awayScore: m._as,
+      elapsed: m._isLive ? (m._min || 'LIVE') : '',
+      status: m._isLive ? 'LIVE' : '',
+      _upcoming: !m._isLive,
+      _date: m._date,
+    }));
+    isLive = false;
+  }
+  if (!cards.length) { renderCarouselEmpty(); return; }
   lcOffset = 0;
-  track.innerHTML = lcGames.map(g => buildLcCard(g)).join('');
   track.style.transform = 'translateX(0)';
+  track.innerHTML = cards.map(g => buildLcCard(g, isLive)).join('');
+  document.getElementById('lcLeft').style.visibility = '';
+  document.getElementById('lcRight').style.visibility = '';
   startCarouselAuto();
 }
 
 function renderCarouselEmpty() {
   const track = document.getElementById('lcTrack');
-  track.innerHTML = `<div class="lc-no-live"><span class="mi">sports_soccer</span><span>No live games right now</span></div>`;
+  track.innerHTML = `<div class="lc-no-live"><span class="mi">sports_soccer</span><span>No fixtures available</span></div>`;
   document.getElementById('lcLeft').style.visibility = 'hidden';
   document.getElementById('lcRight').style.visibility = 'hidden';
 }
 
-function buildLcCard(g) {
-  const hs = g.homeScore ?? g.home_score ?? g.scores?.home ?? 0;
-  const as = g.awayScore ?? g.away_score ?? g.scores?.away ?? 0;
+function buildLcCard(g, isLive) {
+  const hs = g.homeScore ?? g.home_score ?? g.scores?.home ?? null;
+  const as = g.awayScore ?? g.away_score ?? g.scores?.away ?? null;
   const elapsed = g.elapsed ?? g.minute ?? g.time ?? '';
-  const min = elapsed ? `${elapsed}'` : (g.statusShort ?? g.status ?? 'LIVE');
+  const min = elapsed ? `${elapsed}'` : (g.statusShort ?? g.status ?? '');
   const homeName = g.homeTeam ?? g.home_team ?? g.teams?.home?.name ?? 'Home';
   const awayName = g.awayTeam ?? g.away_team ?? g.teams?.away?.name ?? 'Away';
   const homeCrest = g.homeLogo ?? g.homeCrest ?? g.home_logo ?? g.teams?.home?.crest ?? '';
@@ -734,11 +750,25 @@ function buildLcCard(g) {
   const awayInitial = (awayName[0] || 'A').toUpperCase();
 
   const homeCrestHtml = homeCrest
-    ? `<img src="${homeCrest}" class="lc-crest" style="width:20px;height:20px;border-radius:50%;object-fit:contain;flex-shrink:0" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt=""><div class="lc-init" style="display:none">${homeInitial}</div>`
+    ? `<img src="${homeCrest}" style="width:20px;height:20px;border-radius:50%;object-fit:contain;flex-shrink:0" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt=""><div class="lc-init" style="display:none">${homeInitial}</div>`
     : `<div class="lc-init">${homeInitial}</div>`;
   const awayCrestHtml = awayCrest
-    ? `<img src="${awayCrest}" class="lc-crest" style="width:20px;height:20px;border-radius:50%;object-fit:contain;flex-shrink:0" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt=""><div class="lc-init" style="display:none">${awayInitial}</div>`
+    ? `<img src="${awayCrest}" style="width:20px;height:20px;border-radius:50%;object-fit:contain;flex-shrink:0" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt=""><div class="lc-init" style="display:none">${awayInitial}</div>`
     : `<div class="lc-init">${awayInitial}</div>`;
+
+  // Score or upcoming time
+  let scoreHtml, bottomHtml;
+  if (hs !== null && as !== null) {
+    scoreHtml = `<div class="lc-score">${hs}–${as}</div>`;
+    bottomHtml = min ? `<div class="lc-min-wrap"><div class="lc-min-dot"></div><span class="lc-min">${min}</span></div>` : '';
+  } else if (g._upcoming && g._date) {
+    const t = new Date(g._date).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+    scoreHtml = `<div class="lc-score" style="font-size:14px;color:var(--t2)">${t}</div>`;
+    bottomHtml = '';
+  } else {
+    scoreHtml = `<div class="lc-score" style="font-size:16px;color:var(--t3)">VS</div>`;
+    bottomHtml = '';
+  }
 
   return `<div class="lc-card">
     <div class="lc-teams">
@@ -746,8 +776,8 @@ function buildLcCard(g) {
       <div class="lc-team">${awayCrestHtml}<span class="lc-tname">${awayName}</span></div>
     </div>
     <div class="lc-score-col">
-      <div class="lc-score">${hs}–${as}</div>
-      <div class="lc-min-wrap"><div class="lc-min-dot"></div><span class="lc-min">${min}</span></div>
+      ${scoreHtml}
+      ${bottomHtml}
     </div>
   </div>`;
 }
