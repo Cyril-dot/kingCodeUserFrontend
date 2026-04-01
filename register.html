@@ -3,22 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>GStake — Register Free</title>
+<title>BetCash — Register Free</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 <style>
-:root{--bg0:#07090F;--bg1:#0C101A;--bg2:#131825;--bg3:#1B2235;--accent:#F5A623;--accentBg:rgba(245,166,35,0.10);--accentBg2:rgba(245,166,35,0.18);--green:#22C55E;--greenBg:rgba(34,197,94,0.12);--red:#EF4444;--redBg:rgba(239,68,68,0.10);--blue:#60A5FA;--blueBg:rgba(96,165,250,0.08);--t1:#EEF2FF;--t2:#8892A8;--t3:#4A5568;--border:rgba(255,255,255,0.055);--borderHov:rgba(255,255,255,0.11);--borderAcc:rgba(245,166,35,0.4);--shadow:0 8px 40px rgba(0,0,0,0.6);--ff:'DM Sans',sans-serif;--ffC:'Barlow Condensed',sans-serif;--nav:60px}
-[data-theme="light"]{--bg0:#EEF1F8;--bg1:#F7F9FF;--bg2:#FFFFFF;--bg3:#FFFFFF;--accent:#C8820A;--accentBg:rgba(200,130,10,0.08);--green:#16A34A;--greenBg:rgba(22,163,74,0.09);--red:#DC2626;--redBg:rgba(220,38,38,0.09);--t1:#0F172A;--t2:#475569;--t3:#94A3B8;--border:rgba(0,0,0,0.065);--borderHov:rgba(0,0,0,0.13);--borderAcc:rgba(200,130,10,0.45);--shadow:0 8px 40px rgba(0,0,0,0.10)}
+:root{--bg0:#06090F;--bg1:#0A0F1C;--bg2:#101828;--bg3:#182035;--accent:#3B82F6;--accentBg:rgba(59,130,246,0.10);--accentBg2:rgba(59,130,246,0.18);--green:#22C55E;--greenBg:rgba(34,197,94,0.12);--red:#EF4444;--redBg:rgba(239,68,68,0.10);--blue:#60A5FA;--blueBg:rgba(96,165,250,0.08);--t1:#EEF4FF;--t2:#7E9ABB;--t3:#3D5170;--border:rgba(59,130,246,0.10);--borderHov:rgba(59,130,246,0.22);--borderAcc:rgba(59,130,246,0.5);--shadow:0 8px 40px rgba(0,0,0,0.6);--ff:'DM Sans',sans-serif;--ffC:'Barlow Condensed',sans-serif;--nav:60px}
+[data-theme="light"]{--bg0:#EFF4FF;--bg1:#F5F8FF;--bg2:#FFFFFF;--bg3:#FFFFFF;--accent:#1D4ED8;--accentBg:rgba(29,78,216,0.07);--accentBg2:rgba(29,78,216,0.13);--green:#16A34A;--greenBg:rgba(22,163,74,0.09);--red:#DC2626;--redBg:rgba(220,38,38,0.09);--t1:#0B1729;--t2:#3D5785;--t3:#94A3B8;--border:rgba(29,78,216,0.10);--borderHov:rgba(29,78,216,0.22);--borderAcc:rgba(29,78,216,0.40);--shadow:0 8px 40px rgba(0,0,0,0.10)}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
 body{font-family:var(--ff);background:var(--bg0);color:var(--t1);min-height:100vh;overflow-x:hidden;line-height:1.5;transition:background .25s,color .25s}
-body::before{content:'';position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(245,166,35,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(245,166,35,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+body::before{content:'';position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(59,130,246,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
 .blob{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0}
-.blob-1{width:550px;height:550px;top:-160px;right:-100px;background:rgba(245,166,35,0.07)}
+.blob-1{width:550px;height:550px;top:-160px;right:-100px;background:rgba(59,130,246,0.07)}
 .blob-2{width:400px;height:400px;bottom:-80px;left:-80px;background:rgba(34,197,94,0.04)}
-nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);background:rgba(7,9,15,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:16px}
-[data-theme="light"] nav{background:rgba(247,249,255,0.96)}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);background:rgba(6,9,15,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:16px}
+[data-theme="light"] nav{background:rgba(245,248,255,0.96)}
 .logo{font-family:var(--ffC);font-size:26px;font-weight:800;letter-spacing:1px;color:var(--t1);text-decoration:none;flex:1}
 .logo em{color:var(--accent);font-style:normal}
 .nav-right{display:flex;align-items:center;gap:8px}
@@ -81,7 +81,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);background
 .form-check input[type=checkbox]{position:absolute;opacity:0;width:0;height:0}
 .form-check input[type=checkbox]:checked ~ .custom-cb{background:var(--accent);border-color:var(--accent)}
 .form-check input[type=checkbox]:checked ~ .custom-cb svg{display:block}
-.custom-cb svg{display:none;width:11px;height:11px;color:#000}
+.custom-cb svg{display:none;width:11px;height:11px;color:#fff}
 .check-label{font-size:12px;color:var(--t2);line-height:1.6}
 .check-label a{color:var(--accent);text-decoration:none}
 .check-label a:hover{text-decoration:underline}
@@ -93,45 +93,19 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);background
 .success-ico svg{width:28px;height:28px;color:var(--green)}
 .success-state h3{font-family:var(--ffC);font-size:22px;font-weight:800}
 .success-state p{font-size:13px;color:var(--t2);max-width:260px;line-height:1.6}
-.btn-primary{width:100%;padding:13px;border-radius:11px;background:var(--accent);color:#000;font-family:var(--ffC);font-size:17px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;border:none;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 4px 20px rgba(245,166,35,.3)}
-.btn-primary:hover{filter:brightness(1.1);transform:translateY(-2px);box-shadow:0 8px 32px rgba(245,166,35,.45)}
+.btn-primary{width:100%;padding:13px;border-radius:11px;background:var(--accent);color:#fff;font-family:var(--ffC);font-size:17px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;border:none;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 4px 20px rgba(59,130,246,.3)}
+.btn-primary:hover{filter:brightness(1.12);transform:translateY(-2px);box-shadow:0 8px 32px rgba(59,130,246,.45)}
 .btn-primary:active{transform:translateY(0)}.btn-primary svg{width:18px;height:18px}.btn-primary.loading{opacity:.7;pointer-events:none}
 .trust-row{display:flex;gap:6px;margin-top:18px;flex-wrap:wrap;justify-content:center}
 .tbadge{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--t3);background:var(--accentBg);border:1px solid var(--border);border-radius:20px;padding:4px 10px}
 .tbadge svg{width:11px;height:11px;color:var(--green)}
 @keyframes spin{to{transform:rotate(360deg)}}
 .spin{animation:spin .7s linear infinite}
-
-/* ── Phone field with country selector ── */
 .phone-wrap{display:flex;gap:0}
-.country-select{
-  flex-shrink:0;
-  background:var(--bg3);
-  border:1px solid var(--border);
-  border-right:none;
-  border-radius:10px 0 0 10px;
-  padding:0 10px 0 10px;
-  font-family:var(--ff);
-  font-size:13px;
-  font-weight:600;
-  color:var(--t1);
-  cursor:pointer;
-  outline:none;
-  appearance:none;
-  -webkit-appearance:none;
-  transition:all .2s;
-  /* subtle chevron */
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%234A5568'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;
-  background-position:right 8px center;
-  padding-right:24px;
-  min-width:90px;
-}
+.country-select{flex-shrink:0;background:var(--bg3);border:1px solid var(--border);border-right:none;border-radius:10px 0 0 10px;padding:0 10px 0 10px;font-family:var(--ff);font-size:13px;font-weight:600;color:var(--t1);cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;transition:all .2s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%233D5170'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;padding-right:24px;min-width:90px;}
 .country-select:focus{border-color:var(--borderAcc);background-color:var(--bg2);box-shadow:0 0 0 3px var(--accentBg)}
-[data-theme="light"] .country-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2394A3B8'/%3E%3C/svg%3E")}
 .phone-wrap .form-input{border-radius:0 10px 10px 0;padding-left:13px}
 .phone-wrap .form-input:focus{border-color:var(--borderAcc);background:var(--bg2);box-shadow:0 0 0 3px var(--accentBg)}
-
 @media(max-width:520px){.auth-card{padding:24px 18px;border-radius:16px}.form-row{grid-template-columns:1fr}nav{padding:0 14px}}
 </style>
 </head>
@@ -139,7 +113,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);background
 <div class="blob blob-1"></div>
 <div class="blob blob-2"></div>
 <nav>
-  <a href="index.html" class="logo">G<em>S</em>TAKE</a>
+  <a href="index.html" class="logo">CASH<em>BET</em></a>
   <div class="nav-right">
     <div class="icon-btn" onclick="toggleTheme()"><svg data-lucide="moon" id="themeIco"></svg></div>
     <a href="login.html" class="nav-link">Sign In</a>
@@ -149,7 +123,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);background
   <div class="auth-wrap">
     <div class="perks-panel">
       <div>
-        <div class="perks-logo">G<em>S</em>TAKE</div>
+        <div class="perks-logo">BET<em>CASH</em></div>
         <div class="perks-tag">Ghana's premier sports betting platform. Join thousands already winning big with real-time odds.</div>
       </div>
       <div class="perk"><div class="perk-icon gold"><svg data-lucide="zap"></svg></div><div class="perk-body"><h4>Instant Deposits & Withdrawals</h4><p>Fund via MTN MoMo, AirtelTigo or Vodafone Cash in seconds.</p></div></div>
@@ -175,7 +149,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);background
       <div class="success-state" id="successState">
         <div class="success-ico"><svg data-lucide="check-circle"></svg></div>
         <h3>Account Created! 🎉</h3>
-        <p>Welcome to GStake. Redirecting you to the home page…</p>
+        <p>Welcome to BetCash. Redirecting you to the home page…</p>
       </div>
       <form id="registerForm" onsubmit="handleRegister(event)" novalidate>
         <div class="form-row">
@@ -195,26 +169,23 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);background
           <div class="input-wrap"><div class="input-icon"><svg data-lucide="mail"></svg></div><input type="email" id="email" class="form-input" placeholder="you@example.com" autocomplete="email" required></div>
           <div class="form-hint" id="emailHint"></div>
         </div>
-
-        <!-- ── Phone with country selector ── -->
         <div class="form-group">
           <label class="form-label" for="phone">Phone (Optional)</label>
           <div class="phone-wrap">
             <select class="country-select" id="countryCode" onchange="updatePhonePlaceholder()" aria-label="Country code">
-              <option value="+233" data-placeholder="20 000 0000"   data-flag="🇬🇭">🇬🇭 +233</option>
-              <option value="+234" data-placeholder="803 000 0000"  data-flag="🇳🇬">🇳🇬 +234</option>
-              <option value="+44"  data-placeholder="7700 900000"   data-flag="🇬🇧">🇬🇧 +44</option>
-              <option value="+49"  data-placeholder="151 00000000"  data-flag="🇩🇪">🇩🇪 +49</option>
-              <option value="+33"  data-placeholder="6 00 00 00 00" data-flag="🇫🇷">🇫🇷 +33</option>
-              <option value="+34"  data-placeholder="612 000 000"   data-flag="🇪🇸">🇪🇸 +34</option>
-              <option value="+39"  data-placeholder="312 000 0000"  data-flag="🇮🇹">🇮🇹 +39</option>
-              <option value="+31"  data-placeholder="6 12345678"    data-flag="🇳🇱">🇳🇱 +31</option>
+              <option value="+233" data-placeholder="20 000 0000" data-flag="🇬🇭">🇬🇭 +233</option>
+              <option value="+234" data-placeholder="803 000 0000" data-flag="🇳🇬">🇳🇬 +234</option>
+              <option value="+44" data-placeholder="7700 900000" data-flag="🇬🇧">🇬🇧 +44</option>
+              <option value="+49" data-placeholder="151 00000000" data-flag="🇩🇪">🇩🇪 +49</option>
+              <option value="+33" data-placeholder="6 00 00 00 00" data-flag="🇫🇷">🇫🇷 +33</option>
+              <option value="+34" data-placeholder="612 000 000" data-flag="🇪🇸">🇪🇸 +34</option>
+              <option value="+39" data-placeholder="312 000 0000" data-flag="🇮🇹">🇮🇹 +39</option>
+              <option value="+31" data-placeholder="6 12345678" data-flag="🇳🇱">🇳🇱 +31</option>
             </select>
             <input type="tel" id="phone" class="form-input" placeholder="20 000 0000" autocomplete="tel">
           </div>
           <div class="form-hint" id="phoneHint"></div>
         </div>
-
         <div class="form-group">
           <label class="form-label" for="password">Password</label>
           <div class="input-wrap"><div class="input-icon"><svg data-lucide="lock"></svg></div><input type="password" id="password" class="form-input" placeholder="Min. 8 characters" autocomplete="new-password" required oninput="checkStrength(this.value)"><button type="button" class="pw-toggle" onclick="togglePw('password','eye1')"><svg data-lucide="eye" id="eye1"></svg></button></div>
@@ -247,20 +218,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);background
 </div>
 <script>
 const BASE = 'https://kikiwebbackend.onrender.com';
-
 window.addEventListener('load', () => lucide.createIcons());
-
-if (localStorage.getItem('gstake_token') || sessionStorage.getItem('gstake_token')) {
-  window.location.href = 'index.html';
-}
-
-// ── Update phone placeholder when country changes ──
-function updatePhonePlaceholder() {
-  const sel = document.getElementById('countryCode');
-  const opt = sel.options[sel.selectedIndex];
-  document.getElementById('phone').placeholder = opt.dataset.placeholder;
-}
-
+if (localStorage.getItem('gstake_token') || sessionStorage.getItem('gstake_token')) { window.location.href = 'index.html'; }
+function updatePhonePlaceholder() { const sel=document.getElementById('countryCode');const opt=sel.options[sel.selectedIndex];document.getElementById('phone').placeholder=opt.dataset.placeholder; }
 function toggleTheme(){const dark=document.documentElement.getAttribute('data-theme')==='dark';document.documentElement.setAttribute('data-theme',dark?'light':'dark');document.getElementById('themeIco').setAttribute('data-lucide',dark?'sun':'moon');lucide.createIcons()}
 function togglePw(id,iconId){const inp=document.getElementById(id),ico=document.getElementById(iconId);inp.type=inp.type==='password'?'text':'password';ico.setAttribute('data-lucide',inp.type==='text'?'eye-off':'eye');lucide.createIcons()}
 function setHint(id,msg,type){const el=document.getElementById(id);if(!msg){el.innerHTML='';el.className='form-hint';return}const icon=type==='err'?'x-circle':type==='ok'?'check-circle':'info';el.innerHTML=`<svg data-lucide="${icon}"></svg>${msg}`;el.className='form-hint '+(type||'');lucide.createIcons()}
@@ -278,18 +238,11 @@ document.getElementById('firstName').addEventListener('input',()=>setProgress(1)
 document.getElementById('email').addEventListener('input',()=>setProgress(2));
 document.getElementById('password').addEventListener('input',()=>setProgress(3));
 function setProgress(step){for(let i=1;i<=3;i++){const el=document.getElementById('ps'+i);el.className='pstep '+(i<step?'done':i===step?'active':'')}}
-
 async function handleRegister(e){
   e.preventDefault();
   const g=id=>document.getElementById(id);
   const alertBox=g('alertBox'); alertBox.classList.remove('show');
-  const firstName=g('firstName').value.trim(),lastName=g('lastName').value.trim(),
-        email=g('email').value.trim(),
-        dialCode=g('countryCode').value,
-        rawPhone=g('phone').value.trim(),
-        phone=rawPhone ? dialCode + rawPhone.replace(/^0+/,'') : '',
-        password=g('password').value,confirmPassword=g('confirmPassword').value,terms=g('terms').checked;
-
+  const firstName=g('firstName').value.trim(),lastName=g('lastName').value.trim(),email=g('email').value.trim(),dialCode=g('countryCode').value,rawPhone=g('phone').value.trim(),phone=rawPhone?dialCode+rawPhone.replace(/^0+/,''):'',password=g('password').value,confirmPassword=g('confirmPassword').value,terms=g('terms').checked;
   const showErr=msg=>{g('alertMsg').textContent=msg;alertBox.classList.add('show')};
   if(firstName.length<2){showErr('First name must be at least 2 characters.');return}
   if(lastName.length<2){showErr('Last name must be at least 2 characters.');return}
@@ -298,37 +251,21 @@ async function handleRegister(e){
   if(password.length<8){showErr('Password must be at least 8 characters.');return}
   if(password!==confirmPassword){showErr('Passwords do not match.');return}
   if(!terms){showErr('You must accept the Terms & Conditions.');return}
-
   const btn=g('submitBtn'),ico=g('submitIco'),txt=g('submitTxt');
-  btn.classList.add('loading'); ico.removeAttribute('class'); ico.className='spin';
-  ico.setAttribute('data-lucide','loader'); txt.textContent='Creating your account…'; lucide.createIcons();
-
+  btn.classList.add('loading');ico.removeAttribute('class');ico.className='spin';ico.setAttribute('data-lucide','loader');txt.textContent='Creating your account…';lucide.createIcons();
   try {
     const body={firstName,lastName,email,password};
-    if(phone) body.phoneNumber=phone;
+    if(phone)body.phoneNumber=phone;
     const res=await fetch(`${BASE}/api/v1/users/register`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     const data=await res.json();
     if(res.ok&&data.data?.token){
-      localStorage.setItem('gstake_token', data.data.token);
-      localStorage.setItem('gstake_user', JSON.stringify({
-        email:     data.data.email     || email,
-        firstName: data.data.firstName || firstName,
-        lastName:  data.data.lastName  || lastName,
-        role:      data.data.role      || 'USER',
-        currency:  data.data.currency  || 'GHS',
-      }));
-      g('registerForm').style.display='none';
-      g('progressBar').style.display='none';
-      g('successState').classList.add('show');
-      lucide.createIcons();
-      setTimeout(()=>window.location.href='index.html', 2000);
-    } else {
-      throw new Error(data.message||'Registration failed. Please try again.');
-    }
+      localStorage.setItem('gstake_token',data.data.token);
+      localStorage.setItem('gstake_user',JSON.stringify({email:data.data.email||email,firstName:data.data.firstName||firstName,lastName:data.data.lastName||lastName,role:data.data.role||'USER',currency:data.data.currency||'GHS'}));
+      g('registerForm').style.display='none';g('progressBar').style.display='none';g('successState').classList.add('show');lucide.createIcons();
+      setTimeout(()=>window.location.href='index.html',2000);
+    } else { throw new Error(data.message||'Registration failed. Please try again.'); }
   } catch(err){
-    showErr(err.message);
-    btn.classList.remove('loading'); ico.removeAttribute('class');
-    ico.setAttribute('data-lucide','user-plus'); txt.textContent='Create Free Account'; lucide.createIcons();
+    showErr(err.message);btn.classList.remove('loading');ico.removeAttribute('class');ico.setAttribute('data-lucide','user-plus');txt.textContent='Create Free Account';lucide.createIcons();
   }
 }
 </script>

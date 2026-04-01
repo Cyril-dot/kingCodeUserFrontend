@@ -3,31 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-<title>GStake — Wallet</title>
+<title>BetCash — Wallet</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 <style>
 :root {
-  --bg0: #07090F;
-  --bg1: #0C101A;
-  --bg2: #131825;
-  --bg3: #1B2235;
-  --accent: #F5A623;
-  --accentBg: rgba(245,166,35,0.12);
-  --accentBg2: rgba(245,166,35,0.2);
+  --bg0: #06090F;
+  --bg1: #0A0F1C;
+  --bg2: #101828;
+  --bg3: #182035;
+  --accent: #3B82F6;
+  --accentBg: rgba(59,130,246,0.12);
+  --accentBg2: rgba(59,130,246,0.20);
   --green: #22C55E;
   --greenBg: rgba(34,197,94,0.12);
   --red: #EF4444;
   --redBg: rgba(239,68,68,0.10);
   --blue: #60A5FA;
   --blueBg: rgba(96,165,250,0.10);
-  --t1: #EEF2FF;
-  --t2: #8892A8;
-  --t3: #4A5568;
-  --border: rgba(255,255,255,0.06);
-  --borderHov: rgba(255,255,255,0.12);
-  --borderAcc: rgba(245,166,35,0.4);
+  --t1: #EEF4FF;
+  --t2: #7E9ABB;
+  --t3: #3D5170;
+  --border: rgba(59,130,246,0.10);
+  --borderHov: rgba(59,130,246,0.22);
+  --borderAcc: rgba(59,130,246,0.5);
   --borderGreen: rgba(34,197,94,0.3);
   --borderRed: rgba(239,68,68,0.3);
   --shadow: 0 12px 40px rgba(0,0,0,0.5);
@@ -40,43 +40,46 @@
   --nav: 56px;
 }
 [data-theme="light"] {
-  --bg0: #EEF1F8;
-  --bg1: #F7F9FF;
+  --bg0: #EFF4FF;
+  --bg1: #F5F8FF;
   --bg2: #FFFFFF;
-  --bg3: #F0F3FA;
-  --accent: #C8820A;
-  --accentBg: rgba(200,130,10,0.10);
-  --accentBg2: rgba(200,130,10,0.18);
+  --bg3: #EEF3FF;
+  --accent: #1D4ED8;
+  --accentBg: rgba(29,78,216,0.10);
+  --accentBg2: rgba(29,78,216,0.18);
   --green: #16A34A;
   --greenBg: rgba(22,163,74,0.08);
   --red: #DC2626;
   --redBg: rgba(220,38,38,0.08);
   --blue: #2563EB;
   --blueBg: rgba(37,99,235,0.08);
-  --t1: #0F172A;
-  --t2: #475569;
+  --t1: #0B1729;
+  --t2: #3D5785;
   --t3: #94A3B8;
-  --border: rgba(0,0,0,0.07);
-  --borderHov: rgba(0,0,0,0.12);
-  --borderAcc: rgba(200,130,10,0.5);
+  --border: rgba(29,78,216,0.10);
+  --borderHov: rgba(29,78,216,0.20);
+  --borderAcc: rgba(29,78,216,0.45);
   --shadow: 0 10px 30px rgba(0,0,0,0.1);
   --shadowSm: 0 4px 12px rgba(0,0,0,0.08);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{font-family:var(--ff);background:var(--bg0);color:var(--t1);min-height:100vh;overflow-x:hidden;line-height:1.45;transition:background 0.2s,color 0.2s;padding-bottom:env(safe-area-inset-bottom,0px);}
-body::before{content:'';position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(245,166,35,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(245,166,35,0.02) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;}
+body::before{content:'';position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(59,130,246,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,0.03) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;}
 .blob{position:fixed;border-radius:50%;filter:blur(70px);pointer-events:none;z-index:0;opacity:0.5;}
-.blob-1{width:280px;height:280px;top:-100px;left:-80px;background:rgba(245,166,35,0.08);}
+.blob-1{width:280px;height:280px;top:-100px;left:-80px;background:rgba(59,130,246,0.08);}
 .blob-2{width:260px;height:260px;bottom:-60px;right:-70px;background:rgba(96,165,250,0.06);}
 
 nav{
   position:sticky;top:0;z-index:300;height:var(--nav);
-  background:rgba(7,9,15,0.92);
+  background:rgba(6,9,15,0.92);
   backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
   border-bottom:1px solid var(--border);
   display:flex;align-items:center;padding:0 14px;gap:10px;
 }
-[data-theme="light"] nav{background:rgba(247,249,255,0.94);}
+[data-theme="light"] nav{background:rgba(245,248,255,0.94);}
+
+.nav-logo{font-family:var(--ffC);font-size:20px;font-weight:800;letter-spacing:1px;color:var(--t1);text-decoration:none;}
+.nav-logo em{color:var(--accent);font-style:normal;}
 
 .nav-avatar{
   width:36px;height:36px;border-radius:50%;
@@ -117,7 +120,7 @@ nav{
 .page-wrap{position:relative;z-index:2;padding:16px 14px 40px;max-width:480px;margin:0 auto;}
 
 .balance-card{
-  background:linear-gradient(135deg,#1a1f2e 0%,#0f1420 100%);
+  background:linear-gradient(135deg,#0d1a33 0%,#081020 100%);
   border:1px solid var(--borderAcc);border-radius:var(--rXl);
   padding:20px 18px 18px;position:relative;overflow:hidden;margin-bottom:16px;
 }
@@ -140,7 +143,7 @@ nav{
 }
 .action-btn:active{transform:scale(0.97);}
 .action-btn svg{width:20px;height:20px;}
-.action-btn-deposit{background:var(--accent);color:#000;box-shadow:0 6px 14px rgba(245,166,35,0.3);}
+.action-btn-deposit{background:var(--accent);color:#fff;box-shadow:0 6px 14px rgba(59,130,246,0.35);}
 .action-btn-withdraw{background:var(--bg2);border:1px solid var(--border);color:var(--t1);}
 
 .panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rXl);overflow:hidden;margin-bottom:16px;}
@@ -182,7 +185,7 @@ nav{
 .form-input-wrap{position:relative;}
 .input-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--t3);pointer-events:none;}
 select.form-input{appearance:none;cursor:pointer;padding-right:36px;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238892A8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237E9ABB' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 14px center;}
 
 .presets{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
@@ -207,7 +210,7 @@ select.form-input{appearance:none;cursor:pointer;padding-right:36px;
 .btn-submit{
   display:flex;align-items:center;justify-content:center;gap:8px;
   width:100%;padding:14px;border:none;border-radius:60px;
-  background:var(--accent);color:#000;font-family:var(--ffC);
+  background:var(--accent);color:#fff;font-family:var(--ffC);
   font-size:17px;font-weight:800;letter-spacing:0.8px;cursor:pointer;
   transition:all 0.2s;margin-top:8px;
 }
@@ -240,12 +243,9 @@ select.form-input{appearance:none;cursor:pointer;padding-right:36px;
 .tx-amount.credit{color:var(--green);}
 .tx-amount.debit{color:var(--red);}
 
-/* Loading spinner */
-.spinner{width:18px;height:18px;border:2px solid rgba(0,0,0,0.3);border-top-color:#000;border-radius:50%;animation:spin 0.7s linear infinite;display:inline-block;flex-shrink:0;}
-[data-theme="light"] .spinner{border:2px solid rgba(0,0,0,0.15);border-top-color:#000;}
+.spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;display:inline-block;flex-shrink:0;}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* Error state */
 .error-state{text-align:center;padding:28px 16px;color:var(--t3);}
 .error-state svg{width:32px;height:32px;margin:0 auto 8px;display:block;color:var(--red);}
 .error-state p{font-size:13px;margin-bottom:10px;}
@@ -262,7 +262,7 @@ select.form-input{appearance:none;cursor:pointer;padding-right:36px;
 .modal-detail-item{background:var(--bg3);border-radius:12px;padding:10px;}
 .modal-detail-lbl{font-size:11px;color:var(--t3);margin-bottom:4px;}
 .modal-detail-val{font-weight:700;font-size:13px;}
-.btn-modal-close{display:flex;align-items:center;justify-content:center;width:100%;padding:13px;border:none;border-radius:50px;background:var(--accent);color:#000;font-family:var(--ffC);font-size:16px;font-weight:800;cursor:pointer;margin-top:12px;}
+.btn-modal-close{display:flex;align-items:center;justify-content:center;width:100%;padding:13px;border:none;border-radius:50px;background:var(--accent);color:#fff;font-family:var(--ffC);font-size:16px;font-weight:800;cursor:pointer;margin-top:12px;}
 
 .toast-container{position:fixed;bottom:24px;left:0;right:0;display:flex;justify-content:center;z-index:999;pointer-events:none;}
 .toast{background:var(--bg2);border:1px solid var(--border);border-radius:60px;padding:10px 18px;font-weight:600;font-size:13px;display:flex;gap:8px;align-items:center;box-shadow:var(--shadow);pointer-events:auto;animation:toastPop 0.3s ease;}
@@ -279,7 +279,6 @@ select.form-input{appearance:none;cursor:pointer;padding-right:36px;
 .red{color:var(--red);}
 .blue{color:var(--blue);}
 
-/* Redirect notice */
 .redirect-notice{
   display:flex;gap:10px;background:var(--blueBg);border:1px solid rgba(96,165,250,0.3);
   border-radius:12px;padding:12px;margin:10px 0;
@@ -293,6 +292,7 @@ select.form-input{appearance:none;cursor:pointer;padding-right:36px;
 <div class="blob blob-2"></div>
 
 <nav>
+  <a href="index.html" class="nav-logo">CASH<em>BET</em></a>
   <div class="nav-avatar" title="My Account">
     <svg data-lucide="user"></svg>
   </div>
@@ -312,7 +312,6 @@ select.form-input{appearance:none;cursor:pointer;padding-right:36px;
 
 <div class="page-wrap">
 
-  <!-- HERO BALANCE CARD -->
   <div class="balance-card">
     <div class="balance-lbl"><svg data-lucide="wallet"></svg> Available Balance</div>
     <div class="balance-amount"><span class="balance-currency" id="balanceCurrencySymbol">₵</span><span id="mainBalance">—</span></div>
@@ -324,7 +323,6 @@ select.form-input{appearance:none;cursor:pointer;padding-right:36px;
     </div>
   </div>
 
-  <!-- QUICK ACTIONS -->
   <div class="action-row">
     <button class="action-btn action-btn-deposit" onclick="switchAction('deposit')">
       <svg data-lucide="arrow-down-circle"></svg> Deposit
@@ -334,7 +332,6 @@ select.form-input{appearance:none;cursor:pointer;padding-right:36px;
     </button>
   </div>
 
-  <!-- DEPOSIT / WITHDRAW FORM -->
   <div class="panel" id="actionPanel">
     <div class="panel-head">
       <div class="panel-title" id="actionTitle">
@@ -351,7 +348,6 @@ select.form-input{appearance:none;cursor:pointer;padding-right:36px;
     </div>
     <div class="panel-body">
 
-      <!-- DEPOSIT FORM -->
       <div id="depositForm">
         <div class="form-group">
           <div class="form-label">Amount</div>
@@ -381,7 +377,6 @@ select.form-input{appearance:none;cursor:pointer;padding-right:36px;
         </button>
       </div>
 
-      <!-- WITHDRAW FORM -->
       <div id="withdrawForm" style="display:none">
         <div class="form-group">
           <div class="form-label">Amount</div>
@@ -442,7 +437,6 @@ select.form-input{appearance:none;cursor:pointer;padding-right:36px;
     </div>
   </div>
 
-  <!-- TRANSACTION HISTORY -->
   <div class="panel">
     <div class="panel-head">
       <div class="panel-title"><svg data-lucide="clock"></svg> History</div>
@@ -465,7 +459,6 @@ select.form-input{appearance:none;cursor:pointer;padding-right:36px;
 
 </div>
 
-<!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <div class="modal-icon" id="modalIcon"><svg data-lucide="check-circle-2" id="modalIcoSvg"></svg></div>
@@ -480,101 +473,39 @@ select.form-input{appearance:none;cursor:pointer;padding-right:36px;
 <div class="toast-container" id="toastContainer"></div>
 
 <script>
-// ─────────────────────────────────────────────
-// CONFIG
-// ─────────────────────────────────────────────
 const API_BASE = 'https://kikiwebbackend.onrender.com/api/v1';
-
-// Minimum deposit per currency (matches your business rules)
-const MIN_DEPOSIT = {
-  GHS: 500,   // Ghanaians
-  NGN: 50000, // Nigerians
-  USD: 200,   // Europeans / USD
-  EUR: 200,
-  GBP: 200,
-};
-
-// Currency symbols
-const CURRENCY_SYMBOL = {
-  GHS: '₵', NGN: '₦', USD: '$', EUR: '€', GBP: '£'
-};
-
-// Retrieve JWT — login page stores as 'gstake_token'
-function getToken() {
-  return localStorage.getItem('gstake_token') || sessionStorage.getItem('gstake_token') || '';
-}
-
-// Retrieve user object stored at login
-function getUser() {
-  try {
-    const raw = localStorage.getItem('gstake_user') || sessionStorage.getItem('gstake_user');
-    return raw ? JSON.parse(raw) : null;
-  } catch { return null; }
-}
-
-function authHeaders() {
-  return {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${getToken()}`
-  };
-}
-
-// ─────────────────────────────────────────────
-// CURRENCY / MIN-DEPOSIT RULES
-//   GHS (Ghana)   → min 500
-//   NGN (Nigeria) → min 50,000
-//   USD/EUR/other → min 200
-// ─────────────────────────────────────────────
 const MIN_DEPOSIT_MAP = { GHS: 500, NGN: 50000 };
 const MIN_DEPOSIT_DEFAULT = 200;
+function getMinDeposit(currency) { return MIN_DEPOSIT_MAP[currency] ?? MIN_DEPOSIT_DEFAULT; }
+function getCurrencySymbol(currency) { const s={GHS:'₵',NGN:'₦',USD:'$',EUR:'€',GBP:'£'};return s[currency]||(currency+' '); }
+function getToken() { return localStorage.getItem('gstake_token')||sessionStorage.getItem('gstake_token')||''; }
+function getUser() { try{const r=localStorage.getItem('gstake_user')||sessionStorage.getItem('gstake_user');return r?JSON.parse(r):null;}catch{return null;} }
+function authHeaders() { return {'Content-Type':'application/json','Authorization':`Bearer ${getToken()}`}; }
 
-function getMinDeposit(currency) {
-  return MIN_DEPOSIT_MAP[currency] ?? MIN_DEPOSIT_DEFAULT;
-}
+let allTransactions=[];
+let txFilter='ALL';
+let currentBalance=null;
+let userCurrency='GHS';
 
-function getCurrencySymbol(currency) {
-  const symbols = { GHS: '₵', NGN: '₦', USD: '$', EUR: '€', GBP: '£' };
-  return symbols[currency] || (currency + ' ');
-}
-
-// ─────────────────────────────────────────────
-// STATE
-// ─────────────────────────────────────────────
-let allTransactions = [];
-let txFilter = 'ALL';
-let currentBalance = null;
-let userCurrency = 'GHS'; // set from stored user profile on init
-
-// ─────────────────────────────────────────────
-// INIT
-// ─────────────────────────────────────────────
 window.addEventListener('load', async () => {
-  // Pull currency from stored user profile
-  const user = getUser();
-  if (user && user.currency) userCurrency = user.currency;
-
-  // Apply currency symbol to deposit prefix and update min input
-  const sym = getCurrencySymbol(userCurrency);
-  const minDep = getMinDeposit(userCurrency);
-  document.querySelectorAll('.amount-prefix').forEach(el => el.textContent = sym);
-  const heroSym = document.getElementById('balanceCurrencySymbol');
-  if (heroSym) heroSym.textContent = sym;
-  document.getElementById('depositAmount').min = minDep;
-  document.getElementById('depositAmount').value = minDep;
-  document.getElementById('withdrawAmount').min = 1;
-
-  // Update the fee banner text with correct min
-  const feeBanner = document.querySelector('#depositForm .redirect-notice p');
-  if (feeBanner) feeBanner.innerHTML = `You'll be redirected to Paystack to complete your payment securely. Min ${userCurrency} ${minDep.toLocaleString()} · No fees · Instant credit.`;
-
-  // Render currency-aware presets
-  const DEPOSIT_PRESETS = { GHS: [500, 1000, 2000, 5000], NGN: [50000, 100000, 200000, 500000], DEFAULT: [200, 500, 1000, 2000] };
-  const WD_PRESETS      = { GHS: [200, 500, 1000, 2000],  NGN: [20000, 50000, 100000, 200000],  DEFAULT: [100, 200, 500, 1000] };
-  const dPresets = DEPOSIT_PRESETS[userCurrency] || DEPOSIT_PRESETS.DEFAULT;
-  const wPresets = WD_PRESETS[userCurrency]      || WD_PRESETS.DEFAULT;
-  document.getElementById('depositPresets').innerHTML  = dPresets.map(v => `<button class="preset" onclick="setDeposit(${v})">${v.toLocaleString()}</button>`).join('');
-  document.getElementById('withdrawPresets').innerHTML = wPresets.map(v => `<button class="preset" onclick="setWithdraw(${v})">${v.toLocaleString()}</button>`).join('');
-
+  const user=getUser();
+  if(user&&user.currency) userCurrency=user.currency;
+  const sym=getCurrencySymbol(userCurrency);
+  const minDep=getMinDeposit(userCurrency);
+  document.querySelectorAll('.amount-prefix').forEach(el=>el.textContent=sym);
+  const heroSym=document.getElementById('balanceCurrencySymbol');
+  if(heroSym) heroSym.textContent=sym;
+  document.getElementById('depositAmount').min=minDep;
+  document.getElementById('depositAmount').value=minDep;
+  document.getElementById('withdrawAmount').min=1;
+  const feeBanner=document.querySelector('#depositForm .redirect-notice p');
+  if(feeBanner) feeBanner.innerHTML=`You'll be redirected to Paystack to complete your payment securely. Min ${userCurrency} ${minDep.toLocaleString()} · No fees · Instant credit.`;
+  const DEPOSIT_PRESETS={GHS:[500,1000,2000,5000],NGN:[50000,100000,200000,500000],DEFAULT:[200,500,1000,2000]};
+  const WD_PRESETS={GHS:[200,500,1000,2000],NGN:[20000,50000,100000,200000],DEFAULT:[100,200,500,1000]};
+  const dPresets=DEPOSIT_PRESETS[userCurrency]||DEPOSIT_PRESETS.DEFAULT;
+  const wPresets=WD_PRESETS[userCurrency]||WD_PRESETS.DEFAULT;
+  document.getElementById('depositPresets').innerHTML=dPresets.map(v=>`<button class="preset" onclick="setDeposit(${v})">${v.toLocaleString()}</button>`).join('');
+  document.getElementById('withdrawPresets').innerHTML=wPresets.map(v=>`<button class="preset" onclick="setWithdraw(${v})">${v.toLocaleString()}</button>`).join('');
   buildFilters();
   updateDepositSummary();
   updateWithdrawSummary();
@@ -582,398 +513,128 @@ window.addEventListener('load', async () => {
   lucide.createIcons();
 });
 
-// ─────────────────────────────────────────────
-// LOAD TRANSACTIONS FROM API
-// ─────────────────────────────────────────────
 async function loadTransactions() {
-  document.getElementById('txList').innerHTML = `
-    <div class="skeleton"></div>
-    <div class="skeleton"></div>
-    <div class="skeleton"></div>`;
-
+  document.getElementById('txList').innerHTML='<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
   try {
-    const res = await fetch(`${API_BASE}/wallet/transactions`, {
-      headers: authHeaders()
-    });
-
-    if (res.status === 401) {
-      showAuthError();
-      return;
-    }
-
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.message || `Server error ${res.status}`);
-    }
-
-    const json = await res.json();
-    // ApiResponse<List<TransactionResponse>> shape: { data: [...], message: "..." }
-    allTransactions = json.data || json || [];
+    const res=await fetch(`${API_BASE}/wallet/transactions`,{headers:authHeaders()});
+    if(res.status===401){showAuthError();return;}
+    if(!res.ok){const err=await res.json().catch(()=>({}));throw new Error(err.message||`Server error ${res.status}`);}
+    const json=await res.json();
+    allTransactions=json.data||json||[];
     computeAndRenderStats();
     renderTransactions();
-  } catch (e) {
-    document.getElementById('txList').innerHTML = `
-      <div class="error-state">
-        <svg data-lucide="wifi-off"></svg>
-        <p>${e.message || 'Failed to load transactions'}</p>
-        <button class="retry-btn" onclick="loadTransactions()">Try Again</button>
-      </div>`;
+  } catch(e) {
+    document.getElementById('txList').innerHTML=`<div class="error-state"><svg data-lucide="wifi-off"></svg><p>${e.message||'Failed to load transactions'}</p><button class="retry-btn" onclick="loadTransactions()">Try Again</button></div>`;
     lucide.createIcons();
-    showToast(e.message || 'Failed to load transactions', 'error');
+    showToast(e.message||'Failed to load transactions','error');
   }
 }
 
-// ─────────────────────────────────────────────
-// COMPUTE STATS FROM TRANSACTION HISTORY
-// ─────────────────────────────────────────────
 function computeAndRenderStats() {
-  let dep = 0, wdr = 0, wager = 0, win = 0, latestBalance = null;
-
-  allTransactions.forEach(tx => {
-    const amt = parseFloat(tx.amount) || 0;
-    if (tx.type === 'DEPOSIT' && tx.status === 'SUCCESS') dep += amt;
-    if (tx.type === 'WITHDRAWAL' && tx.status === 'SUCCESS') wdr += amt;
-    if (tx.type === 'BET_STAKE' && tx.status === 'SUCCESS') wager += amt;
-    if (tx.type === 'BET_WINNINGS' && tx.status === 'SUCCESS') win += amt;
+  let dep=0,wdr=0,wager=0,win=0,latestBalance=null;
+  allTransactions.forEach(tx=>{
+    const amt=parseFloat(tx.amount)||0;
+    if(tx.type==='DEPOSIT'&&tx.status==='SUCCESS') dep+=amt;
+    if(tx.type==='WITHDRAWAL'&&tx.status==='SUCCESS') wdr+=amt;
+    if(tx.type==='BET_STAKE'&&tx.status==='SUCCESS') wager+=amt;
+    if(tx.type==='BET_WINNINGS'&&tx.status==='SUCCESS') win+=amt;
   });
-
-  // Use balanceAfter from the most recent transaction if available
-  if (allTransactions.length > 0 && allTransactions[0].balanceAfter != null) {
-    latestBalance = parseFloat(allTransactions[0].balanceAfter);
-  }
-
-  const sym = getCurrencySymbol(userCurrency);
-  const fmtShort = n => sym + Number(n || 0).toLocaleString();
-
-  document.getElementById('bsDeposited').innerText = fmtShort(dep);
-  document.getElementById('bsWithdrawn').innerText = fmtShort(wdr);
-  document.getElementById('bsWagered').innerText = fmtShort(wager);
-  document.getElementById('bsWon').innerText = fmtShort(win);
-
-  if (latestBalance !== null) {
-    currentBalance = latestBalance;
-    const formatted = latestBalance.toLocaleString('en-GH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    document.getElementById('mainBalance').innerText = formatted;
-    document.getElementById('balanceDisplay').innerText = sym + formatted;
+  if(allTransactions.length>0&&allTransactions[0].balanceAfter!=null) latestBalance=parseFloat(allTransactions[0].balanceAfter);
+  const sym=getCurrencySymbol(userCurrency);
+  const fmtShort=n=>sym+Number(n||0).toLocaleString();
+  document.getElementById('bsDeposited').innerText=fmtShort(dep);
+  document.getElementById('bsWithdrawn').innerText=fmtShort(wdr);
+  document.getElementById('bsWagered').innerText=fmtShort(wager);
+  document.getElementById('bsWon').innerText=fmtShort(win);
+  if(latestBalance!==null){
+    currentBalance=latestBalance;
+    const formatted=latestBalance.toLocaleString('en-GH',{minimumFractionDigits:2,maximumFractionDigits:2});
+    document.getElementById('mainBalance').innerText=formatted;
+    document.getElementById('balanceDisplay').innerText=sym+formatted;
   }
 }
 
-// ─────────────────────────────────────────────
-// RENDER TRANSACTIONS
-// ─────────────────────────────────────────────
 function renderTransactions() {
-  const listEl = document.getElementById('txList');
-
-  let filtered = allTransactions.filter(tx => {
-    if (txFilter === 'ALL') return true;
-    if (txFilter === 'DEPOSIT') return tx.type === 'DEPOSIT';
-    if (txFilter === 'WITHDRAWAL') return tx.type === 'WITHDRAWAL';
-    if (txFilter === 'BET') return tx.type === 'BET_STAKE';
-    if (txFilter === 'WINNINGS') return tx.type === 'BET_WINNINGS';
-    if (txFilter === 'REFUND') return tx.type === 'BET_REFUND';
+  const listEl=document.getElementById('txList');
+  let filtered=allTransactions.filter(tx=>{
+    if(txFilter==='ALL') return true;
+    if(txFilter==='DEPOSIT') return tx.type==='DEPOSIT';
+    if(txFilter==='WITHDRAWAL') return tx.type==='WITHDRAWAL';
+    if(txFilter==='BET') return tx.type==='BET_STAKE';
+    if(txFilter==='WINNINGS') return tx.type==='BET_WINNINGS';
+    if(txFilter==='REFUND') return tx.type==='BET_REFUND';
     return false;
   });
-
-  const count = filtered.length;
-  document.getElementById('txCount').innerText = count + ' record' + (count !== 1 ? 's' : '');
-
-  if (!filtered.length) {
-    listEl.innerHTML = '<div style="padding:24px 0;text-align:center;color:var(--t3);font-size:14px;">No transactions</div>';
-    return;
-  }
-
-  const iconMap = {
-    DEPOSIT: 'arrow-down-circle',
-    WITHDRAWAL: 'arrow-up-circle',
-    BET_STAKE: 'zap',
-    BET_WINNINGS: 'trophy',
-    BET_REFUND: 'rotate-ccw'
-  };
-
-  const bgMap = {
-    DEPOSIT: 'var(--greenBg)',
-    WITHDRAWAL: 'var(--redBg)',
-    BET_STAKE: 'var(--accentBg)',
-    BET_WINNINGS: 'var(--blueBg)',
-    BET_REFUND: 'var(--accentBg)'
-  };
-
-  const creditTypes = new Set(['DEPOSIT', 'BET_WINNINGS', 'BET_REFUND']);
-
-  listEl.innerHTML = filtered.map(tx => {
-    const isCredit = creditTypes.has(tx.type);
-    const amt = parseFloat(tx.amount || 0).toFixed(2);
-    const statusClass = tx.status === 'SUCCESS' ? 'success' : tx.status === 'PENDING' ? 'pending' : 'failed';
-    const dateStr = tx.createdAt
-      ? new Date(tx.createdAt).toLocaleDateString('en-GH', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })
-      : '—';
-
-    return `
-      <div class="tx-item">
-        <div class="tx-icon" style="background:${bgMap[tx.type] || 'var(--bg3)'};border:1px solid var(--border)">
-          <svg data-lucide="${iconMap[tx.type] || 'circle'}"></svg>
-        </div>
-        <div class="tx-info">
-          <div class="tx-desc">${tx.description || tx.type}</div>
-          <div class="tx-meta">
-            <span class="tx-date">${dateStr}</span>
-            ${tx.paymentReference ? `<span class="tx-ref">${tx.paymentReference}</span>` : ''}
-            <span class="tx-status-badge ${statusClass}">${tx.status}</span>
-          </div>
-        </div>
-        <div class="tx-amount ${isCredit ? 'credit' : 'debit'}">${isCredit ? '+' : '−'}GHS ${amt}</div>
-      </div>`;
+  const count=filtered.length;
+  document.getElementById('txCount').innerText=count+' record'+(count!==1?'s':'');
+  if(!filtered.length){listEl.innerHTML='<div style="padding:24px 0;text-align:center;color:var(--t3);font-size:14px;">No transactions</div>';return;}
+  const iconMap={DEPOSIT:'arrow-down-circle',WITHDRAWAL:'arrow-up-circle',BET_STAKE:'zap',BET_WINNINGS:'trophy',BET_REFUND:'rotate-ccw'};
+  const bgMap={DEPOSIT:'var(--greenBg)',WITHDRAWAL:'var(--redBg)',BET_STAKE:'var(--accentBg)',BET_WINNINGS:'var(--blueBg)',BET_REFUND:'var(--accentBg)'};
+  const creditTypes=new Set(['DEPOSIT','BET_WINNINGS','BET_REFUND']);
+  listEl.innerHTML=filtered.map(tx=>{
+    const isCredit=creditTypes.has(tx.type);
+    const amt=parseFloat(tx.amount||0).toFixed(2);
+    const statusClass=tx.status==='SUCCESS'?'success':tx.status==='PENDING'?'pending':'failed';
+    const dateStr=tx.createdAt?new Date(tx.createdAt).toLocaleDateString('en-GH',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}):'—';
+    return `<div class="tx-item"><div class="tx-icon" style="background:${bgMap[tx.type]||'var(--bg3)'};border:1px solid var(--border)"><svg data-lucide="${iconMap[tx.type]||'circle'}"></svg></div><div class="tx-info"><div class="tx-desc">${tx.description||tx.type}</div><div class="tx-meta"><span class="tx-date">${dateStr}</span>${tx.paymentReference?`<span class="tx-ref">${tx.paymentReference}</span>`:''}<span class="tx-status-badge ${statusClass}">${tx.status}</span></div></div><div class="tx-amount ${isCredit?'credit':'debit'}">${isCredit?'+':'−'}GHS ${amt}</div></div>`;
   }).join('');
-
   lucide.createIcons();
 }
 
-// ─────────────────────────────────────────────
-// DEPOSIT — calls POST /api/v1/wallet/deposit
-// Returns paymentUrl from Paystack → redirect user
-// ─────────────────────────────────────────────
 async function initiateDeposit() {
-  const amt = parseFloat(document.getElementById('depositAmount').value);
-
-  const minDep = getMinDeposit(userCurrency);
-  if (!amt || amt < minDep) {
-    const sym = getCurrencySymbol(userCurrency);
-    showToast(`Min deposit is ${userCurrency} ${minDep.toLocaleString()}`, 'error');
-    return;
-  }
-
-  setBtnLoading('depositBtn', 'depBtnTxt', true, 'Initiating…');
-
+  const amt=parseFloat(document.getElementById('depositAmount').value);
+  const minDep=getMinDeposit(userCurrency);
+  if(!amt||amt<minDep){showToast(`Min deposit is ${userCurrency} ${minDep.toLocaleString()}`,'error');return;}
+  setBtnLoading('depositBtn','depBtnTxt',true,'Initiating…');
   try {
-    const res = await fetch(`${API_BASE}/wallet/deposit`, {
-      method: 'POST',
-      headers: authHeaders(),
-      body: JSON.stringify({ amount: amt })
-    });
-
-    if (res.status === 401) { showAuthError(); return; }
-
-    const json = await res.json();
-
-    if (!res.ok) {
-      throw new Error(json.message || `Error ${res.status}`);
-    }
-
-    // json.data = DepositInitiateResponse { paymentUrl, reference, paystackReference, currency, amountToDeposit }
-    const data = json.data || json;
-
-    showModal('success',
-      'Redirecting to Payment',
-      `You'll be taken to Paystack to complete your ${data.amountToDeposit || fmt(amt)} deposit.`,
-      data.reference,
-      [
-        { lbl: 'Reference', val: data.reference || '—' },
-        { lbl: 'Amount', val: data.amountToDeposit || fmt(amt) }
-      ]
-    );
-
-    // Open Paystack payment URL
-    if (data.paymentUrl) {
-      setTimeout(() => {
-        window.location.href = data.paymentUrl;
-      }, 1500);
-    }
-
-  } catch (e) {
-    showToast(e.message || 'Deposit failed', 'error');
-  } finally {
-    setBtnLoading('depositBtn', 'depBtnTxt', false, 'Deposit Now');
-  }
+    const res=await fetch(`${API_BASE}/wallet/deposit`,{method:'POST',headers:authHeaders(),body:JSON.stringify({amount:amt})});
+    if(res.status===401){showAuthError();return;}
+    const json=await res.json();
+    if(!res.ok) throw new Error(json.message||`Error ${res.status}`);
+    const data=json.data||json;
+    showModal('success','Redirecting to Payment',`You'll be taken to Paystack to complete your ${data.amountToDeposit||fmt(amt)} deposit.`,data.reference,[{lbl:'Reference',val:data.reference||'—'},{lbl:'Amount',val:data.amountToDeposit||fmt(amt)}]);
+    if(data.paymentUrl) setTimeout(()=>window.location.href=data.paymentUrl,1500);
+  } catch(e) {
+    showToast(e.message||'Deposit failed','error');
+  } finally { setBtnLoading('depositBtn','depBtnTxt',false,'Deposit Now'); }
 }
 
-// ─────────────────────────────────────────────
-// WITHDRAW — calls POST /api/v1/wallet/withdraw
-// ─────────────────────────────────────────────
 async function initiateWithdraw() {
-  const amt = parseFloat(document.getElementById('withdrawAmount').value);
-  const name = document.getElementById('wdAccountName').value.trim();
-  const acc = document.getElementById('wdAccountNumber').value.trim();
-  const bankCode = document.getElementById('wdBankCode').value;
-
-  if (!amt || amt <= 0) { showToast('Enter a valid amount', 'error'); return; }
-  if (!name) { showToast('Account name is required', 'error'); return; }
-  if (!acc) { showToast('Account number is required', 'error'); return; }
-
-  setBtnLoading('withdrawBtn', 'wdBtnTxt', true, 'Processing…');
-
+  const amt=parseFloat(document.getElementById('withdrawAmount').value);
+  const name=document.getElementById('wdAccountName').value.trim();
+  const acc=document.getElementById('wdAccountNumber').value.trim();
+  const bankCode=document.getElementById('wdBankCode').value;
+  if(!amt||amt<=0){showToast('Enter a valid amount','error');return;}
+  if(!name){showToast('Account name is required','error');return;}
+  if(!acc){showToast('Account number is required','error');return;}
+  setBtnLoading('withdrawBtn','wdBtnTxt',true,'Processing…');
   try {
-    const res = await fetch(`${API_BASE}/wallet/withdraw`, {
-      method: 'POST',
-      headers: authHeaders(),
-      body: JSON.stringify({
-        amount: amt,
-        accountName: name,
-        accountNumber: acc,
-        bankCode: bankCode
-      })
-    });
-
-    if (res.status === 401) { showAuthError(); return; }
-
-    const json = await res.json();
-
-    if (!res.ok) {
-      throw new Error(json.message || `Error ${res.status}`);
-    }
-
-    // json.data = WithdrawResponse { reference, requestedAmount, feeDeducted, amountReceived, balanceAfter, currency, status, message }
-    const data = json.data || json;
-
-    // Refresh transaction list and update balance
+    const res=await fetch(`${API_BASE}/wallet/withdraw`,{method:'POST',headers:authHeaders(),body:JSON.stringify({amount:amt,accountName:name,accountNumber:acc,bankCode:bankCode})});
+    if(res.status===401){showAuthError();return;}
+    const json=await res.json();
+    if(!res.ok) throw new Error(json.message||`Error ${res.status}`);
+    const data=json.data||json;
     await loadTransactions();
-
-    showModal('success',
-      'Withdrawal Sent',
-      data.message || `GHS ${parseFloat(data.amountReceived || 0).toFixed(2)} will be sent to ${name}.`,
-      data.reference,
-      [
-        { lbl: 'Requested', val: fmt(data.requestedAmount) },
-        { lbl: 'Fee', val: 'GHS ' + parseFloat(data.feeDeducted || 0).toFixed(2) },
-        { lbl: 'You receive', val: fmt(data.amountReceived), cls: 'green' },
-        { lbl: 'Balance After', val: fmt(data.balanceAfter) }
-      ]
-    );
-
-  } catch (e) {
-    showToast(e.message || 'Withdrawal failed', 'error');
-  } finally {
-    setBtnLoading('withdrawBtn', 'wdBtnTxt', false, 'Withdraw Funds');
-  }
+    showModal('success','Withdrawal Sent',data.message||`GHS ${parseFloat(data.amountReceived||0).toFixed(2)} will be sent to ${name}.`,data.reference,[{lbl:'Requested',val:fmt(data.requestedAmount)},{lbl:'Fee',val:'GHS '+parseFloat(data.feeDeducted||0).toFixed(2)},{lbl:'You receive',val:fmt(data.amountReceived),cls:'green'},{lbl:'Balance After',val:fmt(data.balanceAfter)}]);
+  } catch(e) {
+    showToast(e.message||'Withdrawal failed','error');
+  } finally { setBtnLoading('withdrawBtn','wdBtnTxt',false,'Withdraw Funds'); }
 }
 
-// ─────────────────────────────────────────────
-// UI HELPERS
-// ─────────────────────────────────────────────
-function fmt(n) {
-  const sym = getCurrencySymbol(userCurrency);
-  const locale = userCurrency === 'NGN' ? 'en-NG' : userCurrency === 'GHS' ? 'en-GH' : 'en-US';
-  return sym + Number(n || 0).toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
-
-function setBtnLoading(btnId, txtId, loading, label) {
-  const btn = document.getElementById(btnId);
-  const txt = document.getElementById(txtId);
-  if (!btn || !txt) return;
-  btn.disabled = loading;
-  if (loading) {
-    txt.innerHTML = `<span class="spinner"></span> ${label}`;
-  } else {
-    txt.textContent = label;
-  }
-}
-
-function setDeposit(v) { document.getElementById('depositAmount').value = v; updateDepositSummary(); }
-function setWithdraw(v) { document.getElementById('withdrawAmount').value = v; updateWithdrawSummary(); }
-
-function updateDepositSummary() {
-  const amt = parseFloat(document.getElementById('depositAmount').value) || 0;
-  document.getElementById('depSumAmount').innerText = fmt(amt);
-  document.getElementById('depSumReceive').innerText = fmt(amt);
-}
-
-function updateWithdrawSummary() {
-  const amt = parseFloat(document.getElementById('withdrawAmount').value) || 0;
-  const fee = +(amt * 0.02).toFixed(2);
-  const rec = +(amt - fee).toFixed(2);
-  document.getElementById('wdSumAmount').innerText = fmt(amt);
-  document.getElementById('wdSumFee').innerText = '− ' + getCurrencySymbol(userCurrency) + fee.toFixed(2);
-  document.getElementById('wdSumReceive').innerText = fmt(rec);
-}
-
-function switchAction(type) {
-  const isD = type === 'deposit';
-  document.getElementById('depositForm').style.display = isD ? 'block' : 'none';
-  document.getElementById('withdrawForm').style.display = isD ? 'none' : 'block';
-  document.getElementById('btnTabDeposit').classList.toggle('active', isD);
-  document.getElementById('btnTabWithdraw').classList.toggle('active', !isD);
-  const titleEl = document.getElementById('actionTitle');
-  titleEl.innerHTML = `<svg data-lucide="${isD ? 'arrow-down-circle' : 'arrow-up-circle'}"></svg> ${isD ? 'Deposit' : 'Withdraw'}`;
-  lucide.createIcons();
-}
-
-function buildFilters() {
-  const filters = ['ALL', 'DEPOSIT', 'WITHDRAWAL', 'BET', 'WINNINGS', 'REFUND'];
-  const labels = { ALL: 'All', DEPOSIT: 'Deposits', WITHDRAWAL: 'Withdrawals', BET: 'Bets', WINNINGS: 'Winnings', REFUND: 'Refunds' };
-  document.getElementById('filterContainer').innerHTML = filters.map(f =>
-    `<button class="filter-chip ${f === 'ALL' ? 'active' : ''}" data-filter="${f}">${labels[f]}</button>`
-  ).join('');
-
-  document.querySelectorAll('.filter-chip').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-      btn.classList.add('active');
-      txFilter = btn.getAttribute('data-filter');
-      renderTransactions();
-    });
-  });
-}
-
-function showAuthError() {
-  showToast('Session expired — please log in again', 'error');
-  document.getElementById('txList').innerHTML = `
-    <div class="error-state">
-      <svg data-lucide="lock"></svg>
-      <p>You need to be logged in to view your wallet.</p>
-    </div>`;
-  lucide.createIcons();
-}
-
-function showToast(msg, type = 'info') {
-  const c = document.getElementById('toastContainer');
-  const t = document.createElement('div');
-  t.className = `toast ${type}`;
-  t.innerHTML = `<svg data-lucide="${type === 'success' ? 'check-circle-2' : 'alert-circle'}"></svg><span>${msg}</span>`;
-  c.appendChild(t);
-  lucide.createIcons();
-  setTimeout(() => t.remove(), 4000);
-}
-
-function showModal(type, title, msg, ref, details) {
-  document.getElementById('modalTitle').innerText = title;
-  document.getElementById('modalMsg').innerText = msg;
-  const iconDiv = document.getElementById('modalIcon');
-  iconDiv.style.background = type === 'success' ? 'var(--greenBg)' : 'var(--redBg)';
-  iconDiv.style.border = `1px solid ${type === 'success' ? 'var(--borderGreen)' : 'var(--borderRed)'}`;
-  document.getElementById('modalIcoSvg').setAttribute('data-lucide', type === 'success' ? 'check-circle-2' : 'alert-circle');
-  document.getElementById('modalIcoSvg').style.color = type === 'success' ? 'var(--green)' : 'var(--red)';
-  const refDiv = document.getElementById('modalRef');
-  if (ref) { refDiv.innerText = ref; refDiv.style.display = 'block'; } else refDiv.style.display = 'none';
-  const detailDiv = document.getElementById('modalDetail');
-  if (details && details.length) {
-    detailDiv.style.display = 'grid';
-    detailDiv.innerHTML = details.map(d =>
-      `<div class="modal-detail-item"><div class="modal-detail-lbl">${d.lbl}</div><div class="modal-detail-val ${d.cls || ''}">${d.val}</div></div>`
-    ).join('');
-  } else detailDiv.style.display = 'none';
-  document.getElementById('modalOverlay').classList.add('open');
-  lucide.createIcons();
-}
-
-function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
-
-function toggleTheme() {
-  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
-  document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
-  document.getElementById('themeIco').setAttribute('data-lucide', dark ? 'sun' : 'moon');
-  lucide.createIcons();
-}
-
-// Expose globals
-window.switchAction = switchAction;
-window.setDeposit = setDeposit;
-window.setWithdraw = setWithdraw;
-window.updateDepositSummary = updateDepositSummary;
-window.updateWithdrawSummary = updateWithdrawSummary;
-window.initiateDeposit = initiateDeposit;
-window.initiateWithdraw = initiateWithdraw;
-window.closeModal = closeModal;
-window.toggleTheme = toggleTheme;
-window.loadTransactions = loadTransactions;
+function fmt(n){const sym=getCurrencySymbol(userCurrency);const locale=userCurrency==='NGN'?'en-NG':userCurrency==='GHS'?'en-GH':'en-US';return sym+Number(n||0).toLocaleString(locale,{minimumFractionDigits:2,maximumFractionDigits:2});}
+function setBtnLoading(btnId,txtId,loading,label){const btn=document.getElementById(btnId),txt=document.getElementById(txtId);if(!btn||!txt)return;btn.disabled=loading;if(loading){txt.innerHTML=`<span class="spinner"></span> ${label}`;}else{txt.textContent=label;}}
+function setDeposit(v){document.getElementById('depositAmount').value=v;updateDepositSummary();}
+function setWithdraw(v){document.getElementById('withdrawAmount').value=v;updateWithdrawSummary();}
+function updateDepositSummary(){const amt=parseFloat(document.getElementById('depositAmount').value)||0;document.getElementById('depSumAmount').innerText=fmt(amt);document.getElementById('depSumReceive').innerText=fmt(amt);}
+function updateWithdrawSummary(){const amt=parseFloat(document.getElementById('withdrawAmount').value)||0;const fee=+(amt*0.02).toFixed(2);const rec=+(amt-fee).toFixed(2);document.getElementById('wdSumAmount').innerText=fmt(amt);document.getElementById('wdSumFee').innerText='− '+getCurrencySymbol(userCurrency)+fee.toFixed(2);document.getElementById('wdSumReceive').innerText=fmt(rec);}
+function switchAction(type){const isD=type==='deposit';document.getElementById('depositForm').style.display=isD?'block':'none';document.getElementById('withdrawForm').style.display=isD?'none':'block';document.getElementById('btnTabDeposit').classList.toggle('active',isD);document.getElementById('btnTabWithdraw').classList.toggle('active',!isD);const titleEl=document.getElementById('actionTitle');titleEl.innerHTML=`<svg data-lucide="${isD?'arrow-down-circle':'arrow-up-circle'}"></svg> ${isD?'Deposit':'Withdraw'}`;lucide.createIcons();}
+function buildFilters(){const filters=['ALL','DEPOSIT','WITHDRAWAL','BET','WINNINGS','REFUND'];const labels={ALL:'All',DEPOSIT:'Deposits',WITHDRAWAL:'Withdrawals',BET:'Bets',WINNINGS:'Winnings',REFUND:'Refunds'};document.getElementById('filterContainer').innerHTML=filters.map(f=>`<button class="filter-chip ${f==='ALL'?'active':''}" data-filter="${f}">${labels[f]}</button>`).join('');document.querySelectorAll('.filter-chip').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));btn.classList.add('active');txFilter=btn.getAttribute('data-filter');renderTransactions();});});}
+function showAuthError(){showToast('Session expired — please log in again','error');document.getElementById('txList').innerHTML=`<div class="error-state"><svg data-lucide="lock"></svg><p>You need to be logged in to view your wallet.</p></div>`;lucide.createIcons();}
+function showToast(msg,type='info'){const c=document.getElementById('toastContainer');const t=document.createElement('div');t.className=`toast ${type}`;t.innerHTML=`<svg data-lucide="${type==='success'?'check-circle-2':'alert-circle'}"></svg><span>${msg}</span>`;c.appendChild(t);lucide.createIcons();setTimeout(()=>t.remove(),4000);}
+function showModal(type,title,msg,ref,details){document.getElementById('modalTitle').innerText=title;document.getElementById('modalMsg').innerText=msg;const iconDiv=document.getElementById('modalIcon');iconDiv.style.background=type==='success'?'var(--greenBg)':'var(--redBg)';iconDiv.style.border=`1px solid ${type==='success'?'var(--borderGreen)':'var(--borderRed)'}`;document.getElementById('modalIcoSvg').setAttribute('data-lucide',type==='success'?'check-circle-2':'alert-circle');document.getElementById('modalIcoSvg').style.color=type==='success'?'var(--green)':'var(--red)';const refDiv=document.getElementById('modalRef');if(ref){refDiv.innerText=ref;refDiv.style.display='block';}else refDiv.style.display='none';const detailDiv=document.getElementById('modalDetail');if(details&&details.length){detailDiv.style.display='grid';detailDiv.innerHTML=details.map(d=>`<div class="modal-detail-item"><div class="modal-detail-lbl">${d.lbl}</div><div class="modal-detail-val ${d.cls||''}">${d.val}</div></div>`).join('');}else detailDiv.style.display='none';document.getElementById('modalOverlay').classList.add('open');lucide.createIcons();}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
+function toggleTheme(){const dark=document.documentElement.getAttribute('data-theme')==='dark';document.documentElement.setAttribute('data-theme',dark?'light':'dark');document.getElementById('themeIco').setAttribute('data-lucide',dark?'sun':'moon');lucide.createIcons();}
+window.switchAction=switchAction;window.setDeposit=setDeposit;window.setWithdraw=setWithdraw;window.updateDepositSummary=updateDepositSummary;window.updateWithdrawSummary=updateWithdrawSummary;window.initiateDeposit=initiateDeposit;window.initiateWithdraw=initiateWithdraw;window.closeModal=closeModal;window.toggleTheme=toggleTheme;window.loadTransactions=loadTransactions;
 </script>
 </body>
 </html>
