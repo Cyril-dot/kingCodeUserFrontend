@@ -38,37 +38,22 @@
   --nav:66px;
 }
 [data-theme="light"]{
-  --bg0:#F0F6FF;
-  --bg1:#FFFFFF;
-  --bg2:#E8F0FE;
-  --bg3:#D2E3FC;
-  --accent:#1565C0;
-  --accentBright:#1976D2;
-  --accentBg:rgba(21,101,192,0.07);
-  --accentBg2:rgba(21,101,192,0.14);
-  --white:#1565C0;
-  --whiteBg:rgba(21,101,192,0.06);
-  --whiteBg2:rgba(21,101,192,0.12);
-  --whiteBorder:rgba(21,101,192,0.16);
-  --whiteBorderHov:rgba(21,101,192,0.30);
+  --bg0:#F0F6FF;--bg1:#FFFFFF;--bg2:#E8F0FE;--bg3:#D2E3FC;
+  --accent:#1565C0;--accentBright:#1976D2;
+  --accentBg:rgba(21,101,192,0.07);--accentBg2:rgba(21,101,192,0.14);
+  --white:#1565C0;--whiteBg:rgba(21,101,192,0.06);--whiteBg2:rgba(21,101,192,0.12);
+  --whiteBorder:rgba(21,101,192,0.16);--whiteBorderHov:rgba(21,101,192,0.30);
   --green:#16A34A;--greenBg:rgba(22,163,74,0.09);
   --red:#DC2626;--redBg:rgba(220,38,38,0.09);
   --blue:#1D4ED8;--blueBg:rgba(29,78,216,0.07);
   --gold:#D97706;--goldBg:rgba(217,119,6,0.10);
-  --t1:#001A33;
-  --t2:#1E3A5F;
-  --t3:#5C7DA0;
-  --border:rgba(21,101,192,0.10);
-  --borderHov:rgba(21,101,192,0.22);
-  --borderAcc:rgba(21,101,192,0.40);
+  --t1:#001A33;--t2:#1E3A5F;--t3:#5C7DA0;
+  --border:rgba(21,101,192,0.10);--borderHov:rgba(21,101,192,0.22);--borderAcc:rgba(21,101,192,0.40);
   --shadow:0 8px 40px rgba(21,101,192,0.12);
 }
 
-/* MATERIAL ICONS helper */
 .mi{font-family:'Material Icons Round';font-style:normal;font-weight:normal;font-size:18px;line-height:1;letter-spacing:normal;text-transform:none;white-space:nowrap;word-wrap:normal;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;user-select:none}
-.mi-sm{font-size:14px}
-.mi-xs{font-size:12px}
-.mi-lg{font-size:22px}
+.mi-sm{font-size:14px}.mi-xs{font-size:12px}.mi-lg{font-size:22px}
 
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
@@ -80,10 +65,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);background
 .logo{font-family:var(--ffC);font-size:22px;font-weight:800;letter-spacing:1px;color:var(--t1);text-decoration:none;flex-shrink:0;margin-right:28px;display:flex;align-items:center;gap:0}
 .logo-icon{width:30px;height:30px;background:var(--accentBright);border-radius:8px;display:flex;align-items:center;justify-content:center}
 .logo-icon .mi{font-size:16px;color:#fff}
-.logo .logo-prime{color:#FFFFFF}
-.logo .logo-s{color:var(--accentBright)}
-[data-theme="light"] .logo .logo-prime{color:var(--accent)}
-[data-theme="light"] .logo .logo-s{color:var(--accentBright)}
+.logo .logo-prime{color:#FFFFFF}.logo .logo-s{color:var(--accentBright)}
+[data-theme="light"] .logo .logo-prime{color:var(--accent)}[data-theme="light"] .logo .logo-s{color:var(--accentBright)}
 .nav-links{display:flex;gap:2px;flex:1;justify-content:center}
 .nav-links a{font-size:13px;font-weight:500;color:var(--t2);text-decoration:none;padding:7px 13px;border-radius:8px;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:5px}
 .nav-links a .mi{font-size:15px}
@@ -151,6 +134,37 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);background
 .trust-pill .mi{font-size:12px;color:var(--green)}
 [data-theme="light"] .trust-pill{color:var(--t2);background:rgba(21,101,192,0.06);border-color:rgba(21,101,192,0.18)}
 
+/* LIVE CAROUSEL */
+.live-carousel-section{background:linear-gradient(90deg,rgba(34,197,94,0.10) 0%,rgba(0,13,26,0.0) 100%);border-bottom:2px solid rgba(34,197,94,0.18);padding:12px 0;overflow:hidden;position:relative}
+[data-theme="light"] .live-carousel-section{background:linear-gradient(90deg,rgba(22,163,74,0.07) 0%,rgba(240,246,255,0.0) 100%);border-bottom:2px solid rgba(22,163,74,0.18)}
+.lc-inner{max-width:1260px;margin:0 auto;padding:0 16px;display:flex;align-items:center;gap:14px}
+.lc-label{display:flex;align-items:center;gap:8px;flex-shrink:0;font-family:var(--ffC);font-size:13px;font-weight:700;letter-spacing:1.5px;color:var(--green);white-space:nowrap;text-transform:uppercase}
+.lc-dot{width:9px;height:9px;background:var(--green);border-radius:50%;animation:pulse 1.6s infinite;flex-shrink:0;box-shadow:0 0 6px rgba(34,197,94,0.6)}
+.lc-track-wrap{flex:1;display:flex;align-items:center;gap:6px;min-width:0;overflow:hidden}
+.lc-viewport{flex:1;overflow:hidden;min-width:0}
+.lc-track{display:flex;gap:10px;transition:transform .38s cubic-bezier(.4,0,.2,1);will-change:transform}
+.lc-arrow{background:rgba(34,197,94,0.10);border:1px solid rgba(34,197,94,0.25);border-radius:7px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s;padding:0}
+.lc-arrow:hover{background:var(--green);border-color:var(--green)}
+.lc-arrow:hover .mi{color:#fff}
+.lc-arrow .mi{font-size:16px;color:var(--green)}
+/* Live card */
+.lc-card{background:var(--bg2);border:1px solid rgba(34,197,94,0.20);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:12px;flex-shrink:0;min-width:220px;max-width:260px;position:relative;overflow:hidden;cursor:default;transition:border-color .15s}
+.lc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent)}
+.lc-card:hover{border-color:rgba(34,197,94,0.45)}
+.lc-teams{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
+.lc-team{display:flex;align-items:center;gap:7px;min-width:0}
+.lc-crest{width:20px;height:20px;object-fit:contain;border-radius:50%;flex-shrink:0;background:var(--bg3)}
+.lc-crest-placeholder{width:20px;height:20px;border-radius:50%;background:var(--whiteBg2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--t3)}
+.lc-tname{font-size:13px;font-weight:600;color:var(--t1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lc-score-col{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0}
+.lc-score{font-family:var(--ffC);font-size:22px;font-weight:800;color:#fff;line-height:1;text-align:center;min-width:32px}
+.lc-min{font-size:10px;font-weight:700;color:var(--green);display:flex;align-items:center;gap:3px;white-space:nowrap}
+.lc-min-dot{width:5px;height:5px;background:var(--green);border-radius:50%;animation:pulse 1.6s infinite;flex-shrink:0}
+.lc-league{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;text-align:center;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:80px}
+.lc-empty{font-size:12px;color:var(--t3);padding:4px 8px;display:flex;align-items:center;gap:6px}
+.lc-empty .mi{font-size:14px;color:var(--t3)}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}60%{box-shadow:0 0 0 6px rgba(34,197,94,0)}}
+
 /* FEED SECTION */
 .feed-section{background:var(--bg0);border-bottom:1px solid var(--border)}
 .feed-header{max-width:1260px;margin:0 auto;padding:28px 24px 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
@@ -187,7 +201,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);background
 .ctop-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
 .live-badge{display:inline-flex;align-items:center;gap:5px;background:var(--greenBg);color:var(--green);font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.5px;border:1px solid rgba(34,197,94,.15)}
 .live-badge .dot{width:5px;height:5px;background:var(--green);border-radius:50%;animation:pulse 1.6s infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}60%{box-shadow:0 0 0 6px rgba(34,197,94,0)}}
 .time-tag{font-size:11px;color:var(--t3);display:flex;align-items:center;gap:5px}
 .time-tag .mi{font-size:13px}
 .trow{display:flex;align-items:center;gap:10px;margin-bottom:13px}
@@ -240,7 +253,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);background
 .slip-logged-icon{width:54px;height:54px;background:var(--greenBg);border:1px solid rgba(34,197,94,.25);border-radius:50%;display:flex;align-items:center;justify-content:center}
 .slip-logged-icon .mi{font-size:26px;color:var(--green)}
 
-/* SPONSORS SECTION */
+/* SPONSORS */
 .sponsors-section{background:var(--bg1);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:0;overflow:hidden;position:relative;}
 .sponsors-section::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg, var(--accent) 0%, var(--accentBright) 35%, #fff 50%, var(--accentBright) 65%, var(--accent) 100%);}
 .sponsors-inner{max-width:1260px;margin:0 auto;padding:40px 24px 44px}
@@ -250,21 +263,16 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);background
 .sponsors-title{font-family:var(--ffC);font-size:clamp(22px,3.5vw,32px);font-weight:800;color:var(--t1);letter-spacing:.5px;line-height:1.1;}
 .sponsors-title span{color:var(--accentBright)}
 .sponsors-sub{font-size:13px;color:var(--t3);margin-top:8px;line-height:1.6}
-
-/* SportyBet main sponsor */
 .sponsor-main{display:flex;align-items:center;justify-content:center;gap:0;background:linear-gradient(135deg, rgba(33,150,243,0.12) 0%, rgba(21,101,192,0.08) 100%);border:2px solid rgba(33,150,243,0.30);border-radius:18px;padding:28px 36px;margin-bottom:28px;position:relative;overflow:hidden;transition:all .2s;cursor:pointer;}
 .sponsor-main::before{content:'OFFICIAL BETTING PARTNER';position:absolute;top:12px;right:14px;font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--gold);background:var(--goldBg);border:1px solid rgba(245,158,11,0.3);border-radius:4px;padding:3px 8px;}
 .sponsor-main:hover{border-color:var(--accentBright);transform:translateY(-2px);box-shadow:0 12px 40px rgba(33,150,243,0.20)}
-
-/* Real SportyBet logo */
 .sportybet-logo-wrap{display:flex;align-items:center;gap:18px}
 .sportybet-img{height:90px;width:auto;object-fit:contain;display:block;flex-shrink:0}
 .sportybet-fallback{display:flex;align-items:center;gap:12px}
-.sportybet-fallback-icon{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,#FF6B00 0%,#FF3D00 100%);display:flex;align-items:center;justify-content:center;font-family:var(--ffC);font-size:20px;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 4px 16px rgba(255,107,0,0.4)}
+.sportybet-fallback-icon{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,#FF6B00 0%,#FF3D00 100%);display:flex;align-items:center;justify-content:center;font-family:var(--ffC);font-size:20px;font-weight:800;color:#fff;flex-shrink:0}
 .sportybet-text-wrap{display:flex;flex-direction:column;gap:2px}
 .sportybet-brand{font-family:var(--ffC);font-size:clamp(26px,4vw,38px);font-weight:800;color:var(--t1);letter-spacing:.5px;line-height:1}
 .sportybet-brand .sporty{color:#FF6B00}
-.sportybet-brand .bet{color:var(--t1)}
 .sportybet-sub{font-size:12px;color:var(--t3);display:flex;align-items:center;gap:6px}
 .sportybet-sub .mi{font-size:13px;color:var(--green)}
 .sponsor-divider{width:1px;height:60px;background:var(--border);margin:0 32px;flex-shrink:0}
@@ -285,10 +293,8 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
 .footer-logo{font-family:var(--ffC);font-size:24px;font-weight:800;margin-bottom:10px;line-height:1;display:flex;align-items:center;gap:0}
 .footer-logo .fl-icon{width:28px;height:28px;background:var(--accentBright);border-radius:7px;display:flex;align-items:center;justify-content:center}
 .footer-logo .fl-icon .mi{font-size:15px;color:#fff}
-.footer-logo .fl-prime{color:#fff}
-.footer-logo .fl-s{color:var(--accentBright)}
-[data-theme="light"] .footer-logo .fl-prime{color:var(--t1)}
-[data-theme="light"] .footer-logo .fl-s{color:var(--accentBright)}
+.footer-logo .fl-prime{color:#fff}.footer-logo .fl-s{color:var(--accentBright)}
+[data-theme="light"] .footer-logo .fl-prime{color:var(--t1)}[data-theme="light"] .footer-logo .fl-s{color:var(--accentBright)}
 .footer-tagline{font-size:13px;color:var(--t3);line-height:1.6;max-width:220px;margin-bottom:16px}
 .footer-badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
 .fbadge{background:var(--whiteBg);border:1px solid var(--whiteBorder);border-radius:6px;padding:5px 10px;font-size:10px;font-weight:600;color:var(--t2);display:flex;align-items:center;gap:5px;text-transform:uppercase;letter-spacing:.5px}
@@ -353,6 +359,7 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
   .sponsors-inner{padding:28px 16px 32px}.sponsor-main{padding:20px 16px 24px}
   .sportybet-logo-wrap{flex-direction:column;gap:10px;align-items:center}
   .sstat-val{font-size:18px}.sponsor-stats{gap:18px}
+  .lc-card{min-width:180px;max-width:200px}
 }
 @media(max-width:640px){
   nav{padding:0 12px}.hero-inner{padding:36px 14px 34px}.hero-title{font-size:36px}
@@ -360,6 +367,7 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
   .mcard{padding:12px 13px}.tname{font-size:13px}.api-bar{padding:6px 14px}
   .sponsors-title{font-size:20px}.footer-inner{grid-template-columns:1fr 1fr;gap:20px}
   .footer-top-inner{justify-content:flex-start;gap:6px}.footer-quick-link{font-size:10px;padding:4px 9px}
+  .lc-label span{display:none}
 }
 @media(max-width:480px){
   .hero-title{font-size:30px}.hbtn{padding:10px 16px;font-size:13px}
@@ -446,6 +454,27 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
   </div>
 </div>
 
+<!-- LIVE GAMES CAROUSEL -->
+<div class="live-carousel-section" id="liveCarouselSection" style="display:none">
+  <div class="lc-inner">
+    <div class="lc-label">
+      <div class="lc-dot"></div>
+      <span>Live Now</span>
+    </div>
+    <div class="lc-track-wrap">
+      <button class="lc-arrow" id="lcLeft" onclick="slideCarousel(-1)" aria-label="Previous">
+        <span class="mi">chevron_left</span>
+      </button>
+      <div class="lc-viewport" id="lcViewport">
+        <div class="lc-track" id="lcTrack"></div>
+      </div>
+      <button class="lc-arrow" id="lcRight" onclick="slideCarousel(1)" aria-label="Next">
+        <span class="mi">chevron_right</span>
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- FIXTURES FEED -->
 <div class="feed-section">
   <div class="feed-header">
@@ -504,18 +533,9 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
       <div class="sponsors-title">Our <span>Official Sponsors</span> &amp; Partners</div>
       <div class="sponsors-sub">Backed by the world's top football clubs and leading betting operators</div>
     </div>
-
-    <!-- SportyBet with real logo -->
     <div class="sponsor-main">
       <div class="sportybet-logo-wrap">
-        <!-- Real SportyBet logo via their CDN -->
-        <img 
-          src="https://efirbet.com/static/uploads/sportybet-logo.png" 
-          alt="SportyBet" 
-          class="sportybet-img"
-          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
-        >
-        <!-- Fallback if logo doesn't load -->
+        <img src="https://efirbet.com/static/uploads/sportybet-logo.png" alt="SportyBet" class="sportybet-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="sportybet-fallback" style="display:none">
           <div class="sportybet-fallback-icon">SB</div>
           <div class="sportybet-text-wrap">
@@ -550,12 +570,11 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
       <a href="#" class="footer-quick-link"><span class="mi">favorite</span>Responsible Play</a>
     </div>
   </div>
-
   <div class="footer-main">
     <div class="footer-inner">
       <div class="footer-brand">
         <div class="footer-logo">
-        <div class="fl-icon" style="margin-right:6px"><span class="mi">sports_soccer</span></div><span class="fl-prime">BET</span><span class="fl-s">C</span><span class="fl-prime">ASH</span>
+          <div class="fl-icon" style="margin-right:6px"><span class="mi">sports_soccer</span></div><span class="fl-prime">BET</span><span class="fl-s">C</span><span class="fl-prime">ASH</span>
         </div>
         <div class="footer-tagline">Ghana's premier sports betting platform. Real-time odds, instant payouts.</div>
         <div class="footer-badges">
@@ -571,7 +590,6 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
           <a href="#" class="footer-social-btn" title="WhatsApp"><span class="mi">chat</span></a>
         </div>
       </div>
-
       <div class="footer-col">
         <h4>Sports</h4>
         <ul>
@@ -582,7 +600,6 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
           <li><a href="#"><span class="mi">chevron_right</span>Correct Score</a></li>
         </ul>
       </div>
-
       <div class="footer-col">
         <h4>Account</h4>
         <ul>
@@ -593,7 +610,6 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
           <li><a href="wallet.html"><span class="mi">chevron_right</span>My Bets</a></li>
         </ul>
       </div>
-
       <div class="footer-col">
         <h4>Help</h4>
         <ul>
@@ -605,7 +621,6 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
         </ul>
       </div>
     </div>
-
     <div class="footer-bottom">
       <div class="footer-bottom-left">
         <div class="footer-copy">&copy; 2026 CashBet Ghana. All rights reserved.</div>
@@ -626,47 +641,268 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
 <div class="wpop-container" id="wpopContainer"></div>
 
 <script>
-const BASE_URL='https://kingcodebackendgames.onrender.com';
-const FIXTURES_URL=`${BASE_URL}/api/v1/football/fixtures`;
+const BASE_URL = 'https://kingcodebackendgames.onrender.com';
+const FIXTURES_URL = `${BASE_URL}/api/v1/football/fixtures`;
+const LIVE_URL = `${BASE_URL}/api/football/live`;
+
 function getToken(){return localStorage.getItem('primestakes_token')||sessionStorage.getItem('primestakes_token')||null;}
 function getUser(){try{const r=localStorage.getItem('primestakes_user')||sessionStorage.getItem('primestakes_user');return r?JSON.parse(r):null;}catch{return null;}}
 function logout(){['primestakes_token','primestakes_user'].forEach(k=>{localStorage.removeItem(k);sessionStorage.removeItem(k);});window.location.href='/';}
-window.addEventListener('load',()=>{applyAuthState();loadMatches();startWinnerPopups();});
+
+window.addEventListener('load', () => {
+  applyAuthState();
+  loadMatches();
+  loadLiveCarousel();
+  startWinnerPopups();
+});
+
 function applyAuthState(){
-  const token=getToken(),user=getUser();
+  const token=getToken(), user=getUser();
   if(token&&user){
-    document.getElementById('navGuest').style.display='none';document.getElementById('navUser').style.display='flex';
-    document.getElementById('slipGuest').style.display='none';document.getElementById('slipUser').style.display='flex';
-    document.getElementById('heroGuestBtns').style.display='none';document.getElementById('heroUserBtns').style.display='flex';
-    document.getElementById('mobAuthBtns').style.display='none';document.getElementById('mobUserBtns').style.display='flex';
+    document.getElementById('navGuest').style.display='none';
+    document.getElementById('navUser').style.display='flex';
+    document.getElementById('slipGuest').style.display='none';
+    document.getElementById('slipUser').style.display='flex';
+    document.getElementById('heroGuestBtns').style.display='none';
+    document.getElementById('heroUserBtns').style.display='flex';
+    document.getElementById('mobAuthBtns').style.display='none';
+    document.getElementById('mobUserBtns').style.display='flex';
     document.getElementById('mobProfile').style.display='flex';
-    const first=(user.firstName||'').trim(),last=(user.lastName||'').trim();
+    const first=(user.firstName||'').trim(), last=(user.lastName||'').trim();
     const ini=(first[0]||'')+(last[0]||first[1]||'');
-    if(ini)document.getElementById('navInitials').textContent=ini.toUpperCase();
+    if(ini) document.getElementById('navInitials').textContent=ini.toUpperCase();
     document.getElementById('slipWelcome').textContent=`Welcome back, ${user.firstName||'Champ'}!`;
     fetchBalance();
   }
 }
-async function fetchBalance(){try{const res=await fetch(`${BASE_URL}/api/v1/wallet/balance`,{headers:{Authorization:`Bearer ${getToken()}`}});const d=await res.json();const bal=d.data?.balance??d.balance??null;if(bal!==null)document.getElementById('navBalance').textContent=`GHS ${parseFloat(bal).toFixed(2)}`;}catch{}}
-let allMatches=[];
+
+async function fetchBalance(){
+  try{
+    const res=await fetch(`${BASE_URL}/api/v1/wallet/balance`,{headers:{Authorization:`Bearer ${getToken()}`}});
+    const d=await res.json();
+    const bal=d.data?.balance??d.balance??null;
+    if(bal!==null) document.getElementById('navBalance').textContent=`GHS ${parseFloat(bal).toFixed(2)}`;
+  }catch{}
+}
+
+// ── LIVE CAROUSEL ─────────────────────────────────────────────────────────────
+let lcGames = [];
+let lcOffset = 0;
+const LC_CARD_WIDTH = 270; // card width + gap
+
+async function loadLiveCarousel() {
+  try {
+    const res = await fetch(LIVE_URL);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    // data is an array of LiveGameResponse
+    lcGames = Array.isArray(data) ? data : [];
+    renderCarousel();
+  } catch(e) {
+    console.warn('Live games fetch failed:', e.message);
+    // silently hide — no live games right now
+  }
+}
+
+function renderCarousel() {
+  const section = document.getElementById('liveCarouselSection');
+  const track = document.getElementById('lcTrack');
+  if (!lcGames.length) {
+    section.style.display = 'none';
+    return;
+  }
+  section.style.display = 'block';
+  track.innerHTML = lcGames.map(g => buildLcCard(g)).join('');
+  lcOffset = 0;
+  updateCarouselArrows();
+}
+
+function buildLcCard(g) {
+  const hs = g.homeScore ?? 0;
+  const as = g.awayScore ?? 0;
+  const min = g.elapsed ? `${g.elapsed}'` : (g.statusShort || 'LIVE');
+  const homeCrest = g.homeLogo || g.homeCrest || '';
+  const awayCrest = g.awayLogo || g.awayCrest || '';
+  const homeInitial = (g.homeTeam||'H')[0].toUpperCase();
+  const awayInitial = (g.awayTeam||'A')[0].toUpperCase();
+  const leagueName = g.league || g.competition || '';
+
+  const homeCrestHtml = homeCrest
+    ? `<img src="${homeCrest}" class="lc-crest" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt=""><div class="lc-crest-placeholder" style="display:none">${homeInitial}</div>`
+    : `<div class="lc-crest-placeholder">${homeInitial}</div>`;
+  const awayCrestHtml = awayCrest
+    ? `<img src="${awayCrest}" class="lc-crest" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt=""><div class="lc-crest-placeholder" style="display:none">${awayInitial}</div>`
+    : `<div class="lc-crest-placeholder">${awayInitial}</div>`;
+
+  return `<div class="lc-card">
+    <div class="lc-teams">
+      <div class="lc-team">${homeCrestHtml}<span class="lc-tname">${g.homeTeam||'Home'}</span></div>
+      <div class="lc-team">${awayCrestHtml}<span class="lc-tname">${g.awayTeam||'Away'}</span></div>
+    </div>
+    <div class="lc-score-col">
+      <div class="lc-score">${hs}–${as}</div>
+      <div class="lc-min"><div class="lc-min-dot"></div>${min}</div>
+      <div class="lc-league">${leagueName}</div>
+    </div>
+  </div>`;
+}
+
+function slideCarousel(dir) {
+  const viewport = document.getElementById('lcViewport');
+  const track = document.getElementById('lcTrack');
+  const cards = track.querySelectorAll('.lc-card');
+  if (!cards.length) return;
+  const viewW = viewport.offsetWidth;
+  const totalW = track.scrollWidth;
+  const maxOffset = Math.max(0, totalW - viewW);
+  lcOffset = Math.min(maxOffset, Math.max(0, lcOffset + dir * LC_CARD_WIDTH));
+  track.style.transform = `translateX(-${lcOffset}px)`;
+  updateCarouselArrows();
+}
+
+function updateCarouselArrows() {
+  const viewport = document.getElementById('lcViewport');
+  const track = document.getElementById('lcTrack');
+  const totalW = track.scrollWidth;
+  const viewW = viewport.offsetWidth;
+  const maxOffset = Math.max(0, totalW - viewW);
+  document.getElementById('lcLeft').style.opacity = lcOffset <= 0 ? '0.35' : '1';
+  document.getElementById('lcRight').style.opacity = lcOffset >= maxOffset ? '0.35' : '1';
+}
+
+// Auto-refresh carousel every 60 seconds
+setInterval(loadLiveCarousel, 60 * 1000);
+
+// ── FIXTURES FEED ─────────────────────────────────────────────────────────────
+let allMatches = [];
 function sr(n){let s=n;s^=s<<13;s^=s>>17;s^=s<<5;return(s>>>0)/4294967296;}
 function odds(id){return{home:+(1.35+sr(id)*2.5).toFixed(2),draw:+(2.60+sr(id*7919)*1.5).toFixed(2),away:+(1.35+sr(id*6271)*2.5).toFixed(2),o15:+(1.12+sr(id+1)*0.4).toFixed(2),o25:+(1.55+sr(id+2)*0.7).toFixed(2),o35:+(2.10+sr(id+3)*1.4).toFixed(2)};}
 function hashStr(s){let h=0;for(let i=0;i<s.length;i++)h=(Math.imul(31,h)+s.charCodeAt(i))|0;return Math.abs(h);}
-async function loadMatches(){showLoad();try{const res=await fetch(FIXTURES_URL);if(!res.ok)throw new Error(`HTTP ${res.status}`);const data=await res.json();const club=[],wc=[];(data.matches||[]).forEach(m=>{if(isWC(m))wc.push(normalise(m));else club.push(normalise(m));});allMatches=[...club,...wc];updateApiBadge(club.length,wc.length);renderFeed();}catch(e){console.error('Failed:',e);updateApiBadgeError();showError();}}
+
+async function loadMatches(){
+  showLoad();
+  try{
+    const res=await fetch(FIXTURES_URL);
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data=await res.json();
+    const club=[],wc=[];
+    (data.matches||[]).forEach(m=>{
+      if(isWC(m)) wc.push(normalise(m));
+      else club.push(normalise(m));
+    });
+    allMatches=[...club,...wc];
+    updateApiBadge(club.length,wc.length);
+    renderFeed();
+  }catch(e){
+    console.error('Failed:',e);
+    updateApiBadgeError();
+    showError();
+  }
+}
+
 function isWC(m){const c=(m.competition||'').toLowerCase();return c.includes('world cup')||c.includes('wc')||m.category==='wc';}
-function normalise(m){return{_uid:m.uid||`m-${Math.random()}`,_comp:m.competition||'Football',_cat:isWC(m)?'wc':'club',_isLive:m.live===true||m.status==='IN_PLAY'||m.status==='PAUSED',_date:m.utcDate||new Date().toISOString(),_min:m.minute||'',_ht:m.teams?.home?.name||m.homeTeam||'Home',_at:m.teams?.away?.name||m.awayTeam||'Away',_hc:m.crests?.home||m.teams?.home?.crest||'',_ac:m.crests?.away||m.teams?.away?.crest||'',_hs:m.scores?.home??null,_as:m.scores?.away??null,_venue:m.venue||'',_odds:m.odds||null};}
-function updateApiBadge(c,w){const now=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});document.getElementById('apiBar').innerHTML=`<span class="api-badge ${c>0?'ok':'err'}"><span class="mi">${c>0?'check_circle':'cancel'}</span>${c>0?`✓ ${c} Club Fixtures`:'Club Leagues Offline'}</span><span class="api-badge ${w>0?'ok':'err'}"><span class="mi">${w>0?'check_circle':'cancel'}</span>${w>0?`✓ ${w} WC 2026 Fixtures`:'WC 2026 Offline'}</span><span class="last-updated"><span class="mi">refresh</span>Updated ${now}</span>`;}
+
+function normalise(m){
+  return{
+    _uid:m.uid||`m-${Math.random()}`,
+    _comp:m.competition||'Football',
+    _cat:isWC(m)?'wc':'club',
+    _isLive:m.live===true||m.status==='IN_PLAY'||m.status==='PAUSED',
+    _date:m.utcDate||new Date().toISOString(),
+    _min:m.minute||'',
+    _ht:m.teams?.home?.name||m.homeTeam||'Home',
+    _at:m.teams?.away?.name||m.awayTeam||'Away',
+    _hc:m.crests?.home||m.teams?.home?.crest||m.homeCrest||'',
+    _ac:m.crests?.away||m.teams?.away?.crest||m.awayCrest||'',
+    _hs:m.scores?.home??m.homeScore??null,
+    _as:m.scores?.away??m.awayScore??null,
+    _venue:m.venue||'',
+    _odds:m.odds||null
+  };
+}
+
+function updateApiBadge(c,w){
+  const now=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('apiBar').innerHTML=
+    `<span class="api-badge ${c>0?'ok':'err'}"><span class="mi">${c>0?'check_circle':'cancel'}</span>${c>0?`✓ ${c} Club Fixtures`:'Club Leagues Offline'}</span>`+
+    `<span class="api-badge ${w>0?'ok':'err'}"><span class="mi">${w>0?'check_circle':'cancel'}</span>${w>0?`✓ ${w} WC 2026 Fixtures`:'WC 2026 Offline'}</span>`+
+    `<span class="last-updated"><span class="mi">refresh</span>Updated ${now}</span>`;
+}
 function updateApiBadgeError(){document.getElementById('apiBar').innerHTML=`<span class="api-badge err"><span class="mi">cancel</span>Backend Unreachable</span>`;}
 function showLoad(){document.getElementById('feed').innerHTML='<div class="loading-wrap"><div class="spinner"></div><span style="font-size:13px;color:var(--t3)">Fetching fixtures…</span></div>';}
 function showError(){document.getElementById('feed').innerHTML=`<div class="empty-wrap"><span class="mi">wifi_off</span><span>Could not reach the server.</span><button onclick="loadMatches()" style="margin-top:8px;padding:8px 20px;border-radius:8px;background:var(--accent);color:#fff;border:none;font-weight:700;cursor:pointer;font-family:var(--ff)">Retry</button></div>`;}
-function renderFeed(){const feed=document.getElementById('feed');const club=allMatches.filter(m=>m._cat==='club');const wc=allMatches.filter(m=>m._cat==='wc');const sortFn=(a,b)=>{if(a._isLive&&!b._isLive)return -1;if(!a._isLive&&b._isLive)return 1;return new Date(a._date)-new Date(b._date);};club.sort(sortFn);wc.sort(sortFn);let html='';if(club.length)html+=mkSection('Top 6 European Leagues','shield','var(--accentBright)','',club,0);if(wc.length)html+=mkSection('FIFA World Cup 2026','emoji_events','var(--green)','wc',wc,club.length);feed.innerHTML=html||'<div class="empty-wrap"><span class="mi">calendar_today</span><span>No fixtures available right now.</span></div>';}
-function mkSection(title,icon,color,type,arr,off){const cls=type==='wc'?'sec-lbl wc':'sec-lbl';let h=`<div class="${cls}" style="margin-top:${off>0?'24px':'0'}"><span><span class="mi" style="font-size:13px;color:${color}">${icon}</span>${title}</span><span style="font-family:var(--ffC);color:${color}">${arr.length}</span></div>`;arr.forEach((m,i)=>{h+=buildCard(m,off+i);});return h;}
-function fmtT(u){const d=new Date(u),n=new Date();const t=d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});const tm=new Date();tm.setDate(n.getDate()+1);if(d.toDateString()===n.toDateString())return'Today '+t;if(d.toDateString()===tm.toDateString())return'Tomorrow '+t;return d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})+' '+t;}
-function buildCard(m,idx){const oid=hashStr(m._uid)%900000+100000;const od=m._odds?{home:m._odds.home,draw:m._odds.draw,away:m._odds.away,o15:m._odds.over15,o25:m._odds.over25,o35:m._odds.over35}:odds(oid);const crest=src=>src?`<img src="${src}" class="tcrest" onerror="this.style.display='none'" alt="">`:'' ;const scoreHtml=m._hs!=null?`<div class="score-box">${m._hs} – ${m._as}</div>`:m._isLive?`<div class="score-box">– –</div>`:`<div class="vs-box">VS</div>`;const statusHtml=m._isLive?`<span class="live-badge"><div class="dot"></div>${m._min||'LIVE'}</span>`:`<span class="time-tag"><span class="mi">schedule</span>${fmtT(m._date)}</span>`;const leagueCls=m._cat==='wc'?'league-tag wct':'league-tag';const cardCls=`mcard${m._isLive?' live-card':''}${m._cat==='wc'?' wc-card':''}`;return `<div class="${cardCls}" style="animation-delay:${idx*25}ms"><div class="ctop"><div class="${leagueCls}">${m._comp||'Football'}</div><div class="ctop-right">${statusHtml}</div></div>${m._venue?`<div style="font-size:11px;color:var(--t3);margin-bottom:8px;display:flex;align-items:center;gap:4px"><span class="mi" style="font-size:12px">location_on</span>${m._venue}</div>`:''}<div class="trow"><div class="team-blk">${crest(m._hc)}<div class="tname">${m._ht}</div></div>${scoreHtml}<div class="team-blk away"><div class="tname away">${m._at}</div>${crest(m._ac)}</div></div><div class="og"><div class="obtn"><span class="ol">1 Home</span><span class="ov">${od.home}</span></div><div class="obtn"><span class="ol">X Draw</span><span class="ov">${od.draw}</span></div><div class="obtn"><span class="ol">2 Away</span><span class="ov">${od.away}</span></div></div><div class="gg"><div class="gbtn"><span class="gl">Over 1.5</span><span class="gv">${od.o15}</span></div><div class="gbtn"><span class="gl">Over 2.5</span><span class="gv">${od.o25}</span></div><div class="gbtn"><span class="gl">Over 3.5</span><span class="gv">${od.o35}</span></div></div></div>`;}
-function toggleTheme(){const dark=document.documentElement.getAttribute('data-theme')==='dark';document.documentElement.setAttribute('data-theme',dark?'light':'dark');const i=document.getElementById('themeIco');if(i)i.textContent=dark?'light_mode':'dark_mode';}
-function toggleMobNav(){document.getElementById('mobNav').classList.toggle('open');document.getElementById('hamBtn').classList.toggle('open');}
-setInterval(loadMatches,60*60*1000);
 
+function renderFeed(){
+  const feed=document.getElementById('feed');
+  const club=allMatches.filter(m=>m._cat==='club');
+  const wc=allMatches.filter(m=>m._cat==='wc');
+  const sortFn=(a,b)=>{if(a._isLive&&!b._isLive)return -1;if(!a._isLive&&b._isLive)return 1;return new Date(a._date)-new Date(b._date);};
+  club.sort(sortFn); wc.sort(sortFn);
+  let html='';
+  if(club.length) html+=mkSection('Top 6 European Leagues','shield','var(--accentBright)','',club,0);
+  if(wc.length) html+=mkSection('FIFA World Cup 2026','emoji_events','var(--green)','wc',wc,club.length);
+  feed.innerHTML=html||'<div class="empty-wrap"><span class="mi">calendar_today</span><span>No fixtures available right now.</span></div>';
+}
+
+function mkSection(title,icon,color,type,arr,off){
+  const cls=type==='wc'?'sec-lbl wc':'sec-lbl';
+  let h=`<div class="${cls}" style="margin-top:${off>0?'24px':'0'}"><span><span class="mi" style="font-size:13px;color:${color}">${icon}</span>${title}</span><span style="font-family:var(--ffC);color:${color}">${arr.length}</span></div>`;
+  arr.forEach((m,i)=>{h+=buildCard(m,off+i);});
+  return h;
+}
+
+function fmtT(u){
+  const d=new Date(u),n=new Date();
+  const t=d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  const tm=new Date();tm.setDate(n.getDate()+1);
+  if(d.toDateString()===n.toDateString()) return'Today '+t;
+  if(d.toDateString()===tm.toDateString()) return'Tomorrow '+t;
+  return d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})+' '+t;
+}
+
+function buildCard(m,idx){
+  const oid=hashStr(m._uid)%900000+100000;
+  const od=m._odds?{home:m._odds.home,draw:m._odds.draw,away:m._odds.away,o15:m._odds.over15,o25:m._odds.over25,o35:m._odds.over35}:odds(oid);
+  const crest=src=>src?`<img src="${src}" class="tcrest" onerror="this.style.display='none'" alt="">`:'' ;
+  const scoreHtml=m._hs!=null?`<div class="score-box">${m._hs} – ${m._as}</div>`:m._isLive?`<div class="score-box">– –</div>`:`<div class="vs-box">VS</div>`;
+  const statusHtml=m._isLive?`<span class="live-badge"><div class="dot"></div>${m._min||'LIVE'}</span>`:`<span class="time-tag"><span class="mi">schedule</span>${fmtT(m._date)}</span>`;
+  const leagueCls=m._cat==='wc'?'league-tag wct':'league-tag';
+  const cardCls=`mcard${m._isLive?' live-card':''}${m._cat==='wc'?' wc-card':''}`;
+  return `<div class="${cardCls}" style="animation-delay:${idx*25}ms">
+    <div class="ctop"><div class="${leagueCls}">${m._comp||'Football'}</div><div class="ctop-right">${statusHtml}</div></div>
+    ${m._venue?`<div style="font-size:11px;color:var(--t3);margin-bottom:8px;display:flex;align-items:center;gap:4px"><span class="mi" style="font-size:12px">location_on</span>${m._venue}</div>`:''}
+    <div class="trow">
+      <div class="team-blk">${crest(m._hc)}<div class="tname">${m._ht}</div></div>
+      ${scoreHtml}
+      <div class="team-blk away"><div class="tname away">${m._at}</div>${crest(m._ac)}</div>
+    </div>
+    <div class="og">
+      <div class="obtn"><span class="ol">1 Home</span><span class="ov">${od.home}</span></div>
+      <div class="obtn"><span class="ol">X Draw</span><span class="ov">${od.draw}</span></div>
+      <div class="obtn"><span class="ol">2 Away</span><span class="ov">${od.away}</span></div>
+    </div>
+    <div class="gg">
+      <div class="gbtn"><span class="gl">Over 1.5</span><span class="gv">${od.o15}</span></div>
+      <div class="gbtn"><span class="gl">Over 2.5</span><span class="gv">${od.o25}</span></div>
+      <div class="gbtn"><span class="gl">Over 3.5</span><span class="gv">${od.o35}</span></div>
+    </div>
+  </div>`;
+}
+
+function toggleTheme(){
+  const dark=document.documentElement.getAttribute('data-theme')==='dark';
+  document.documentElement.setAttribute('data-theme',dark?'light':'dark');
+  const i=document.getElementById('themeIco');
+  if(i) i.textContent=dark?'light_mode':'dark_mode';
+}
+function toggleMobNav(){
+  document.getElementById('mobNav').classList.toggle('open');
+  document.getElementById('hamBtn').classList.toggle('open');
+}
+
+setInterval(loadMatches, 60*60*1000);
+
+// ── WINNER POPUPS ─────────────────────────────────────────────────────────────
 const WINNER_DATA=[
   {name:'Kwame Asante',amt:'GH₵ 48,200',review:"Couldn't believe it — placed a 5-fold and it landed!"},
   {name:'Ama Serwah',amt:'GH₵ 92,400',review:"BetCash paid out within minutes. Absolutely mad!"},
