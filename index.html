@@ -163,6 +163,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);background
 .lc-league{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;text-align:center;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:80px}
 .lc-empty{font-size:12px;color:var(--t3);padding:4px 8px;display:flex;align-items:center;gap:6px}
 .lc-empty .mi{font-size:14px;color:var(--t3)}
+/* No live games placeholder */
+.lc-no-live{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--t3);padding:4px 0}
+.lc-no-live .mi{font-size:16px;color:var(--t3)}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}60%{box-shadow:0 0 0 6px rgba(34,197,94,0)}}
 
 /* FEED SECTION */
@@ -454,8 +457,8 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
   </div>
 </div>
 
-<!-- LIVE GAMES CAROUSEL -->
-<div class="live-carousel-section" id="liveCarouselSection" style="display:none">
+<!-- LIVE GAMES CAROUSEL — always visible, populated by JS -->
+<div class="live-carousel-section" id="liveCarouselSection">
   <div class="lc-inner">
     <div class="lc-label">
       <div class="lc-dot"></div>
@@ -466,7 +469,13 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
         <span class="mi">chevron_left</span>
       </button>
       <div class="lc-viewport" id="lcViewport">
-        <div class="lc-track" id="lcTrack"></div>
+        <div class="lc-track" id="lcTrack">
+          <!-- skeleton while loading -->
+          <div class="lc-no-live">
+            <span class="mi">sports_soccer</span>
+            <span>Loading live games…</span>
+          </div>
+        </div>
       </div>
       <button class="lc-arrow" id="lcRight" onclick="slideCarousel(1)" aria-label="Next">
         <span class="mi">chevron_right</span>
@@ -688,56 +697,88 @@ async function fetchBalance(){
 // ── LIVE CAROUSEL ─────────────────────────────────────────────────────────────
 let lcGames = [];
 let lcOffset = 0;
-const LC_CARD_WIDTH = 270; // card width + gap
+const LC_CARD_WIDTH = 270;
 
 async function loadLiveCarousel() {
   try {
-    const res = await fetch(LIVE_URL);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000); // 8s timeout
+    const res = await fetch(LIVE_URL, { signal: controller.signal });
+    clearTimeout(timeout);
+
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
     const data = await res.json();
-    // data is an array of LiveGameResponse
-    lcGames = Array.isArray(data) ? data : [];
+    console.log('[LiveCarousel] API response:', data);
+
+    // Handle different response shapes: array, or { data: [...] }, or { matches: [...] }
+    let games = [];
+    if (Array.isArray(data)) {
+      games = data;
+    } else if (Array.isArray(data.data)) {
+      games = data.data;
+    } else if (Array.isArray(data.matches)) {
+      games = data.matches;
+    } else if (Array.isArray(data.games)) {
+      games = data.games;
+    }
+
+    lcGames = games;
     renderCarousel();
+
   } catch(e) {
-    console.warn('Live games fetch failed:', e.message);
-    // silently hide — no live games right now
+    console.warn('[LiveCarousel] Fetch failed:', e.message);
+    // Show a "no live games right now" placeholder instead of hiding
+    renderCarouselEmpty('No live games right now');
   }
 }
 
 function renderCarousel() {
-  const section = document.getElementById('liveCarouselSection');
   const track = document.getElementById('lcTrack');
+
   if (!lcGames.length) {
-    section.style.display = 'none';
+    renderCarouselEmpty('No live games right now');
     return;
   }
-  section.style.display = 'block';
-  track.innerHTML = lcGames.map(g => buildLcCard(g)).join('');
+
   lcOffset = 0;
+  track.innerHTML = lcGames.map(g => buildLcCard(g)).join('');
   updateCarouselArrows();
 }
 
+function renderCarouselEmpty(msg) {
+  const track = document.getElementById('lcTrack');
+  track.innerHTML = `<div class="lc-no-live"><span class="mi">sports_soccer</span><span>${msg}</span></div>`;
+  // Hide arrows when no cards
+  document.getElementById('lcLeft').style.display = 'none';
+  document.getElementById('lcRight').style.display = 'none';
+}
+
 function buildLcCard(g) {
-  const hs = g.homeScore ?? 0;
-  const as = g.awayScore ?? 0;
-  const min = g.elapsed ? `${g.elapsed}'` : (g.statusShort || 'LIVE');
-  const homeCrest = g.homeLogo || g.homeCrest || '';
-  const awayCrest = g.awayLogo || g.awayCrest || '';
-  const homeInitial = (g.homeTeam||'H')[0].toUpperCase();
-  const awayInitial = (g.awayTeam||'A')[0].toUpperCase();
-  const leagueName = g.league || g.competition || '';
+  // Support many possible field names from the API
+  const hs = g.homeScore ?? g.home_score ?? g.scores?.home ?? 0;
+  const as = g.awayScore ?? g.away_score ?? g.scores?.away ?? 0;
+  const elapsed = g.elapsed ?? g.minute ?? g.time ?? '';
+  const min = elapsed ? `${elapsed}'` : (g.statusShort ?? g.status ?? 'LIVE');
+  const homeName = g.homeTeam ?? g.home_team ?? g.teams?.home?.name ?? 'Home';
+  const awayName = g.awayTeam ?? g.away_team ?? g.teams?.away?.name ?? 'Away';
+  const homeCrest = g.homeLogo ?? g.homeCrest ?? g.home_logo ?? g.teams?.home?.crest ?? '';
+  const awayCrest = g.awayLogo ?? g.awayCrest ?? g.away_logo ?? g.teams?.away?.crest ?? '';
+  const leagueName = g.league ?? g.competition ?? g.league_name ?? '';
+  const homeInitial = (homeName[0] || 'H').toUpperCase();
+  const awayInitial = (awayName[0] || 'A').toUpperCase();
 
   const homeCrestHtml = homeCrest
-    ? `<img src="${homeCrest}" class="lc-crest" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt=""><div class="lc-crest-placeholder" style="display:none">${homeInitial}</div>`
+    ? `<img src="${homeCrest}" class="lc-crest" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt=""><div class="lc-crest-placeholder" style="display:none">${homeInitial}</div>`
     : `<div class="lc-crest-placeholder">${homeInitial}</div>`;
   const awayCrestHtml = awayCrest
-    ? `<img src="${awayCrest}" class="lc-crest" onerror="this.style.display='none';this.nextSibling.style.display='flex'" alt=""><div class="lc-crest-placeholder" style="display:none">${awayInitial}</div>`
+    ? `<img src="${awayCrest}" class="lc-crest" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt=""><div class="lc-crest-placeholder" style="display:none">${awayInitial}</div>`
     : `<div class="lc-crest-placeholder">${awayInitial}</div>`;
 
   return `<div class="lc-card">
     <div class="lc-teams">
-      <div class="lc-team">${homeCrestHtml}<span class="lc-tname">${g.homeTeam||'Home'}</span></div>
-      <div class="lc-team">${awayCrestHtml}<span class="lc-tname">${g.awayTeam||'Away'}</span></div>
+      <div class="lc-team">${homeCrestHtml}<span class="lc-tname">${homeName}</span></div>
+      <div class="lc-team">${awayCrestHtml}<span class="lc-tname">${awayName}</span></div>
     </div>
     <div class="lc-score-col">
       <div class="lc-score">${hs}–${as}</div>
@@ -750,8 +791,6 @@ function buildLcCard(g) {
 function slideCarousel(dir) {
   const viewport = document.getElementById('lcViewport');
   const track = document.getElementById('lcTrack');
-  const cards = track.querySelectorAll('.lc-card');
-  if (!cards.length) return;
   const viewW = viewport.offsetWidth;
   const totalW = track.scrollWidth;
   const maxOffset = Math.max(0, totalW - viewW);
@@ -766,8 +805,12 @@ function updateCarouselArrows() {
   const totalW = track.scrollWidth;
   const viewW = viewport.offsetWidth;
   const maxOffset = Math.max(0, totalW - viewW);
-  document.getElementById('lcLeft').style.opacity = lcOffset <= 0 ? '0.35' : '1';
-  document.getElementById('lcRight').style.opacity = lcOffset >= maxOffset ? '0.35' : '1';
+  const lBtn = document.getElementById('lcLeft');
+  const rBtn = document.getElementById('lcRight');
+  lBtn.style.display = '';
+  rBtn.style.display = '';
+  lBtn.style.opacity = lcOffset <= 0 ? '0.35' : '1';
+  rBtn.style.opacity = lcOffset >= maxOffset ? '0.35' : '1';
 }
 
 // Auto-refresh carousel every 60 seconds
