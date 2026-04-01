@@ -135,38 +135,30 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);background
 [data-theme="light"] .trust-pill{color:var(--t2);background:rgba(21,101,192,0.06);border-color:rgba(21,101,192,0.18)}
 
 /* LIVE CAROUSEL */
-.live-carousel-section{background:linear-gradient(90deg,rgba(34,197,94,0.10) 0%,rgba(0,13,26,0.0) 100%);border-bottom:2px solid rgba(34,197,94,0.18);padding:12px 0;overflow:hidden;position:relative}
+.live-carousel-section{background:linear-gradient(90deg,rgba(34,197,94,0.10) 0%,rgba(0,13,26,0.0) 100%);border-bottom:2px solid rgba(34,197,94,0.18);padding:10px 0;overflow:hidden;position:relative}
 [data-theme="light"] .live-carousel-section{background:linear-gradient(90deg,rgba(22,163,74,0.07) 0%,rgba(240,246,255,0.0) 100%);border-bottom:2px solid rgba(22,163,74,0.18)}
-.lc-inner{max-width:1260px;margin:0 auto;padding:0 16px;display:flex;align-items:center;gap:14px}
-.lc-label{display:flex;align-items:center;gap:8px;flex-shrink:0;font-family:var(--ffC);font-size:13px;font-weight:700;letter-spacing:1.5px;color:var(--green);white-space:nowrap;text-transform:uppercase}
-.lc-dot{width:9px;height:9px;background:var(--green);border-radius:50%;animation:pulse 1.6s infinite;flex-shrink:0;box-shadow:0 0 6px rgba(34,197,94,0.6)}
-.lc-track-wrap{flex:1;display:flex;align-items:center;gap:6px;min-width:0;overflow:hidden}
+.lc-inner{max-width:1260px;margin:0 auto;padding:0 12px;display:flex;align-items:center;gap:8px}
 .lc-viewport{flex:1;overflow:hidden;min-width:0}
 .lc-track{display:flex;gap:10px;transition:transform .38s cubic-bezier(.4,0,.2,1);will-change:transform}
 .lc-arrow{background:rgba(34,197,94,0.10);border:1px solid rgba(34,197,94,0.25);border-radius:7px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s;padding:0}
 .lc-arrow:hover{background:var(--green);border-color:var(--green)}
 .lc-arrow:hover .mi{color:#fff}
 .lc-arrow .mi{font-size:16px;color:var(--green)}
-/* Live card */
-.lc-card{background:var(--bg2);border:1px solid rgba(34,197,94,0.20);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:12px;flex-shrink:0;min-width:220px;max-width:260px;position:relative;overflow:hidden;cursor:default;transition:border-color .15s}
+.lc-card{background:var(--bg2);border:1px solid rgba(34,197,94,0.20);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:12px;flex-shrink:0;width:220px;position:relative;overflow:hidden;cursor:default;transition:border-color .15s}
 .lc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent)}
 .lc-card:hover{border-color:rgba(34,197,94,0.45)}
-.lc-teams{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
+.lc-teams{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
 .lc-team{display:flex;align-items:center;gap:7px;min-width:0}
-.lc-crest{width:20px;height:20px;object-fit:contain;border-radius:50%;flex-shrink:0;background:var(--bg3)}
-.lc-crest-placeholder{width:20px;height:20px;border-radius:50%;background:var(--whiteBg2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--t3)}
+.lc-init{width:20px;height:20px;border-radius:50%;background:var(--whiteBg2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--t3)}
 .lc-tname{font-size:13px;font-weight:600;color:var(--t1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.lc-score-col{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0}
+.lc-score-col{display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0}
 .lc-score{font-family:var(--ffC);font-size:22px;font-weight:800;color:#fff;line-height:1;text-align:center;min-width:32px}
-.lc-min{font-size:10px;font-weight:700;color:var(--green);display:flex;align-items:center;gap:3px;white-space:nowrap}
-.lc-min-dot{width:5px;height:5px;background:var(--green);border-radius:50%;animation:pulse 1.6s infinite;flex-shrink:0}
-.lc-league{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;text-align:center;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:80px}
-.lc-empty{font-size:12px;color:var(--t3);padding:4px 8px;display:flex;align-items:center;gap:6px}
-.lc-empty .mi{font-size:14px;color:var(--t3)}
-/* No live games placeholder */
+.lc-min-wrap{display:flex;align-items:center;gap:3px}
+.lc-min-dot{width:5px;height:5px;background:var(--green);border-radius:50%;animation:lcpulse 1.6s infinite;flex-shrink:0}
+.lc-min{font-size:10px;font-weight:700;color:var(--green)}
 .lc-no-live{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--t3);padding:4px 0}
-.lc-no-live .mi{font-size:16px;color:var(--t3)}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}60%{box-shadow:0 0 0 6px rgba(34,197,94,0)}}
+.lc-no-live .mi{font-size:16px}
+@keyframes lcpulse{0%,100%{opacity:1}50%{opacity:.3}}
 
 /* FEED SECTION */
 .feed-section{background:var(--bg0);border-bottom:1px solid var(--border)}
@@ -203,7 +195,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);background
 .league-tag.wct{color:var(--green)}
 .ctop-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
 .live-badge{display:inline-flex;align-items:center;gap:5px;background:var(--greenBg);color:var(--green);font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.5px;border:1px solid rgba(34,197,94,.15)}
-.live-badge .dot{width:5px;height:5px;background:var(--green);border-radius:50%;animation:pulse 1.6s infinite}
+.live-badge .dot{width:5px;height:5px;background:var(--green);border-radius:50%;animation:lcpulse 1.6s infinite}
 .time-tag{font-size:11px;color:var(--t3);display:flex;align-items:center;gap:5px}
 .time-tag .mi{font-size:13px}
 .trow{display:flex;align-items:center;gap:10px;margin-bottom:13px}
@@ -362,7 +354,7 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
   .sponsors-inner{padding:28px 16px 32px}.sponsor-main{padding:20px 16px 24px}
   .sportybet-logo-wrap{flex-direction:column;gap:10px;align-items:center}
   .sstat-val{font-size:18px}.sponsor-stats{gap:18px}
-  .lc-card{min-width:180px;max-width:200px}
+  .lc-card{width:180px}
 }
 @media(max-width:640px){
   nav{padding:0 12px}.hero-inner{padding:36px 14px 34px}.hero-title{font-size:36px}
@@ -370,7 +362,6 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
   .mcard{padding:12px 13px}.tname{font-size:13px}.api-bar{padding:6px 14px}
   .sponsors-title{font-size:20px}.footer-inner{grid-template-columns:1fr 1fr;gap:20px}
   .footer-top-inner{justify-content:flex-start;gap:6px}.footer-quick-link{font-size:10px;padding:4px 9px}
-  .lc-label span{display:none}
 }
 @media(max-width:480px){
   .hero-title{font-size:30px}.hbtn{padding:10px 16px;font-size:13px}
@@ -457,30 +448,23 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
   </div>
 </div>
 
-<!-- LIVE GAMES CAROUSEL — always visible, populated by JS -->
+<!-- LIVE GAMES CAROUSEL — games only, no label/count -->
 <div class="live-carousel-section" id="liveCarouselSection">
   <div class="lc-inner">
-    <div class="lc-label">
-      <div class="lc-dot"></div>
-      <span>Live Now</span>
-    </div>
-    <div class="lc-track-wrap">
-      <button class="lc-arrow" id="lcLeft" onclick="slideCarousel(-1)" aria-label="Previous">
-        <span class="mi">chevron_left</span>
-      </button>
-      <div class="lc-viewport" id="lcViewport">
-        <div class="lc-track" id="lcTrack">
-          <!-- skeleton while loading -->
-          <div class="lc-no-live">
-            <span class="mi">sports_soccer</span>
-            <span>Loading live games…</span>
-          </div>
+    <button class="lc-arrow" id="lcLeft" onclick="slideCarousel(-1)" aria-label="Previous">
+      <span class="mi">chevron_left</span>
+    </button>
+    <div class="lc-viewport" id="lcViewport">
+      <div class="lc-track" id="lcTrack">
+        <div class="lc-no-live">
+          <span class="mi">sports_soccer</span>
+          <span>Loading live games…</span>
         </div>
       </div>
-      <button class="lc-arrow" id="lcRight" onclick="slideCarousel(1)" aria-label="Next">
-        <span class="mi">chevron_right</span>
-      </button>
     </div>
+    <button class="lc-arrow" id="lcRight" onclick="slideCarousel(1)" aria-label="Next">
+      <span class="mi">chevron_right</span>
+    </button>
   </div>
 </div>
 
@@ -697,65 +681,47 @@ async function fetchBalance(){
 // ── LIVE CAROUSEL ─────────────────────────────────────────────────────────────
 let lcGames = [];
 let lcOffset = 0;
-const LC_CARD_WIDTH = 270;
+const LC_CARD_WIDTH = 230;
+let lcAutoTimer = null;
 
 async function loadLiveCarousel() {
   try {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 8000); // 8s timeout
+    const timeout = setTimeout(() => controller.abort(), 8000);
     const res = await fetch(LIVE_URL, { signal: controller.signal });
     clearTimeout(timeout);
-
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
     const data = await res.json();
-    console.log('[LiveCarousel] API response:', data);
-
-    // Handle different response shapes: array, or { data: [...] }, or { matches: [...] }
     let games = [];
-    if (Array.isArray(data)) {
-      games = data;
-    } else if (Array.isArray(data.data)) {
-      games = data.data;
-    } else if (Array.isArray(data.matches)) {
-      games = data.matches;
-    } else if (Array.isArray(data.games)) {
-      games = data.games;
-    }
-
+    if (Array.isArray(data)) games = data;
+    else if (Array.isArray(data.data)) games = data.data;
+    else if (Array.isArray(data.matches)) games = data.matches;
+    else if (Array.isArray(data.games)) games = data.games;
     lcGames = games;
     renderCarousel();
-
   } catch(e) {
     console.warn('[LiveCarousel] Fetch failed:', e.message);
-    // Show a "no live games right now" placeholder instead of hiding
-    renderCarouselEmpty('No live games right now');
+    renderCarouselEmpty();
   }
 }
 
 function renderCarousel() {
   const track = document.getElementById('lcTrack');
-
-  if (!lcGames.length) {
-    renderCarouselEmpty('No live games right now');
-    return;
-  }
-
+  if (!lcGames.length) { renderCarouselEmpty(); return; }
   lcOffset = 0;
   track.innerHTML = lcGames.map(g => buildLcCard(g)).join('');
-  updateCarouselArrows();
+  track.style.transform = 'translateX(0)';
+  startCarouselAuto();
 }
 
-function renderCarouselEmpty(msg) {
+function renderCarouselEmpty() {
   const track = document.getElementById('lcTrack');
-  track.innerHTML = `<div class="lc-no-live"><span class="mi">sports_soccer</span><span>${msg}</span></div>`;
-  // Hide arrows when no cards
-  document.getElementById('lcLeft').style.display = 'none';
-  document.getElementById('lcRight').style.display = 'none';
+  track.innerHTML = `<div class="lc-no-live"><span class="mi">sports_soccer</span><span>No live games right now</span></div>`;
+  document.getElementById('lcLeft').style.visibility = 'hidden';
+  document.getElementById('lcRight').style.visibility = 'hidden';
 }
 
 function buildLcCard(g) {
-  // Support many possible field names from the API
   const hs = g.homeScore ?? g.home_score ?? g.scores?.home ?? 0;
   const as = g.awayScore ?? g.away_score ?? g.scores?.away ?? 0;
   const elapsed = g.elapsed ?? g.minute ?? g.time ?? '';
@@ -764,16 +730,15 @@ function buildLcCard(g) {
   const awayName = g.awayTeam ?? g.away_team ?? g.teams?.away?.name ?? 'Away';
   const homeCrest = g.homeLogo ?? g.homeCrest ?? g.home_logo ?? g.teams?.home?.crest ?? '';
   const awayCrest = g.awayLogo ?? g.awayCrest ?? g.away_logo ?? g.teams?.away?.crest ?? '';
-  const leagueName = g.league ?? g.competition ?? g.league_name ?? '';
   const homeInitial = (homeName[0] || 'H').toUpperCase();
   const awayInitial = (awayName[0] || 'A').toUpperCase();
 
   const homeCrestHtml = homeCrest
-    ? `<img src="${homeCrest}" class="lc-crest" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt=""><div class="lc-crest-placeholder" style="display:none">${homeInitial}</div>`
-    : `<div class="lc-crest-placeholder">${homeInitial}</div>`;
+    ? `<img src="${homeCrest}" class="lc-crest" style="width:20px;height:20px;border-radius:50%;object-fit:contain;flex-shrink:0" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt=""><div class="lc-init" style="display:none">${homeInitial}</div>`
+    : `<div class="lc-init">${homeInitial}</div>`;
   const awayCrestHtml = awayCrest
-    ? `<img src="${awayCrest}" class="lc-crest" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt=""><div class="lc-crest-placeholder" style="display:none">${awayInitial}</div>`
-    : `<div class="lc-crest-placeholder">${awayInitial}</div>`;
+    ? `<img src="${awayCrest}" class="lc-crest" style="width:20px;height:20px;border-radius:50%;object-fit:contain;flex-shrink:0" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt=""><div class="lc-init" style="display:none">${awayInitial}</div>`
+    : `<div class="lc-init">${awayInitial}</div>`;
 
   return `<div class="lc-card">
     <div class="lc-teams">
@@ -782,8 +747,7 @@ function buildLcCard(g) {
     </div>
     <div class="lc-score-col">
       <div class="lc-score">${hs}–${as}</div>
-      <div class="lc-min"><div class="lc-min-dot"></div>${min}</div>
-      <div class="lc-league">${leagueName}</div>
+      <div class="lc-min-wrap"><div class="lc-min-dot"></div><span class="lc-min">${min}</span></div>
     </div>
   </div>`;
 }
@@ -794,26 +758,20 @@ function slideCarousel(dir) {
   const viewW = viewport.offsetWidth;
   const totalW = track.scrollWidth;
   const maxOffset = Math.max(0, totalW - viewW);
-  lcOffset = Math.min(maxOffset, Math.max(0, lcOffset + dir * LC_CARD_WIDTH));
+  lcOffset += dir * LC_CARD_WIDTH;
+  if (lcOffset > maxOffset) lcOffset = 0;
+  if (lcOffset < 0) lcOffset = maxOffset;
   track.style.transform = `translateX(-${lcOffset}px)`;
-  updateCarouselArrows();
 }
 
-function updateCarouselArrows() {
-  const viewport = document.getElementById('lcViewport');
-  const track = document.getElementById('lcTrack');
-  const totalW = track.scrollWidth;
-  const viewW = viewport.offsetWidth;
-  const maxOffset = Math.max(0, totalW - viewW);
-  const lBtn = document.getElementById('lcLeft');
-  const rBtn = document.getElementById('lcRight');
-  lBtn.style.display = '';
-  rBtn.style.display = '';
-  lBtn.style.opacity = lcOffset <= 0 ? '0.35' : '1';
-  rBtn.style.opacity = lcOffset >= maxOffset ? '0.35' : '1';
+function startCarouselAuto() {
+  if (lcAutoTimer) clearInterval(lcAutoTimer);
+  lcAutoTimer = setInterval(() => slideCarousel(1), 3000);
+  const vp = document.getElementById('lcViewport');
+  vp.onmouseenter = () => clearInterval(lcAutoTimer);
+  vp.onmouseleave = () => { lcAutoTimer = setInterval(() => slideCarousel(1), 3000); };
 }
 
-// Auto-refresh carousel every 60 seconds
 setInterval(loadLiveCarousel, 60 * 1000);
 
 // ── FIXTURES FEED ─────────────────────────────────────────────────────────────
