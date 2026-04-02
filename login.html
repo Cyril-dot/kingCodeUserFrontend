@@ -163,13 +163,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);background
 <script>
 const BASE = 'https://kingcodebackendgames.onrender.com';
 
-// ── MUST match index.html exactly ──
-const TOKEN_KEY = 'primestakes_token';
-const USER_KEY  = 'primestakes_user';
+// ── These match index.html's primary getToken() / getUser() keys ──
+const TOKEN_KEY = 'gstake_token';
+const USER_KEY  = 'gstake_user';
 
 window.addEventListener('load', () => lucide.createIcons());
 
-// If already logged in → go home (no redirect loop)
+// If already logged in → go home
 if (localStorage.getItem(TOKEN_KEY) || sessionStorage.getItem(TOKEN_KEY)) {
   window.location.href = 'index.html';
 }
@@ -240,7 +240,7 @@ async function handleLogin(e) {
     const data = await res.json();
 
     if (res.ok && data.data?.token) {
-      // ── Save using primestakes_ keys so index.html reads them ──
+      // Save under gstake_ keys — matches index.html getToken() / getUser()
       const storage = remember ? localStorage : sessionStorage;
       storage.setItem(TOKEN_KEY, data.data.token);
       storage.setItem(USER_KEY, JSON.stringify({
