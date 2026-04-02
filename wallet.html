@@ -478,10 +478,9 @@ const MIN_DEPOSIT_MAP = { GHS: 500, NGN: 50000 };
 const MIN_DEPOSIT_DEFAULT = 200;
 function getMinDeposit(currency) { return MIN_DEPOSIT_MAP[currency] ?? MIN_DEPOSIT_DEFAULT; }
 function getCurrencySymbol(currency) { const s={GHS:'₵',NGN:'₦',USD:'$',EUR:'€',GBP:'£'};return s[currency]||(currency+' '); }
-function getToken() { return localStorage.getItem('gstake_token')||sessionStorage.getItem('gstake_token')||''; }
-function getUser() { try{const r=localStorage.getItem('gstake_user')||sessionStorage.getItem('gstake_user');return r?JSON.parse(r):null;}catch{return null;} }
+function getToken() { return localStorage.getItem('primestakes_token')||sessionStorage.getItem('primestakes_token')||''; }
+function getUser() { try{const r=localStorage.getItem('primestakes_user')||sessionStorage.getItem('primestakes_user');return r?JSON.parse(r):null;}catch{return null;} }
 function authHeaders() { return {'Content-Type':'application/json','Authorization':`Bearer ${getToken()}`}; }
-
 let allTransactions=[];
 let txFilter='ALL';
 let currentBalance=null;
