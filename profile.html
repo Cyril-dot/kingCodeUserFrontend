@@ -236,12 +236,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);background
 
 <script>
 const BASE  = 'https://kingcodebackendgames.onrender.com';
-const token = localStorage.getItem('gstake_token') || sessionStorage.getItem('gstake_token');
-
+const token = localStorage.getItem('primestakes_token') || sessionStorage.getItem('primestakes_token');
 if (!token) window.location.href = 'login.html?returnUrl=profile.html';
-
 const cachedUser = JSON.parse(
-  localStorage.getItem('gstake_user') || sessionStorage.getItem('gstake_user') || '{}'
+  localStorage.getItem('primestakes_user') || sessionStorage.getItem('primestakes_user') || '{}'
 );
 
 window.addEventListener('load', () => lucide.createIcons());
