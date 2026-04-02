@@ -672,6 +672,20 @@ let lcAnimId = null;
 let lcPos = 0;
 const LC_SPEED = 0.6; // px per frame
 
+// Hardcoded fallback fixtures shown when backend is down
+const FALLBACK_MATCHES = [
+  {homeTeam:'Arsenal',awayTeam:'Chelsea',_upcoming:true,_date:'2026-04-04T18:45:00Z'},
+  {homeTeam:'Real Madrid',awayTeam:'Barcelona',_upcoming:true,_date:'2026-04-05T19:00:00Z'},
+  {homeTeam:'Bayern',awayTeam:'Dortmund',_upcoming:true,_date:'2026-04-05T13:30:00Z'},
+  {homeTeam:'PSG',awayTeam:'Marseille',_upcoming:true,_date:'2026-04-06T18:45:00Z'},
+  {homeTeam:'Inter',awayTeam:'Juventus',_upcoming:true,_date:'2026-04-06T19:00:00Z'},
+  {homeTeam:'Man City',awayTeam:'Liverpool',_upcoming:true,_date:'2026-04-07T19:00:00Z'},
+  {homeTeam:'Atlético',awayTeam:'Villarreal',_upcoming:true,_date:'2026-04-07T19:00:00Z'},
+  {homeTeam:'Leverkusen',awayTeam:'RB Leipzig',_upcoming:true,_date:'2026-04-05T13:30:00Z'},
+  {homeTeam:'Sporting CP',awayTeam:'Arsenal',_upcoming:true,_date:'2026-04-08T19:00:00Z'},
+  {homeTeam:'Real Madrid',awayTeam:'Bayern',_upcoming:true,_date:'2026-04-08T19:00:00Z'},
+];
+
 async function loadLiveCarousel() {
   try {
     const controller = new AbortController();
@@ -709,9 +723,10 @@ function renderCarousel() {
     }));
     isLive = false;
   }
+  // Final fallback: use hardcoded data if both API and allMatches are empty
   if (!cards.length) {
-    track.innerHTML = '<div class="lc-no-live"><span class="mi">sports_soccer</span><span>No fixtures available</span></div>';
-    return;
+    cards = FALLBACK_MATCHES;
+    isLive = false;
   }
   // Duplicate cards for seamless infinite loop
   const cardHtml = cards.map(g => buildLcCard(g, isLive)).join('');
