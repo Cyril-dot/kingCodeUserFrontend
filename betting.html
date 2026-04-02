@@ -624,62 +624,179 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 <script>
 const API_BASE = 'https://kingcodebackendgames.onrender.com/api/v1';
 const CS_BASE  = 'https://kingcodebackendgames.onrender.com/api/correct-score';
-function getToken(){return localStorage.getItem('gstake_token')||sessionStorage.getItem('gstake_token')||'';}
+
+// ── TOKEN HELPERS ─────────────────────────────────────────────────────────────
+// Reads from both the primary key AND a legacy fallback so old sessions still work.
+function getToken() {
+  return localStorage.getItem('gstake_token')
+      || sessionStorage.getItem('gstake_token')
+      || localStorage.getItem('primestakes_token')
+      || sessionStorage.getItem('primestakes_token')
+      || '';
+}
+function getUser() {
+  const raw = localStorage.getItem('gstake_user')
+           || sessionStorage.getItem('gstake_user')
+           || localStorage.getItem('primestakes_user')
+           || sessionStorage.getItem('primestakes_user')
+           || '';
+  try { return raw ? JSON.parse(raw) : null; } catch { return null; }
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 let betSlip=[],gamesData=[],_stakeVal=10,allMyBets=[],currentBetFilter='ALL',currentBetFilterMob='ALL',pollInterval=null,scoreSnapshot={};
 const SEEN_WINS_KEY='gstake_seen_wins';
-window.addEventListener('load',()=>{lucide.createIcons();populateProfileBtn();fetchBalance();fetchGames();if(getToken()){loadMyBets();checkForWins();startPolling();}});
-function populateProfileBtn(){const raw=localStorage.getItem('gstake_user')||sessionStorage.getItem('gstake_user');if(!raw)return;try{const u=JSON.parse(raw);const ini=((u.firstName||'')[0]||'')+((u.lastName||'')[0]||(u.firstName||'')[1]||'');if(ini)document.getElementById('profileInitials').textContent=ini.toUpperCase();}catch{}}
+
+window.addEventListener('load',()=>{
+  lucide.createIcons();
+  populateProfileBtn();
+  fetchBalance();
+  fetchGames();
+  if(getToken()){loadMyBets();checkForWins();startPolling();}
+});
+
+function populateProfileBtn(){
+  const u = getUser();
+  if(!u) return;
+  const ini=((u.firstName||'')[0]||'')+((u.lastName||'')[0]||(u.firstName||'')[1]||'');
+  if(ini) document.getElementById('profileInitials').textContent=ini.toUpperCase();
+}
+
 function showPage(page){document.querySelectorAll('.bn-item').forEach(b=>b.classList.remove('active'));document.getElementById('bnMarkets').classList.add('active');}
-async function apiFetch(path,opts={}){const token=getToken();const headers={'Content-Type':'application/json',...(token?{Authorization:`Bearer ${token}`}:{}), ...opts.headers};const res=await fetch(path,{...opts,headers});const json=await res.json().catch(()=>({}));if(!res.ok)throw new Error(json.message||`HTTP ${res.status}`);return json.data!==undefined?json.data:json;}
+
+async function apiFetch(path,opts={}){
+  const token=getToken();
+  const headers={'Content-Type':'application/json',...(token?{Authorization:`Bearer ${token}`}:{}), ...opts.headers};
+  const res=await fetch(path,{...opts,headers});
+  const json=await res.json().catch(()=>({}));
+  if(!res.ok)throw new Error(json.message||`HTTP ${res.status}`);
+  return json.data!==undefined?json.data:json;
+}
+
 async function fetchBalance(){try{const d=await apiFetch(`${API_BASE}/wallet/balance`);const b=d?.balance??d??null;if(b!==null)document.getElementById('balanceDisplay').textContent=`GHS ${parseFloat(b).toFixed(2)}`;}catch{}}
+
 async function fetchGames(silent=false){try{const rawGames=await apiFetch(`${API_BASE}/games/public`);const gamesList=Array.isArray(rawGames)?rawGames:[];if(!gamesList.length){gamesData=[];if(!silent){renderGames();updateCounts(0);}return;}const newGames=await Promise.all(gamesList.map(async(g)=>{try{const csData=await apiFetch(`${CS_BASE}/${g.id}`);return{...g,csOptions:csData?.options??[],correctScoreMarketStatus:csData?.marketStatus??g.correctScoreMarketStatus??'OPEN'};}catch{return{...g,csOptions:[],correctScoreMarketStatus:g.correctScoreMarketStatus??'OPEN'};}}));if(silent){newGames.forEach(g=>{const prev=scoreSnapshot[g.id];const curH=g.homeScore??null,curA=g.awayScore??null,curS=g.status;if(prev){const scoreChanged=(prev.homeScore!==curH||prev.awayScore!==curA)&&curH!==null;const statusChanged=prev.status!==curS&&curS==='FINISHED';if(scoreChanged||statusChanged)showScoreUpdatePopup(g);}scoreSnapshot[g.id]={homeScore:curH,awayScore:curA,status:curS};});gamesData=newGames;renderGames();}else{gamesData=newGames;gamesData.forEach(g=>{scoreSnapshot[g.id]={homeScore:g.homeScore??null,awayScore:g.awayScore??null,status:g.status};});renderGames();updateCounts(gamesData.length);}}catch(err){if(!silent){gamesData=[];showToast('Failed to load games — '+(err.message||'Server error'),'error');renderGames();updateCounts(0);}}}
+
 function updateCounts(n){document.getElementById('gameCountBadge').textContent=`${n} game${n!==1?'s':''}`;}
+
 function renderGames(){const grid=document.getElementById('gamesGrid');if(!gamesData.length){grid.innerHTML=`<div class="empty-state"><div class="empty-icon"><svg data-lucide="calendar-x"></svg></div><div class="empty-t">No Games</div><div class="empty-s">No upcoming games right now.</div></div>`;lucide.createIcons();return;}grid.innerHTML=gamesData.map((g,i)=>buildCard(g,i)).join('');lucide.createIcons();}
+
 function short(n){return n.replace('Manchester ','Man ').replace('Borussia ','').replace(' Milan','');}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
 function buildCard(g,idx){const isFinished=g.status==='FINISHED',isCancelled=g.status==='CANCELLED',isLive=g.status==='LIVE',isOpen=!isFinished&&!isCancelled,csOpen=g.correctScoreMarketStatus==='OPEN',csLocked=g.correctScoreMarketStatus==='LOCKED';let statusBadge='';if(isFinished)statusBadge=`<div class="gc-status-badge settled"><svg data-lucide="check-circle"></svg>Finished</div>`;else if(isCancelled)statusBadge=`<div class="gc-status-badge locked"><svg data-lucide="x-circle"></svg>Cancelled</div>`;else if(isLive)statusBadge=`<div class="gc-status-badge live"><span></span>Live</div>`;else if(csOpen)statusBadge=`<div class="gc-status-badge open"><svg data-lucide="circle-dot"></svg>Open</div>`;else if(csLocked)statusBadge=`<div class="gc-status-badge locked"><svg data-lucide="lock"></svg>Locked</div>`;else statusBadge=`<div class="gc-status-badge settled"><svg data-lucide="check-circle"></svg>Settled</div>`;let scoreBoard='';const hasScore=g.homeScore!==null&&g.homeScore!==undefined&&g.awayScore!==null&&g.awayScore!==undefined;if(hasScore||isFinished){const h=g.homeScore??0,a=g.awayScore??0;scoreBoard=`<div class="gc-score-board${isFinished?' finished':''}" id="scoreboard-${g.id}"><span class="gc-score-num">${h}</span><span class="gc-score-sep">–</span><span class="gc-score-num">${a}</span></div>`;}const mkts=[{key:'HOME_WIN',lbl:'1',sub:short(g.homeTeam),odds:g.oddsHomeWin},{key:'DRAW',lbl:'X',sub:'Draw',odds:g.oddsDraw},{key:'AWAY_WIN',lbl:'2',sub:short(g.awayTeam),odds:g.oddsAwayWin}];const x1html=mkts.map(m=>{const sel=betSlip.some(s=>s.gameId===g.id&&s.type==='1X2'&&s.label===m.key);const disabled=!isOpen||!m.odds;if(!m.odds)return`<div class="odds-btn disabled"><div class="odds-lbl">${m.lbl}</div><div class="odds-val">—</div></div>`;return`<div class="odds-btn${sel?' selected':''}${disabled?' disabled':''}" ${disabled?'':`onclick="toggle1X2('${g.id}','${esc(g.homeTeam)}','${esc(g.awayTeam)}','${m.key}','${esc(m.lbl)}',${m.odds})"`}><div class="odds-lbl">${m.lbl}</div><div class="odds-val">${parseFloat(m.odds).toFixed(2)}</div><div class="odds-team">${esc(m.sub)}</div></div>`;}).join('');let bottomSection='';if(isFinished){const h=g.homeScore??0,a=g.awayScore??0;bottomSection=`<div class="gc-finished-banner"><svg data-lucide="check-circle-2"></svg><span class="gc-finished-txt">Final Score</span><span class="gc-finished-score">${h} – ${a}</span></div>`;}else if(isCancelled){bottomSection=`<div class="gc-cancelled-banner"><svg data-lucide="x-circle"></svg><span class="gc-cancelled-txt">This game has been cancelled — all stakes refunded</span></div>`;}else if(csOpen){const opts=g.csOptions||[];if(opts.length){const allBtns=opts.slice(0,5).map(o=>{const sel=betSlip.some(s=>s.gameId===g.id&&s.type==='CS'&&s.csOptionId===o.id);return`<div class="score-btn${sel?' selected':''}" onclick="toggleCS('${g.id}','${esc(g.homeTeam)}','${esc(g.awayTeam)}','${o.id}',${o.homeScore},${o.awayScore},${o.odds})"><div class="sc">${o.homeScore}:${o.awayScore}</div><div class="so">${parseFloat(o.odds).toFixed(2)}</div></div>`;}).join('');const moreBtn=opts.length>5?`<div class="score-show-more"><button class="score-show-more-btn" onclick="openScoreModal('${g.id}','${esc(g.homeTeam)}','${esc(g.awayTeam)}')"><svg data-lucide="chevrons-down"></svg><span>View all ${opts.length} predictions</span></button></div>`:'';bottomSection=`<div class="gc-cs"><div class="gc-cs-lbl"><svg data-lucide="crosshair"></svg>Predict final score — pick one per game</div><div class="score-btns-grid">${allBtns}</div>${moreBtn}</div>`;}else{bottomSection=`<div class="gc-cs"><div style="padding:10px 0;font-size:12px;color:var(--t3);display:flex;align-items:center;gap:6px"><svg data-lucide="info" style="width:12px;height:12px"></svg>No score options yet.</div></div>`;}}else if(csLocked){bottomSection=`<div class="gc-cs"><div style="padding:10px 0;font-size:12px;color:var(--t3);display:flex;align-items:center;gap:6px"><svg data-lucide="lock" style="width:12px;height:12px;color:var(--red)"></svg>Score market locked.</div></div>`;}return`<div class="game-card${isFinished?' finished':''}${isCancelled?' cancelled':''}" style="animation-delay:${idx*.045}s" id="card-${g.id}"><div class="gc-head"><div class="gc-teams"><div class="gc-matchup">${esc(g.homeTeam)}<span class="gc-vs">vs</span>${esc(g.awayTeam)}</div><div class="gc-meta"><svg data-lucide="clock"></svg><span class="gc-meta-txt">${fmtDate(g.matchDate)}</span></div></div><div class="gc-right">${statusBadge}${scoreBoard}</div></div><div class="gc-1x2">${x1html}</div>${bottomSection}</div>`;}
+
 function rerenderCard(gameId){const card=document.getElementById(`card-${gameId}`);if(!card)return;const g=gamesData.find(x=>x.id===gameId);if(!g)return;const tmp=document.createElement('div');tmp.innerHTML=buildCard(g,gamesData.indexOf(g));card.replaceWith(tmp.firstElementChild);lucide.createIcons();}
+
 function showScoreUpdatePopup(game){const container=document.getElementById('scorePopupOverlay');const popup=document.createElement('div');popup.className='score-popup';const h=game.homeScore??0,a=game.awayScore??0;const isFinished=game.status==='FINISHED';popup.innerHTML=`<div class="score-popup-icon"><svg data-lucide="activity"></svg></div><div class="score-popup-body"><div class="score-popup-match">${esc(game.homeTeam)} vs ${esc(game.awayTeam)}</div><div class="score-popup-label">${isFinished?'✅ Full time result':'⚽ Score updated'}</div></div><div class="score-popup-score">${h} – ${a}</div>`;container.appendChild(popup);lucide.createIcons();setTimeout(()=>{popup.classList.add('fadeOut');setTimeout(()=>popup.remove(),320);},5000);}
+
 function openScoreModal(gameId,homeTeam,awayTeam){const g=gamesData.find(x=>x.id===gameId);if(!g)return;const grid=(g.csOptions||[]).map(o=>{const sel=betSlip.some(s=>s.gameId===gameId&&s.type==='CS'&&s.csOptionId===o.id);return`<div class="score-modal-btn${sel?' selected':''}" onclick="toggleCS('${gameId}','${esc(homeTeam)}','${esc(awayTeam)}','${o.id}',${o.homeScore},${o.awayScore},${o.odds});closeScoreModal()"><div class="sc">${o.homeScore}:${o.awayScore}</div><div class="so">${parseFloat(o.odds).toFixed(2)}</div></div>`;}).join('');document.getElementById('scoreModalContent').innerHTML=`<div class="score-modal-grid">${grid}</div>`;lucide.createIcons();document.getElementById('scoreModalOverlay').classList.add('open');document.body.style.overflow='hidden';}
+
 function closeScoreModal(){document.getElementById('scoreModalOverlay').classList.remove('open');document.body.style.overflow='';}
 function closeScoreModalOnBg(e){if(e.target===document.getElementById('scoreModalOverlay'))closeScoreModal();}
+
 function toggleCS(gameId,homeTeam,awayTeam,csOptionId,homeScore,awayScore,odds){const ex=betSlip.findIndex(s=>s.gameId===gameId&&s.type==='CS');const same=ex!==-1&&betSlip[ex].csOptionId===csOptionId;if(ex!==-1)betSlip.splice(ex,1);if(!same)betSlip.push({gameId,homeTeam,awayTeam,type:'CS',label:`${homeScore}:${awayScore}`,odds:parseFloat(odds),csOptionId});rerenderCard(gameId);renderSlip();}
+
 function toggle1X2(gameId,homeTeam,awayTeam,marketKey,marketLabel,odds){const ex=betSlip.findIndex(s=>s.gameId===gameId&&s.type==='1X2');const same=ex!==-1&&betSlip[ex].label===marketKey;if(ex!==-1)betSlip.splice(ex,1);if(!same)betSlip.push({gameId,homeTeam,awayTeam,type:'1X2',label:marketKey,displayLabel:marketLabel,odds:parseFloat(odds)});rerenderCard(gameId);renderSlip();}
+
 function removeFromSlip(gameId,type){betSlip=betSlip.filter(s=>!(s.gameId===gameId&&s.type===type));rerenderCard(gameId);renderSlip();}
+
 function renderSlip(){const count=betSlip.length,totalOdds=betSlip.reduce((a,s)=>a*s.odds,1),payout=_stakeVal*totalOdds;const fb=document.getElementById('slipFloat');fb.classList.toggle('visible',count>0);document.getElementById('floatBadge').textContent=count;document.getElementById('floatPicksTxt').textContent=`${count} pick${count!==1?'s':''} · odds ${totalOdds.toFixed(2)}`;document.getElementById('floatWinTxt').textContent=`GHS ${payout.toFixed(2)} potential`;document.getElementById('ssCount').textContent=count;document.getElementById('sidebarSlipBody').innerHTML=buildSlipHTML(count,totalOdds,payout);if(document.getElementById('sheetOverlay').classList.contains('open'))document.getElementById('sheetBody').innerHTML=buildSlipHTML(count,totalOdds,payout);lucide.createIcons();}
+
 function buildSlipHTML(count,totalOdds,payout){const successEl=`<div class="slip-success" id="slipSuccessEl"><div class="success-icon"><svg data-lucide="check-circle-2"></svg></div><div style="font-family:var(--ffC);font-size:18px;font-weight:800;color:var(--green)">Bet Placed!</div><div style="font-size:13px;color:var(--t2);line-height:1.6">Your score slip is live. Good luck!</div><div class="success-ref" id="slipRefEl">—</div><button class="btn-new" onclick="resetSlip()">New Slip</button></div>`;if(count===0)return successEl+`<div class="slip-empty"><div class="slip-empty-icon"><svg data-lucide="crosshair"></svg></div><div class="slip-empty-t">No picks yet</div><div class="slip-empty-s">Tap any score or 1X2 odds to add a selection.</div></div>`;const items=betSlip.map(s=>{const isCS=s.type==='CS';return`<div class="slip-item"><div class="slip-item-top"><div class="slip-item-match">${esc(s.homeTeam)} vs ${esc(s.awayTeam)}</div><button class="slip-item-rm" onclick="removeFromSlip('${s.gameId}','${s.type}')"><svg data-lucide="x"></svg></button></div><div class="slip-item-bot"><div><div class="slip-item-type ${isCS?'cs':'x1'}">${isCS?'Correct Score':fmtMkt(s.label)}</div>${isCS?`<div style="font-size:9px;color:var(--t3);margin-top:2px">@${s.odds.toFixed(2)}</div>`:''}</div>${isCS?`<div class="slip-item-score">${s.label}</div>`:`<div class="slip-item-odds-wrap"><div class="slip-item-odds-lbl">odds</div><div class="slip-item-odds">${s.odds.toFixed(2)}</div></div>`}</div></div>`;}).join('');const presets=[5,10,20,50,100].map(v=>`<button class="preset-btn${_stakeVal===v?' active':''}" onclick="setStake(${v})">${v}</button>`).join('');return successEl+`<div class="slip-items">${items}</div><div class="slip-stake-section"><div class="slip-stake-lbl">Stake (GHS)</div><div class="stake-field"><div class="stake-sym">¢</div><input class="stake-input" type="number" value="${_stakeVal}" min="1" step="1" oninput="_stakeVal=Math.max(1,parseFloat(this.value)||1);updateFloatBar()"></div><div class="stake-presets">${presets}</div><div class="slip-summary"><div class="sum-row"><span class="sum-lbl">Picks</span><span class="sum-val">${count}</span></div><div class="sum-row"><span class="sum-lbl">Total Odds</span><span class="sum-val">${totalOdds.toFixed(2)}</span></div><div class="sum-row"><span class="sum-lbl">Stake</span><span class="sum-val">GHS ${_stakeVal.toFixed(2)}</span></div><div class="sum-div"></div><div class="sum-row"><span class="sum-win-lbl">Potential Win</span><span class="sum-win-val">GHS ${payout.toFixed(2)}</span></div></div><button class="btn-place" onclick="placeBet()"><svg data-lucide="zap"></svg><span>Place Bet</span></button></div>`;}
+
 function updateFloatBar(){const tot=betSlip.reduce((a,s)=>a*s.odds,1);document.getElementById('floatWinTxt').textContent=`GHS ${(_stakeVal*tot).toFixed(2)} potential`;}
 function setStake(v){_stakeVal=v;renderSlip();}
+
 function openSheet(){const count=betSlip.length,tot=betSlip.reduce((a,s)=>a*s.odds,1);document.getElementById('sheetBody').innerHTML=buildSlipHTML(count,tot,_stakeVal*tot);lucide.createIcons();document.getElementById('sheetOverlay').classList.add('open');document.body.style.overflow='hidden';}
 function closeSheet(){document.getElementById('sheetOverlay').classList.remove('open');document.body.style.overflow='';}
 function closeSheetOnBg(e){if(e.target===document.getElementById('sheetOverlay'))closeSheet();}
+
 function openBetsSheet(){document.getElementById('betsSheetOverlay').classList.add('open');document.body.style.overflow='hidden';lucide.createIcons();renderMyBetsMobile();document.querySelectorAll('.bn-item').forEach(b=>b.classList.remove('active'));document.getElementById('bnBets').classList.add('active');}
 function closeBetsSheet(){document.getElementById('betsSheetOverlay').classList.remove('open');document.body.style.overflow='';document.querySelectorAll('.bn-item').forEach(b=>b.classList.remove('active'));document.getElementById('bnMarkets').classList.add('active');}
 function closeBetsSheetOnBg(e){if(e.target===document.getElementById('betsSheetOverlay'))closeBetsSheet();}
-async function placeBet(){if(!betSlip.length){showToast('Add at least one pick','error');return;}if(!_stakeVal||_stakeVal<=0){showToast('Enter a valid stake','error');return;}if(!getToken()){showToast('Please log in to place a bet','error');return;}document.querySelectorAll('.btn-place').forEach(b=>{b.disabled=true;b.innerHTML='<svg data-lucide="loader" class="spin"></svg><span>Placing…</span>';});lucide.createIcons();const csPicks=betSlip.filter(s=>s.type==='CS'),x1Picks=betSlip.filter(s=>s.type==='1X2'),refs=[],stakePerType=_stakeVal/(csPicks.length&&x1Picks.length?2:1);try{for(const pick of csPicks){const d=await apiFetch(`${CS_BASE}/bet`,{method:'POST',body:JSON.stringify({gameId:pick.gameId,correctScoreOptionId:pick.csOptionId,stake:parseFloat(stakePerType.toFixed(2))})});if(d?.slipReference)refs.push(d.slipReference);}if(x1Picks.length){const d=await apiFetch(`${API_BASE}/bets`,{method:'POST',body:JSON.stringify({stake:parseFloat(stakePerType.toFixed(2)),selections:x1Picks.map(p=>({gameId:p.gameId,marketType:p.label}))})});if(d?.slipReference)refs.push(d.slipReference);}showSuccess(refs.join(' · ')||'—');fetchBalance();}catch(err){document.querySelectorAll('.btn-place').forEach(b=>{b.disabled=false;b.innerHTML='<svg data-lucide="zap"></svg><span>Place Bet</span>';});lucide.createIcons();const msg=err.message||'';if(msg.toLowerCase().includes('insufficient')||msg.toLowerCase().includes('balance'))showInsufficientFunds();else showToast(msg||'Failed to place bet','error');}}
+
+async function placeBet(){
+  if(!betSlip.length){showToast('Add at least one pick','error');return;}
+  if(!_stakeVal||_stakeVal<=0){showToast('Enter a valid stake','error');return;}
+  if(!getToken()){showToast('Please log in to place a bet','error');return;}
+  document.querySelectorAll('.btn-place').forEach(b=>{b.disabled=true;b.innerHTML='<svg data-lucide="loader" class="spin"></svg><span>Placing…</span>';});
+  lucide.createIcons();
+  const csPicks=betSlip.filter(s=>s.type==='CS'),x1Picks=betSlip.filter(s=>s.type==='1X2'),refs=[],stakePerType=_stakeVal/(csPicks.length&&x1Picks.length?2:1);
+  try{
+    for(const pick of csPicks){const d=await apiFetch(`${CS_BASE}/bet`,{method:'POST',body:JSON.stringify({gameId:pick.gameId,correctScoreOptionId:pick.csOptionId,stake:parseFloat(stakePerType.toFixed(2))})});if(d?.slipReference)refs.push(d.slipReference);}
+    if(x1Picks.length){const d=await apiFetch(`${API_BASE}/bets`,{method:'POST',body:JSON.stringify({stake:parseFloat(stakePerType.toFixed(2)),selections:x1Picks.map(p=>({gameId:p.gameId,marketType:p.label}))})});if(d?.slipReference)refs.push(d.slipReference);}
+    showSuccess(refs.join(' · ')||'—');fetchBalance();
+  }catch(err){
+    document.querySelectorAll('.btn-place').forEach(b=>{b.disabled=false;b.innerHTML='<svg data-lucide="zap"></svg><span>Place Bet</span>';});
+    lucide.createIcons();
+    const msg=err.message||'';
+    if(msg.toLowerCase().includes('insufficient')||msg.toLowerCase().includes('balance'))showInsufficientFunds();
+    else showToast(msg||'Failed to place bet','error');
+  }
+}
+
 function showInsufficientFunds(){const html=`<div class="funds-card"><div class="funds-icon"><svg data-lucide="wallet"></svg></div><div class="funds-title">Insufficient Funds</div><div class="funds-sub">You don't have enough balance. Top up your wallet to continue.</div><a href="wallet.html" class="funds-topup"><svg data-lucide="plus-circle"></svg>Top Up Wallet</a><button class="funds-back" onclick="closeInsufficientFunds()">Back to Slip</button></div>`;document.querySelectorAll('#sidebarSlipBody, #sheetBody').forEach(el=>{el.innerHTML=html;});lucide.createIcons();}
 function closeInsufficientFunds(){renderSlip();}
+
 function showSuccess(ref){betSlip=[];renderGames();renderSlip();setTimeout(()=>{document.querySelectorAll('.slip-success').forEach(el=>{el.style.display='flex';});document.querySelectorAll('#slipRefEl').forEach(el=>{el.textContent=ref;});lucide.createIcons();},60);showToast('Bet placed! Good luck!','success');loadMyBets();}
 function resetSlip(){_stakeVal=10;betSlip=[];renderGames();renderSlip();closeSheet();}
+
 function parseSlipToBet(slip){const sel=(slip.selections||[])[0];const isCS=sel?.marketType==='CORRECT_SCORE';const match=sel?`${sel.homeTeam||'?'} vs ${sel.awayTeam||'?'}`:'Bet Slip';const pick=isCS?`@ ${parseFloat(sel.oddsAtPlacement||slip.totalOdds||0).toFixed(2)}`:fmtMkt(sel?.marketType||'');return{id:slip.id,ref:slip.slipReference||slip.id,match,type:isCS?'CS':'1X2',pick,odds:slip.totalOdds??'—',stake:slip.stake,payout:slip.potentialPayout??null,actualPayout:slip.actualPayout??null,status:normaliseStatus(slip.status),placedAt:slip.placedAt||slip.createdAt};}
-async function loadMyBets(){if(!getToken())return;try{let bets=[];try{const slips=await apiFetch(`${API_BASE}/bets/my`);for(const slip of(Array.isArray(slips)?slips:[])){const sels=slip.selections||[];if(sels.length){for(const sel of sels){bets.push({id:`${slip.id}-${sel.gameId}`,ref:slip.slipReference||slip.id,match:`${sel.homeTeam||'?'} vs ${sel.awayTeam||'?'}`,type:'1X2',pick:fmtMkt(sel.marketType||''),odds:sel.oddsAtPlacement??slip.totalOdds??'—',stake:slip.stake,payout:slip.potentialPayout??null,actualPayout:slip.actualPayout??null,status:normaliseStatus(slip.status),placedAt:slip.placedAt||slip.createdAt});}}else{bets.push(parseSlipToBet(slip));}}}catch{}try{const csSlips=await apiFetch(`${CS_BASE}/bets/my`);for(const slip of(Array.isArray(csSlips)?csSlips:[]))bets.push(parseSlipToBet(slip));}catch{}bets.sort((a,b)=>new Date(b.placedAt)-new Date(a.placedAt));allMyBets=bets;renderMyBets();renderMyBetsMobile();updateBetTabBadge();}catch{}}
+
+async function loadMyBets(){
+  if(!getToken())return;
+  try{
+    let bets=[];
+    try{const slips=await apiFetch(`${API_BASE}/bets/my`);for(const slip of(Array.isArray(slips)?slips:[])){const sels=slip.selections||[];if(sels.length){for(const sel of sels){bets.push({id:`${slip.id}-${sel.gameId}`,ref:slip.slipReference||slip.id,match:`${sel.homeTeam||'?'} vs ${sel.awayTeam||'?'}`,type:'1X2',pick:fmtMkt(sel.marketType||''),odds:sel.oddsAtPlacement??slip.totalOdds??'—',stake:slip.stake,payout:slip.potentialPayout??null,actualPayout:slip.actualPayout??null,status:normaliseStatus(slip.status),placedAt:slip.placedAt||slip.createdAt});}}else{bets.push(parseSlipToBet(slip));}}}catch{}
+    try{const csSlips=await apiFetch(`${CS_BASE}/bets/my`);for(const slip of(Array.isArray(csSlips)?csSlips:[]))bets.push(parseSlipToBet(slip));}catch{}
+    bets.sort((a,b)=>new Date(b.placedAt)-new Date(a.placedAt));
+    allMyBets=bets;renderMyBets();renderMyBetsMobile();updateBetTabBadge();
+  }catch{}
+}
+
 function normaliseStatus(s){if(!s)return'PENDING';const u=String(s).toUpperCase();if(u==='WON'||u==='WIN')return'WON';if(u==='LOST'||u==='LOSE'||u==='LOSS')return'LOST';if(u==='REFUNDED'||u==='CANCELLED')return'REFUNDED';return'PENDING';}
+
 function filterBets(filter,btn){currentBetFilter=filter;document.querySelectorAll('#bhFilterRow .bh-filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderMyBets();}
 function filterBetsMobile(filter,btn){currentBetFilterMob=filter;document.querySelectorAll('#bhFilterRowMobile .bh-filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderMyBetsMobile();}
+
 function buildBetCards(bets){if(!bets.length)return`<div class="empty-state"><div class="empty-icon"><svg data-lucide="filter-x"></svg></div><div class="empty-t">No bets here</div><div class="empty-s">Nothing to show for this filter.</div></div>`;return bets.map((b,i)=>{const st=b.status.toLowerCase();const stLabel=st==='pending'?'Active':b.status;const stIcon=st==='won'?'trophy':st==='lost'?'x-circle':'clock';const isCS=b.type==='CS';const payoutStr=b.status==='WON'?`GHS ${parseFloat(b.actualPayout??b.payout??0).toFixed(2)}`:b.status==='PENDING'&&b.payout?`GHS ${parseFloat(b.payout).toFixed(2)}`:b.status==='LOST'?`–GHS ${parseFloat(b.stake??0).toFixed(2)}`:'—';const payoutClass=b.status==='WON'?'':b.status==='LOST'?'lost':'pending';return`<div class="bet-card ${st}" style="animation-delay:${i*.04}s"><div class="bet-card-head"><div class="bet-card-match">${esc(b.match)}</div><div class="bet-status-pill ${st}"><svg data-lucide="${stIcon}"></svg>${stLabel}</div></div><div class="bet-card-body"><div class="bet-pick-box"><div class="bet-pick-type ${isCS?'cs':'x1'}">${isCS?'Correct Score':'1X2'}</div><div class="bet-pick-val ${st}">${esc(b.pick)}</div></div><div class="bet-money-col"><div class="bet-money-lbl">${b.status==='WON'?'Won':b.status==='LOST'?'Lost':'Potential'}</div><div class="bet-money-win ${payoutClass}">${payoutStr}</div><div class="bet-money-stake">Stake: GHS ${parseFloat(b.stake??0).toFixed(2)}</div></div></div><div class="bet-card-foot"><span class="bet-ref">${esc(String(b.ref).slice(0,16))}</span><span class="bet-date">${b.placedAt?fmtDate(b.placedAt):'—'}</span></div></div>`;}).join('');}
+
 function renderMyBets(){const pending=allMyBets.filter(b=>b.status==='PENDING'),won=allMyBets.filter(b=>b.status==='WON'),lost=allMyBets.filter(b=>b.status==='LOST');document.getElementById('statPending').textContent=pending.length;document.getElementById('statWon').textContent=won.length;document.getElementById('statLost').textContent=lost.length;const filtered=currentBetFilter==='ALL'?allMyBets:currentBetFilter==='PENDING'?pending:currentBetFilter==='WON'?won:lost;const container=document.getElementById('betsContainer');if(!allMyBets.length){container.innerHTML=`<div class="empty-state"><div class="empty-icon"><svg data-lucide="receipt"></svg></div><div class="empty-t">No Bets Yet</div><div class="empty-s">Place your first bet!</div></div>`;lucide.createIcons();return;}container.innerHTML=buildBetCards(filtered);lucide.createIcons();}
+
 function renderMyBetsMobile(){const pending=allMyBets.filter(b=>b.status==='PENDING'),won=allMyBets.filter(b=>b.status==='WON'),lost=allMyBets.filter(b=>b.status==='LOST');const pEl=document.getElementById('statPendingM'),wEl=document.getElementById('statWonM'),lEl=document.getElementById('statLostM');if(pEl)pEl.textContent=pending.length;if(wEl)wEl.textContent=won.length;if(lEl)lEl.textContent=lost.length;const filtered=currentBetFilterMob==='ALL'?allMyBets:currentBetFilterMob==='PENDING'?pending:currentBetFilterMob==='WON'?won:lost;const container=document.getElementById('betsContainerMobile');if(!container)return;if(!allMyBets.length){container.innerHTML=`<div class="empty-state"><div class="empty-icon"><svg data-lucide="receipt"></svg></div><div class="empty-t">No Bets Yet</div><div class="empty-s">Place your first bet!</div></div>`;lucide.createIcons();return;}container.innerHTML=buildBetCards(filtered);lucide.createIcons();}
+
 function updateBetTabBadge(){const pending=allMyBets.filter(b=>b.status==='PENDING').length;const badge=document.getElementById('bnBadge');if(badge){badge.textContent=pending;badge.classList.toggle('show',pending>0);}}
+
 function getSeenWins(){try{return new Set(JSON.parse(localStorage.getItem(SEEN_WINS_KEY)||'[]'));}catch{return new Set();}}
 function markWinSeen(ref){const seen=getSeenWins();seen.add(String(ref));localStorage.setItem(SEEN_WINS_KEY,JSON.stringify([...seen]));}
-async function checkForWins(){if(!getToken())return;try{let bets=[];try{const slips=await apiFetch(`${API_BASE}/bets/my`);for(const slip of(Array.isArray(slips)?slips:[])){const sel=(slip.selections||[])[0];bets.push({ref:slip.slipReference||slip.id,status:normaliseStatus(slip.status),match:sel?`${sel.homeTeam||'?'} vs ${sel.awayTeam||'?'}`:'Bet',payout:slip.actualPayout??slip.potentialPayout??0,type:'1X2',pick:fmtMkt(sel?.marketType||'')});}}catch{}try{const csSlips=await apiFetch(`${CS_BASE}/bets/my`);for(const slip of(Array.isArray(csSlips)?csSlips:[])){const sel=(slip.selections||[])[0];bets.push({ref:slip.slipReference||slip.id,status:normaliseStatus(slip.status),match:sel?`${sel.homeTeam||'?'} vs ${sel.awayTeam||'?'}`:'Correct Score Bet',payout:slip.actualPayout??slip.potentialPayout??0,type:'CS',pick:`@ ${parseFloat(sel?.oddsAtPlacement||slip.totalOdds||0).toFixed(2)}`});}}catch{}const seen=getSeenWins();const newWins=bets.filter(b=>b.status==='WON'&&!seen.has(String(b.ref)));if(newWins.length>0)showWinPopup(newWins);}catch{}}
+
+async function checkForWins(){
+  if(!getToken())return;
+  try{
+    let bets=[];
+    try{const slips=await apiFetch(`${API_BASE}/bets/my`);for(const slip of(Array.isArray(slips)?slips:[])){const sel=(slip.selections||[])[0];bets.push({ref:slip.slipReference||slip.id,status:normaliseStatus(slip.status),match:sel?`${sel.homeTeam||'?'} vs ${sel.awayTeam||'?'}`:'Bet',payout:slip.actualPayout??slip.potentialPayout??0,type:'1X2',pick:fmtMkt(sel?.marketType||'')});}}catch{}
+    try{const csSlips=await apiFetch(`${CS_BASE}/bets/my`);for(const slip of(Array.isArray(csSlips)?csSlips:[])){const sel=(slip.selections||[])[0];bets.push({ref:slip.slipReference||slip.id,status:normaliseStatus(slip.status),match:sel?`${sel.homeTeam||'?'} vs ${sel.awayTeam||'?'}`:'Correct Score Bet',payout:slip.actualPayout??slip.potentialPayout??0,type:'CS',pick:`@ ${parseFloat(sel?.oddsAtPlacement||slip.totalOdds||0).toFixed(2)}`});}}catch{}
+    const seen=getSeenWins();
+    const newWins=bets.filter(b=>b.status==='WON'&&!seen.has(String(b.ref)));
+    if(newWins.length>0)showWinPopup(newWins);
+  }catch{}
+}
+
 function startPolling(){if(pollInterval)clearInterval(pollInterval);pollInterval=setInterval(()=>{fetchGames(true);checkForWins();},15000);}
+
 function showWinPopup(wins){const totalPayout=wins.reduce((sum,w)=>sum+parseFloat(w.payout||0),0);document.getElementById('winBetsList').innerHTML=wins.map(w=>`<div class="win-bet-row"><div class="win-bet-match">${esc(w.match)}<br><span style="font-size:9px;color:var(--t3);font-weight:400">${w.type==='CS'?'Correct Score':esc(w.pick)}</span></div><div class="win-bet-amt">+GHS ${parseFloat(w.payout||0).toFixed(2)}</div></div>`).join('');document.getElementById('winSub').textContent=wins.length===1?'Your bet has been settled — you won!':`${wins.length} bets settled — you won!`;document.getElementById('winPayoutAmt').textContent=`GHS ${totalPayout.toFixed(2)}`;spawnConfetti();document.getElementById('winOverlay').classList.add('show');document.body.style.overflow='hidden';wins.forEach(w=>markWinSeen(w.ref));lucide.createIcons();fetchBalance();}
+
 function dismissWin(){document.getElementById('winOverlay').classList.remove('show');document.body.style.overflow='';loadMyBets();}
+
 function spawnConfetti(){const c=document.getElementById('confettiC');c.innerHTML='';const colors=['#2196F3','#22C55E','#60A5FA','#A78BFA','#ffffff','#BBDEFB','#90CAF9'];for(let i=0;i<80;i++){const el=document.createElement('div');el.className='confetti-piece';el.style.cssText=`left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>.5?'50%':'2px'};animation-delay:${Math.random()*1.5}s;animation-duration:${2+Math.random()*2}s;`;c.appendChild(el);}}
+
 function toggleTheme(){const dark=document.documentElement.getAttribute('data-theme')==='dark';document.documentElement.setAttribute('data-theme',dark?'light':'dark');document.getElementById('themeIco').setAttribute('data-lucide',dark?'sun':'moon');lucide.createIcons();}
+
 function showToast(msg,type='info'){const icons={success:'check-circle-2',error:'alert-circle',info:'zap','score-update':'activity'};const c=document.getElementById('toastC');const t=document.createElement('div');t.className=`toast ${type}`;t.innerHTML=`<svg data-lucide="${icons[type]||'zap'}"></svg><span>${esc(msg)}</span>`;c.appendChild(t);lucide.createIcons();setTimeout(()=>{t.classList.add('fadeOut');setTimeout(()=>t.remove(),280);},3500);}
+
 function fmtDate(iso){if(!iso)return'—';const d=new Date(iso),now=new Date();const isToday=d.toDateString()===now.toDateString();const tmrw=new Date(now);tmrw.setDate(now.getDate()+1);const isTmrw=d.toDateString()===tmrw.toDateString();const pre=isToday?'Today':isTmrw?'Tomorrow':d.toLocaleDateString('en-GB',{day:'numeric',month:'short'});return pre+' · '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});}
+
 function fmtMkt(m){return{HOME_WIN:'Home Win',DRAW:'Draw',AWAY_WIN:'Away Win'}[m]||m;}
 </script>
 </body>
