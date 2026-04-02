@@ -191,6 +191,17 @@ select.form-input{appearance:none;cursor:pointer;padding-right:36px;background-i
 .redirect-notice{display:flex;gap:10px;background:var(--blueBg);border:1px solid rgba(96,165,250,0.3);border-radius:12px;padding:12px;margin:10px 0;}
 .redirect-notice svg{flex-shrink:0;width:16px;height:16px;margin-top:1px;color:var(--blue);}
 .redirect-notice p{font-size:12px;line-height:1.45;color:var(--t2);}
+
+/* ── Region Selector ── */
+.region-tabs{display:flex;gap:6px;margin-bottom:16px;background:var(--bg0);border-radius:12px;padding:5px;}
+.region-tab{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 6px;border-radius:9px;border:none;background:transparent;color:var(--t2);font-family:var(--ff);font-size:12px;font-weight:700;cursor:pointer;transition:all 0.18s;white-space:nowrap;}
+.region-tab .flag{font-size:15px;line-height:1;}
+.region-tab.active{background:var(--bg3);color:var(--t1);box-shadow:0 2px 8px rgba(0,0,0,0.25);}
+.region-tab.active .flag{transform:scale(1.1);}
+
+/* ── IBAN / SWIFT fields ── */
+.iban-hint{font-size:10px;color:var(--t3);margin-top:5px;padding-left:2px;}
+.full-col{grid-column:1/-1;}
 </style>
 </head>
 <body>
@@ -234,6 +245,7 @@ select.form-input{appearance:none;cursor:pointer;padding-right:36px;background-i
     </div>
     <div class="panel-body">
 
+      <!-- ══ DEPOSIT ══ -->
       <div id="depositForm">
         <div class="form-group">
           <div class="form-label">Amount</div>
@@ -263,7 +275,10 @@ select.form-input{appearance:none;cursor:pointer;padding-right:36px;background-i
         </button>
       </div>
 
+      <!-- ══ WITHDRAW ══ -->
       <div id="withdrawForm" style="display:none">
+
+        <!-- Amount -->
         <div class="form-group">
           <div class="form-label">Amount</div>
           <div class="amount-input-wrap">
@@ -277,41 +292,186 @@ select.form-input{appearance:none;cursor:pointer;padding-right:36px;background-i
             <button class="preset" onclick="setWithdraw(2000)">2,000</button>
           </div>
         </div>
-        <div class="two-col">
+
+        <!-- Region selector -->
+        <div class="form-label">Withdraw To</div>
+        <div class="region-tabs" id="regionTabs">
+          <button class="region-tab active" data-region="GH" onclick="switchRegion('GH')"><span class="flag">🇬🇭</span> Ghana</button>
+          <button class="region-tab" data-region="NG" onclick="switchRegion('NG')"><span class="flag">🇳🇬</span> Nigeria</button>
+          <button class="region-tab" data-region="EU" onclick="switchRegion('EU')"><span class="flag">🇪🇺</span> Europe</button>
+        </div>
+
+        <!-- ─ GHANA fields ─ -->
+        <div id="wdFieldsGH">
+          <div class="two-col">
+            <div class="form-group">
+              <div class="form-label">Account Name</div>
+              <div class="form-input-wrap">
+                <svg class="input-icon" data-lucide="user"></svg>
+                <input type="text" class="form-input" id="wdAccountName_GH" placeholder="John Doe">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Phone / Acct No.</div>
+              <div class="form-input-wrap">
+                <svg class="input-icon" data-lucide="hash"></svg>
+                <input type="text" class="form-input" id="wdAccountNumber_GH" placeholder="0244000000">
+              </div>
+            </div>
+          </div>
           <div class="form-group">
-            <div class="form-label">Account Name</div>
+            <div class="form-label">Provider</div>
+            <div class="form-input-wrap">
+              <svg class="input-icon" data-lucide="building-2"></svg>
+              <select class="form-input" id="wdBankCode_GH">
+                <option value="MTN">MTN MoMo</option>
+                <option value="VOD">Vodafone Cash</option>
+                <option value="ATL">AirtelTigo</option>
+                <option value="GCB">GCB Bank</option>
+                <option value="ECO">Ecobank Ghana</option>
+                <option value="CAL">Cal Bank</option>
+                <option value="ZEN">Zenith Bank Ghana</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ NIGERIA fields ─ -->
+        <div id="wdFieldsNG" style="display:none">
+          <div class="two-col">
+            <div class="form-group">
+              <div class="form-label">Account Name</div>
+              <div class="form-input-wrap">
+                <svg class="input-icon" data-lucide="user"></svg>
+                <input type="text" class="form-input" id="wdAccountName_NG" placeholder="Chidi Okeke">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Account Number</div>
+              <div class="form-input-wrap">
+                <svg class="input-icon" data-lucide="hash"></svg>
+                <input type="text" class="form-input" id="wdAccountNumber_NG" placeholder="0123456789" maxlength="10">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-label">Bank / Mobile Money</div>
+            <div class="form-input-wrap">
+              <svg class="input-icon" data-lucide="building-2"></svg>
+              <select class="form-input" id="wdBankCode_NG">
+                <optgroup label="Mobile Money">
+                  <option value="MTN_NG">MTN MoMo Nigeria</option>
+                  <option value="AIR_NG">Airtel Money</option>
+                </optgroup>
+                <optgroup label="Commercial Banks">
+                  <option value="ACCESS">Access Bank</option>
+                  <option value="GTB">Guaranty Trust Bank (GTB)</option>
+                  <option value="ZENITH_NG">Zenith Bank</option>
+                  <option value="UBA">United Bank for Africa (UBA)</option>
+                  <option value="FIRST_NG">First Bank of Nigeria</option>
+                  <option value="FCMB">FCMB</option>
+                  <option value="STANBIC_NG">Stanbic IBTC</option>
+                  <option value="FIDELITY_NG">Fidelity Bank</option>
+                  <option value="POLARIS">Polaris Bank</option>
+                  <option value="WEMA">Wema Bank</option>
+                  <option value="STERLING">Sterling Bank</option>
+                  <option value="UNION_NG">Union Bank Nigeria</option>
+                  <option value="ECOBANK_NG">Ecobank Nigeria</option>
+                  <option value="KEYSTONE">Keystone Bank</option>
+                  <option value="HERITAGE">Heritage Bank</option>
+                  <option value="PROVIDUS">Providus Bank</option>
+                  <option value="KUDA">Kuda Bank</option>
+                  <option value="OPAY">OPay (Paycom)</option>
+                  <option value="PALMPAY">PalmPay</option>
+                  <option value="MONIEPOINT">Moniepoint MFB</option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ EUROPE fields ─ -->
+        <div id="wdFieldsEU" style="display:none">
+          <div class="form-group">
+            <div class="form-label">Account Holder Name</div>
             <div class="form-input-wrap">
               <svg class="input-icon" data-lucide="user"></svg>
-              <input type="text" class="form-input" id="wdAccountName" placeholder="John Doe">
+              <input type="text" class="form-input" id="wdAccountName_EU" placeholder="Jean Dupont">
+            </div>
+          </div>
+          <div class="two-col">
+            <div class="form-group full-col">
+              <div class="form-label">IBAN</div>
+              <div class="form-input-wrap">
+                <svg class="input-icon" data-lucide="landmark"></svg>
+                <input type="text" class="form-input" id="wdIBAN" placeholder="DE89 3704 0044 0532 0130 00" maxlength="34" oninput="formatIBAN(this)">
+              </div>
+              <div class="iban-hint">Supported: SEPA zone — DE, FR, ES, IT, NL, PT, BE, AT, IE, PL, SE, DK, FI +more</div>
+            </div>
+          </div>
+          <div class="two-col">
+            <div class="form-group">
+              <div class="form-label">BIC / SWIFT</div>
+              <div class="form-input-wrap">
+                <svg class="input-icon" data-lucide="code-2"></svg>
+                <input type="text" class="form-input" id="wdBIC" placeholder="COBADEFFXXX" maxlength="11" style="text-transform:uppercase">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Country</div>
+              <div class="form-input-wrap">
+                <svg class="input-icon" data-lucide="map-pin"></svg>
+                <select class="form-input" id="wdCountry_EU">
+                  <option value="DE">🇩🇪 Germany</option>
+                  <option value="FR">🇫🇷 France</option>
+                  <option value="ES">🇪🇸 Spain</option>
+                  <option value="IT">🇮🇹 Italy</option>
+                  <option value="NL">🇳🇱 Netherlands</option>
+                  <option value="PT">🇵🇹 Portugal</option>
+                  <option value="BE">🇧🇪 Belgium</option>
+                  <option value="AT">🇦🇹 Austria</option>
+                  <option value="IE">🇮🇪 Ireland</option>
+                  <option value="PL">🇵🇱 Poland</option>
+                  <option value="SE">🇸🇪 Sweden</option>
+                  <option value="DK">🇩🇰 Denmark</option>
+                  <option value="FI">🇫🇮 Finland</option>
+                  <option value="NO">🇳🇴 Norway</option>
+                  <option value="CH">🇨🇭 Switzerland</option>
+                  <option value="GB">🇬🇧 United Kingdom</option>
+                  <option value="GR">🇬🇷 Greece</option>
+                  <option value="CZ">🇨🇿 Czech Republic</option>
+                  <option value="HU">🇭🇺 Hungary</option>
+                  <option value="RO">🇷🇴 Romania</option>
+                  <option value="OTHER">Other</option>
+                </select>
+              </div>
             </div>
           </div>
           <div class="form-group">
-            <div class="form-label">Account No.</div>
+            <div class="form-label">Payment Method</div>
             <div class="form-input-wrap">
-              <svg class="input-icon" data-lucide="hash"></svg>
-              <input type="text" class="form-input" id="wdAccountNumber" placeholder="0244000000">
+              <svg class="input-icon" data-lucide="credit-card"></svg>
+              <select class="form-input" id="wdMethod_EU">
+                <option value="SEPA">SEPA Bank Transfer (1–2 days)</option>
+                <option value="SWIFT">SWIFT / International Wire</option>
+                <option value="WISE">Wise (TransferWise)</option>
+                <option value="REVOLUT">Revolut</option>
+                <option value="PAYPAL">PayPal</option>
+                <option value="SKRILL">Skrill</option>
+                <option value="NETELLER">Neteller</option>
+              </select>
             </div>
           </div>
         </div>
-        <div class="form-group">
-          <div class="form-label">Provider</div>
-          <div class="form-input-wrap">
-            <svg class="input-icon" data-lucide="building-2"></svg>
-            <select class="form-input" id="wdBankCode">
-              <option value="MTN">MTN MoMo</option>
-              <option value="VOD">Vodafone Cash</option>
-              <option value="ATL">AirtelTigo</option>
-              <option value="GCB">GCB Bank</option>
-            </select>
-          </div>
-        </div>
+
+        <!-- Fee banner & summary -->
         <div class="fee-banner">
           <svg data-lucide="alert-triangle" style="color:var(--accent)"></svg>
-          <p><strong>2% fee</strong> applies · Min GHS 50 balance must remain after withdrawal</p>
+          <p id="feeBannerText"><strong>2% fee</strong> applies · Min GHS 50 balance must remain after withdrawal</p>
         </div>
         <div class="summary-box">
           <div class="summary-row"><span class="summary-lbl">Requested</span><span class="summary-val" id="wdSumAmount">GHS 100.00</span></div>
-          <div class="summary-row"><span class="summary-lbl">Fee (2%)</span><span class="summary-val red" id="wdSumFee">− GHS 2.00</span></div>
+          <div class="summary-row"><span class="summary-lbl" id="wdFeeLbl">Fee (2%)</span><span class="summary-val red" id="wdSumFee">− GHS 2.00</span></div>
           <div class="summary-divider"></div>
           <div class="summary-row"><span class="summary-lbl">You receive</span><span class="summary-val green" id="wdSumReceive">GHS 98.00</span></div>
         </div>
@@ -360,7 +520,6 @@ select.form-input{appearance:none;cursor:pointer;padding-right:36px;background-i
 
 <script>
 const API_BASE = 'https://kingcodebackendgames.onrender.com/api/v1';
-// ✅ UPDATED MINIMUMS: GHS 400 | NGN 40,000
 const MIN_DEPOSIT_MAP = { GHS: 400, NGN: 40000 };
 const MIN_DEPOSIT_DEFAULT = 400;
 function getMinDeposit(currency) { return MIN_DEPOSIT_MAP[currency] ?? MIN_DEPOSIT_DEFAULT; }
@@ -368,10 +527,37 @@ function getCurrencySymbol(currency) { const s={GHS:'₵',NGN:'₦',USD:'$',EUR:
 function getToken() { return localStorage.getItem('primestakes_token')||sessionStorage.getItem('primestakes_token')||''; }
 function getUser() { try{const r=localStorage.getItem('primestakes_user')||sessionStorage.getItem('primestakes_user');return r?JSON.parse(r):null;}catch{return null;} }
 function authHeaders() { return {'Content-Type':'application/json','Authorization':`Bearer ${getToken()}`}; }
+
 let allTransactions=[];
 let txFilter='ALL';
 let currentBalance=null;
 let userCurrency='GHS';
+let activeRegion='GH';
+
+// Fee rates & processing times per region
+const REGION_CONFIG = {
+  GH: { fee: 0.02, feeLabel: 'Fee (2%)', note: 'Min GHS 50 balance must remain after withdrawal' },
+  NG: { fee: 0.015, feeLabel: 'Fee (1.5%)', note: 'NGN bank transfers settle within 24hrs' },
+  EU: { fee: 0.025, feeLabel: 'Fee (2.5%)', note: 'SEPA transfers: 1–2 business days · SWIFT: 3–5 days' },
+};
+
+function switchRegion(region) {
+  activeRegion = region;
+  document.querySelectorAll('.region-tab').forEach(t => t.classList.toggle('active', t.dataset.region === region));
+  document.getElementById('wdFieldsGH').style.display = region === 'GH' ? 'block' : 'none';
+  document.getElementById('wdFieldsNG').style.display = region === 'NG' ? 'block' : 'none';
+  document.getElementById('wdFieldsEU').style.display = region === 'EU' ? 'block' : 'none';
+  const cfg = REGION_CONFIG[region];
+  document.getElementById('feeBannerText').innerHTML = `<strong>${cfg.feeLabel.replace('Fee ','')}</strong> applies · ${cfg.note}`;
+  document.getElementById('wdFeeLbl').textContent = cfg.feeLabel;
+  updateWithdrawSummary();
+  lucide.createIcons();
+}
+
+function formatIBAN(input) {
+  let v = input.value.replace(/\s+/g,'').toUpperCase();
+  input.value = v.replace(/(.{4})/g,'$1 ').trim();
+}
 
 window.addEventListener('load', async () => {
   const user=getUser();
@@ -487,21 +673,45 @@ async function initiateDeposit() {
 
 async function initiateWithdraw() {
   const amt=parseFloat(document.getElementById('withdrawAmount').value);
-  const name=document.getElementById('wdAccountName').value.trim();
-  const acc=document.getElementById('wdAccountNumber').value.trim();
-  const bankCode=document.getElementById('wdBankCode').value;
   if(!amt||amt<=0){showToast('Enter a valid amount','error');return;}
-  if(!name){showToast('Account name is required','error');return;}
-  if(!acc){showToast('Account number is required','error');return;}
+
+  let payload={amount:amt,region:activeRegion};
+
+  if(activeRegion==='GH'){
+    const name=document.getElementById('wdAccountName_GH').value.trim();
+    const acc=document.getElementById('wdAccountNumber_GH').value.trim();
+    const bankCode=document.getElementById('wdBankCode_GH').value;
+    if(!name){showToast('Account name is required','error');return;}
+    if(!acc){showToast('Account number is required','error');return;}
+    Object.assign(payload,{accountName:name,accountNumber:acc,bankCode});
+  } else if(activeRegion==='NG'){
+    const name=document.getElementById('wdAccountName_NG').value.trim();
+    const acc=document.getElementById('wdAccountNumber_NG').value.trim();
+    const bankCode=document.getElementById('wdBankCode_NG').value;
+    if(!name){showToast('Account name is required','error');return;}
+    if(!acc||acc.length<10){showToast('Enter a valid 10-digit Nigerian account number','error');return;}
+    Object.assign(payload,{accountName:name,accountNumber:acc,bankCode});
+  } else if(activeRegion==='EU'){
+    const name=document.getElementById('wdAccountName_EU').value.trim();
+    const iban=document.getElementById('wdIBAN').value.replace(/\s/g,'').toUpperCase();
+    const bic=document.getElementById('wdBIC').value.toUpperCase();
+    const country=document.getElementById('wdCountry_EU').value;
+    const method=document.getElementById('wdMethod_EU').value;
+    if(!name){showToast('Account holder name is required','error');return;}
+    if(!iban||iban.length<15){showToast('Enter a valid IBAN','error');return;}
+    if(!bic||bic.length<8){showToast('Enter a valid BIC/SWIFT code','error');return;}
+    Object.assign(payload,{accountName:name,iban,bic,country,paymentMethod:method});
+  }
+
   setBtnLoading('withdrawBtn','wdBtnTxt',true,'Processing…');
   try {
-    const res=await fetch(`${API_BASE}/wallet/withdraw`,{method:'POST',headers:authHeaders(),body:JSON.stringify({amount:amt,accountName:name,accountNumber:acc,bankCode:bankCode})});
+    const res=await fetch(`${API_BASE}/wallet/withdraw`,{method:'POST',headers:authHeaders(),body:JSON.stringify(payload)});
     if(res.status===401){showAuthError();return;}
     const json=await res.json();
     if(!res.ok) throw new Error(json.message||`Error ${res.status}`);
     const data=json.data||json;
     await loadTransactions();
-    showModal('success','Withdrawal Sent',data.message||`GHS ${parseFloat(data.amountReceived||0).toFixed(2)} will be sent to ${name}.`,data.reference,[{lbl:'Requested',val:fmt(data.requestedAmount)},{lbl:'Fee',val:'GHS '+parseFloat(data.feeDeducted||0).toFixed(2)},{lbl:'You receive',val:fmt(data.amountReceived),cls:'green'},{lbl:'Balance After',val:fmt(data.balanceAfter)}]);
+    showModal('success','Withdrawal Sent',data.message||`${fmt(data.amountReceived||0)} will be sent to your account.`,data.reference,[{lbl:'Requested',val:fmt(data.requestedAmount)},{lbl:'Fee',val:getCurrencySymbol(userCurrency)+parseFloat(data.feeDeducted||0).toFixed(2)},{lbl:'You receive',val:fmt(data.amountReceived),cls:'green'},{lbl:'Balance After',val:fmt(data.balanceAfter)}]);
   } catch(e) {
     showToast(e.message||'Withdrawal failed','error');
   } finally { setBtnLoading('withdrawBtn','wdBtnTxt',false,'Withdraw Funds'); }
@@ -512,7 +722,15 @@ function setBtnLoading(btnId,txtId,loading,label){const btn=document.getElementB
 function setDeposit(v){document.getElementById('depositAmount').value=v;updateDepositSummary();}
 function setWithdraw(v){document.getElementById('withdrawAmount').value=v;updateWithdrawSummary();}
 function updateDepositSummary(){const amt=parseFloat(document.getElementById('depositAmount').value)||0;document.getElementById('depSumAmount').innerText=fmt(amt);document.getElementById('depSumReceive').innerText=fmt(amt);}
-function updateWithdrawSummary(){const amt=parseFloat(document.getElementById('withdrawAmount').value)||0;const fee=+(amt*0.02).toFixed(2);const rec=+(amt-fee).toFixed(2);document.getElementById('wdSumAmount').innerText=fmt(amt);document.getElementById('wdSumFee').innerText='− '+getCurrencySymbol(userCurrency)+fee.toFixed(2);document.getElementById('wdSumReceive').innerText=fmt(rec);}
+function updateWithdrawSummary(){
+  const amt=parseFloat(document.getElementById('withdrawAmount').value)||0;
+  const feeRate=REGION_CONFIG[activeRegion]?.fee||0.02;
+  const fee=+(amt*feeRate).toFixed(2);
+  const rec=+(amt-fee).toFixed(2);
+  document.getElementById('wdSumAmount').innerText=fmt(amt);
+  document.getElementById('wdSumFee').innerText='− '+getCurrencySymbol(userCurrency)+fee.toFixed(2);
+  document.getElementById('wdSumReceive').innerText=fmt(rec);
+}
 function switchAction(type){const isD=type==='deposit';document.getElementById('depositForm').style.display=isD?'block':'none';document.getElementById('withdrawForm').style.display=isD?'none':'block';document.getElementById('btnTabDeposit').classList.toggle('active',isD);document.getElementById('btnTabWithdraw').classList.toggle('active',!isD);const titleEl=document.getElementById('actionTitle');titleEl.innerHTML=`<svg data-lucide="${isD?'arrow-down-circle':'arrow-up-circle'}"></svg> ${isD?'Deposit':'Withdraw'}`;lucide.createIcons();}
 function buildFilters(){const filters=['ALL','DEPOSIT','WITHDRAWAL','BET','WINNINGS','REFUND'];const labels={ALL:'All',DEPOSIT:'Deposits',WITHDRAWAL:'Withdrawals',BET:'Bets',WINNINGS:'Winnings',REFUND:'Refunds'};document.getElementById('filterContainer').innerHTML=filters.map(f=>`<button class="filter-chip ${f==='ALL'?'active':''}" data-filter="${f}">${labels[f]}</button>`).join('');document.querySelectorAll('.filter-chip').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));btn.classList.add('active');txFilter=btn.getAttribute('data-filter');renderTransactions();});});}
 function showAuthError(){showToast('Session expired — please log in again','error');document.getElementById('txList').innerHTML=`<div class="error-state"><svg data-lucide="lock"></svg><p>You need to be logged in to view your wallet.</p></div>`;lucide.createIcons();}
@@ -520,7 +738,7 @@ function showToast(msg,type='info'){const c=document.getElementById('toastContai
 function showModal(type,title,msg,ref,details){document.getElementById('modalTitle').innerText=title;document.getElementById('modalMsg').innerText=msg;const iconDiv=document.getElementById('modalIcon');iconDiv.style.background=type==='success'?'var(--greenBg)':'var(--redBg)';iconDiv.style.border=`1px solid ${type==='success'?'var(--borderGreen)':'var(--borderRed)'}`;document.getElementById('modalIcoSvg').setAttribute('data-lucide',type==='success'?'check-circle-2':'alert-circle');document.getElementById('modalIcoSvg').style.color=type==='success'?'var(--green)':'var(--red)';const refDiv=document.getElementById('modalRef');if(ref){refDiv.innerText=ref;refDiv.style.display='block';}else refDiv.style.display='none';const detailDiv=document.getElementById('modalDetail');if(details&&details.length){detailDiv.style.display='grid';detailDiv.innerHTML=details.map(d=>`<div class="modal-detail-item"><div class="modal-detail-lbl">${d.lbl}</div><div class="modal-detail-val ${d.cls||''}">${d.val}</div></div>`).join('');}else detailDiv.style.display='none';document.getElementById('modalOverlay').classList.add('open');lucide.createIcons();}
 function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
 function toggleTheme(){const dark=document.documentElement.getAttribute('data-theme')==='dark';document.documentElement.setAttribute('data-theme',dark?'light':'dark');document.getElementById('themeIco').setAttribute('data-lucide',dark?'sun':'moon');lucide.createIcons();}
-window.switchAction=switchAction;window.setDeposit=setDeposit;window.setWithdraw=setWithdraw;window.updateDepositSummary=updateDepositSummary;window.updateWithdrawSummary=updateWithdrawSummary;window.initiateDeposit=initiateDeposit;window.initiateWithdraw=initiateWithdraw;window.closeModal=closeModal;window.toggleTheme=toggleTheme;window.loadTransactions=loadTransactions;
+window.switchAction=switchAction;window.setDeposit=setDeposit;window.setWithdraw=setWithdraw;window.updateDepositSummary=updateDepositSummary;window.updateWithdrawSummary=updateWithdrawSummary;window.initiateDeposit=initiateDeposit;window.initiateWithdraw=initiateWithdraw;window.closeModal=closeModal;window.toggleTheme=toggleTheme;window.loadTransactions=loadTransactions;window.switchRegion=switchRegion;window.formatIBAN=formatIBAN;
 </script>
 </body>
 </html>
