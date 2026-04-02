@@ -625,7 +625,7 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
 <script>
 const BASE_URL = 'https://kingcodebackendgames.onrender.com';
 const FIXTURES_URL = `${BASE_URL}/api/v1/football/fixtures`;
-const LIVE_URL = `${BASE_URL}/api/football/live`;
+const LIVE_URL = `${BASE_URL}/api/v1/football/live`;
 
 function getToken(){return localStorage.getItem('primestakes_token')||sessionStorage.getItem('primestakes_token')||null;}
 function getUser(){try{const r=localStorage.getItem('primestakes_user')||sessionStorage.getItem('primestakes_user');return r?JSON.parse(r):null;}catch{return null;}}
@@ -688,18 +688,18 @@ const FALLBACK_MATCHES = [
 
 async function loadLiveCarousel() {
   try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 8000);
-    const res = await fetch(LIVE_URL, { signal: controller.signal });
-    clearTimeout(timeout);
+    const res = await fetch(LIVE_URL);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
+    // /api/v1/football/live returns { total, matches: [...] }
+    // also handle flat array or other shapes defensively
     let games = [];
     if (Array.isArray(data)) games = data;
-    else if (Array.isArray(data.data)) games = data.data;
     else if (Array.isArray(data.matches)) games = data.matches;
+    else if (Array.isArray(data.data)) games = data.data;
     else if (Array.isArray(data.games)) games = data.games;
     lcGames = games;
+    console.log(`[LiveCarousel] ${games.length} live games loaded`);
   } catch(e) {
     console.warn('[LiveCarousel] Fetch failed:', e.message);
     lcGames = [];
@@ -829,19 +829,22 @@ async function loadMatches(){
 function isWC(m){const c=(m.competition||'').toLowerCase();return c.includes('world cup')||c.includes('wc')||m.category==='wc';}
 
 function normalise(m){
+  // Handles MatchDTO from /api/v1/football/fixtures:
+  // { uid, competition, category, live, status, minute, utcDate,
+  //   homeTeam, awayTeam, homeCrest, awayCrest, homeScore, awayScore, odds }
   return{
     _uid:m.uid||`m-${Math.random()}`,
-    _comp:m.competition||'Football',
-    _cat:isWC(m)?'wc':'club',
+    _comp:m.competition||m.league||'Football',
+    _cat:m.category||(isWC(m)?'wc':'club'),
     _isLive:m.live===true||m.status==='IN_PLAY'||m.status==='PAUSED',
-    _date:m.utcDate||new Date().toISOString(),
+    _date:m.utcDate||m.kickoff||new Date().toISOString(),
     _min:m.minute||'',
-    _ht:m.teams?.home?.name||m.homeTeam||'Home',
-    _at:m.teams?.away?.name||m.awayTeam||'Away',
-    _hc:m.crests?.home||m.teams?.home?.crest||m.homeCrest||'',
-    _ac:m.crests?.away||m.teams?.away?.crest||m.awayCrest||'',
-    _hs:m.scores?.home??m.homeScore??null,
-    _as:m.scores?.away??m.awayScore??null,
+    _ht:m.homeTeam||m.teams?.home?.name||'Home',
+    _at:m.awayTeam||m.teams?.away?.name||'Away',
+    _hc:m.homeCrest||m.crests?.home||m.teams?.home?.crest||'',
+    _ac:m.awayCrest||m.crests?.away||m.teams?.away?.crest||'',
+    _hs:m.homeScore??m.scores?.home??null,
+    _as:m.awayScore??m.scores?.away??null,
     _venue:m.venue||'',
     _odds:m.odds||null
   };
@@ -888,7 +891,14 @@ function fmtT(u){
 
 function buildCard(m,idx){
   const oid=hashStr(m._uid)%900000+100000;
-  const od=m._odds?{home:m._odds.home,draw:m._odds.draw,away:m._odds.away,o15:m._odds.over15,o25:m._odds.over25,o35:m._odds.over35}:odds(oid);
+  const od=m._odds?{
+    home:m._odds.home??m._odds.homeWin??odds(oid).home,
+    draw:m._odds.draw??m._odds.drawWin??odds(oid).draw,
+    away:m._odds.away??m._odds.awayWin??odds(oid).away,
+    o15:m._odds.over15??m._odds.o15??odds(oid).o15,
+    o25:m._odds.over25??m._odds.o25??odds(oid).o25,
+    o35:m._odds.over35??m._odds.o35??odds(oid).o35
+  }:odds(oid);
   const crest=src=>src?`<img src="${src}" class="tcrest" onerror="this.style.display='none'" alt="">`:'' ;
   const scoreHtml=m._hs!=null?`<div class="score-box">${m._hs} – ${m._as}</div>`:m._isLive?`<div class="score-box">– –</div>`:`<div class="vs-box">VS</div>`;
   const statusHtml=m._isLive?`<span class="live-badge"><div class="dot"></div>${m._min||'LIVE'}</span>`:`<span class="time-tag"><span class="mi">schedule</span>${fmtT(m._date)}</span>`;
