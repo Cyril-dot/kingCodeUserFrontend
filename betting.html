@@ -627,20 +627,22 @@ const CS_BASE  = 'https://kingcodebackendgames.onrender.com/api/correct-score';
 
 // ── TOKEN HELPERS ─────────────────────────────────────────────────────────────
 // Reads from both the primary key AND a legacy fallback so old sessions still work.
+const TOKEN_KEY = 'primestakes_token';
+const USER_KEY  = 'primestakes_user';
+
 function getToken() {
-  return localStorage.getItem('gstake_token')
-      || sessionStorage.getItem('gstake_token')
-      || localStorage.getItem('primestakes_token')
-      || sessionStorage.getItem('primestakes_token')
-      || '';
+  return localStorage.getItem(TOKEN_KEY) || sessionStorage.getItem(TOKEN_KEY) || null;
 }
 function getUser() {
-  const raw = localStorage.getItem('gstake_user')
-           || sessionStorage.getItem('gstake_user')
-           || localStorage.getItem('primestakes_user')
-           || sessionStorage.getItem('primestakes_user')
-           || '';
+  const raw = localStorage.getItem(USER_KEY) || sessionStorage.getItem(USER_KEY);
   try { return raw ? JSON.parse(raw) : null; } catch { return null; }
+}
+function logout() {
+  [TOKEN_KEY, USER_KEY].forEach(k => {
+    localStorage.removeItem(k);
+    sessionStorage.removeItem(k);
+  });
+  window.location.href = '/';
 }
 // ─────────────────────────────────────────────────────────────────────────────
 
