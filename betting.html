@@ -626,7 +626,6 @@ const API_BASE = 'https://kingcodebackendgames.onrender.com/api/v1';
 const CS_BASE  = 'https://kingcodebackendgames.onrender.com/api/correct-score';
 
 // ── TOKEN HELPERS ─────────────────────────────────────────────────────────────
-// Reads from both the primary key AND a legacy fallback so old sessions still work.
 const TOKEN_KEY = 'primestakes_token';
 const USER_KEY  = 'primestakes_user';
 
@@ -646,7 +645,11 @@ function logout() {
 }
 // ─────────────────────────────────────────────────────────────────────────────
 
-let betSlip=[],gamesData=[],_stakeVal=10,allMyBets=[],currentBetFilter='ALL',currentBetFilterMob='ALL',pollInterval=null,scoreSnapshot={};
+// ── CHANGED: default stake is now 200, min stake is 200 ──────────────────────
+let betSlip=[],gamesData=[],_stakeVal=200,allMyBets=[],currentBetFilter='ALL',currentBetFilterMob='ALL',pollInterval=null,scoreSnapshot={};
+const MIN_STAKE=200;
+// ─────────────────────────────────────────────────────────────────────────────
+
 const SEEN_WINS_KEY='gstake_seen_wins';
 
 window.addEventListener('load',()=>{
@@ -705,7 +708,14 @@ function removeFromSlip(gameId,type){betSlip=betSlip.filter(s=>!(s.gameId===game
 
 function renderSlip(){const count=betSlip.length,totalOdds=betSlip.reduce((a,s)=>a*s.odds,1),payout=_stakeVal*totalOdds;const fb=document.getElementById('slipFloat');fb.classList.toggle('visible',count>0);document.getElementById('floatBadge').textContent=count;document.getElementById('floatPicksTxt').textContent=`${count} pick${count!==1?'s':''} · odds ${totalOdds.toFixed(2)}`;document.getElementById('floatWinTxt').textContent=`GHS ${payout.toFixed(2)} potential`;document.getElementById('ssCount').textContent=count;document.getElementById('sidebarSlipBody').innerHTML=buildSlipHTML(count,totalOdds,payout);if(document.getElementById('sheetOverlay').classList.contains('open'))document.getElementById('sheetBody').innerHTML=buildSlipHTML(count,totalOdds,payout);lucide.createIcons();}
 
-function buildSlipHTML(count,totalOdds,payout){const successEl=`<div class="slip-success" id="slipSuccessEl"><div class="success-icon"><svg data-lucide="check-circle-2"></svg></div><div style="font-family:var(--ffC);font-size:18px;font-weight:800;color:var(--green)">Bet Placed!</div><div style="font-size:13px;color:var(--t2);line-height:1.6">Your score slip is live. Good luck!</div><div class="success-ref" id="slipRefEl">—</div><button class="btn-new" onclick="resetSlip()">New Slip</button></div>`;if(count===0)return successEl+`<div class="slip-empty"><div class="slip-empty-icon"><svg data-lucide="crosshair"></svg></div><div class="slip-empty-t">No picks yet</div><div class="slip-empty-s">Tap any score or 1X2 odds to add a selection.</div></div>`;const items=betSlip.map(s=>{const isCS=s.type==='CS';return`<div class="slip-item"><div class="slip-item-top"><div class="slip-item-match">${esc(s.homeTeam)} vs ${esc(s.awayTeam)}</div><button class="slip-item-rm" onclick="removeFromSlip('${s.gameId}','${s.type}')"><svg data-lucide="x"></svg></button></div><div class="slip-item-bot"><div><div class="slip-item-type ${isCS?'cs':'x1'}">${isCS?'Correct Score':fmtMkt(s.label)}</div>${isCS?`<div style="font-size:9px;color:var(--t3);margin-top:2px">@${s.odds.toFixed(2)}</div>`:''}</div>${isCS?`<div class="slip-item-score">${s.label}</div>`:`<div class="slip-item-odds-wrap"><div class="slip-item-odds-lbl">odds</div><div class="slip-item-odds">${s.odds.toFixed(2)}</div></div>`}</div></div>`;}).join('');const presets=[5,10,20,50,100].map(v=>`<button class="preset-btn${_stakeVal===v?' active':''}" onclick="setStake(${v})">${v}</button>`).join('');return successEl+`<div class="slip-items">${items}</div><div class="slip-stake-section"><div class="slip-stake-lbl">Stake (GHS)</div><div class="stake-field"><div class="stake-sym">¢</div><input class="stake-input" type="number" value="${_stakeVal}" min="1" step="1" oninput="_stakeVal=Math.max(1,parseFloat(this.value)||1);updateFloatBar()"></div><div class="stake-presets">${presets}</div><div class="slip-summary"><div class="sum-row"><span class="sum-lbl">Picks</span><span class="sum-val">${count}</span></div><div class="sum-row"><span class="sum-lbl">Total Odds</span><span class="sum-val">${totalOdds.toFixed(2)}</span></div><div class="sum-row"><span class="sum-lbl">Stake</span><span class="sum-val">GHS ${_stakeVal.toFixed(2)}</span></div><div class="sum-div"></div><div class="sum-row"><span class="sum-win-lbl">Potential Win</span><span class="sum-win-val">GHS ${payout.toFixed(2)}</span></div></div><button class="btn-place" onclick="placeBet()"><svg data-lucide="zap"></svg><span>Place Bet</span></button></div>`;}
+function buildSlipHTML(count,totalOdds,payout){
+  const successEl=`<div class="slip-success" id="slipSuccessEl"><div class="success-icon"><svg data-lucide="check-circle-2"></svg></div><div style="font-family:var(--ffC);font-size:18px;font-weight:800;color:var(--green)">Bet Placed!</div><div style="font-size:13px;color:var(--t2);line-height:1.6">Your score slip is live. Good luck!</div><div class="success-ref" id="slipRefEl">—</div><button class="btn-new" onclick="resetSlip()">New Slip</button></div>`;
+  if(count===0)return successEl+`<div class="slip-empty"><div class="slip-empty-icon"><svg data-lucide="crosshair"></svg></div><div class="slip-empty-t">No picks yet</div><div class="slip-empty-s">Tap any score or 1X2 odds to add a selection.</div></div>`;
+  const items=betSlip.map(s=>{const isCS=s.type==='CS';return`<div class="slip-item"><div class="slip-item-top"><div class="slip-item-match">${esc(s.homeTeam)} vs ${esc(s.awayTeam)}</div><button class="slip-item-rm" onclick="removeFromSlip('${s.gameId}','${s.type}')"><svg data-lucide="x"></svg></button></div><div class="slip-item-bot"><div><div class="slip-item-type ${isCS?'cs':'x1'}">${isCS?'Correct Score':fmtMkt(s.label)}</div>${isCS?`<div style="font-size:9px;color:var(--t3);margin-top:2px">@${s.odds.toFixed(2)}</div>`:''}</div>${isCS?`<div class="slip-item-score">${s.label}</div>`:`<div class="slip-item-odds-wrap"><div class="slip-item-odds-lbl">odds</div><div class="slip-item-odds">${s.odds.toFixed(2)}</div></div>`}</div></div>`;}).join('');
+  // ── CHANGED: presets updated to 200/500/1000/2000/5000, min="200" ──
+  const presets=[200,500,1000,2000,5000].map(v=>`<button class="preset-btn${_stakeVal===v?' active':''}" onclick="setStake(${v})">${v}</button>`).join('');
+  return successEl+`<div class="slip-items">${items}</div><div class="slip-stake-section"><div class="slip-stake-lbl">Stake (GHS) — Min: 200</div><div class="stake-field"><div class="stake-sym">¢</div><input class="stake-input" type="number" value="${_stakeVal}" min="200" step="1" oninput="_stakeVal=Math.max(${MIN_STAKE},parseFloat(this.value)||${MIN_STAKE});updateFloatBar()"></div><div class="stake-presets">${presets}</div><div class="slip-summary"><div class="sum-row"><span class="sum-lbl">Picks</span><span class="sum-val">${count}</span></div><div class="sum-row"><span class="sum-lbl">Total Odds</span><span class="sum-val">${totalOdds.toFixed(2)}</span></div><div class="sum-row"><span class="sum-lbl">Stake</span><span class="sum-val">GHS ${_stakeVal.toFixed(2)}</span></div><div class="sum-div"></div><div class="sum-row"><span class="sum-win-lbl">Potential Win</span><span class="sum-win-val">GHS ${payout.toFixed(2)}</span></div></div><button class="btn-place" onclick="placeBet()"><svg data-lucide="zap"></svg><span>Place Bet</span></button></div>`;
+}
 
 function updateFloatBar(){const tot=betSlip.reduce((a,s)=>a*s.odds,1);document.getElementById('floatWinTxt').textContent=`GHS ${(_stakeVal*tot).toFixed(2)} potential`;}
 function setStake(v){_stakeVal=v;renderSlip();}
@@ -720,7 +730,8 @@ function closeBetsSheetOnBg(e){if(e.target===document.getElementById('betsSheetO
 
 async function placeBet(){
   if(!betSlip.length){showToast('Add at least one pick','error');return;}
-  if(!_stakeVal||_stakeVal<=0){showToast('Enter a valid stake','error');return;}
+  // ── CHANGED: enforce minimum stake of 200 ──
+  if(!_stakeVal||_stakeVal<MIN_STAKE){showToast(`Minimum stake is GHS ${MIN_STAKE}`,'error');return;}
   if(!getToken()){showToast('Please log in to place a bet','error');return;}
   document.querySelectorAll('.btn-place').forEach(b=>{b.disabled=true;b.innerHTML='<svg data-lucide="loader" class="spin"></svg><span>Placing…</span>';});
   lucide.createIcons();
@@ -742,7 +753,9 @@ function showInsufficientFunds(){const html=`<div class="funds-card"><div class=
 function closeInsufficientFunds(){renderSlip();}
 
 function showSuccess(ref){betSlip=[];renderGames();renderSlip();setTimeout(()=>{document.querySelectorAll('.slip-success').forEach(el=>{el.style.display='flex';});document.querySelectorAll('#slipRefEl').forEach(el=>{el.textContent=ref;});lucide.createIcons();},60);showToast('Bet placed! Good luck!','success');loadMyBets();}
-function resetSlip(){_stakeVal=10;betSlip=[];renderGames();renderSlip();closeSheet();}
+
+// ── CHANGED: resetSlip now resets to 200 ──
+function resetSlip(){_stakeVal=200;betSlip=[];renderGames();renderSlip();closeSheet();}
 
 function parseSlipToBet(slip){const sel=(slip.selections||[])[0];const isCS=sel?.marketType==='CORRECT_SCORE';const match=sel?`${sel.homeTeam||'?'} vs ${sel.awayTeam||'?'}`:'Bet Slip';const pick=isCS?`@ ${parseFloat(sel.oddsAtPlacement||slip.totalOdds||0).toFixed(2)}`:fmtMkt(sel?.marketType||'');return{id:slip.id,ref:slip.slipReference||slip.id,match,type:isCS?'CS':'1X2',pick,odds:slip.totalOdds??'—',stake:slip.stake,payout:slip.potentialPayout??null,actualPayout:slip.actualPayout??null,status:normaliseStatus(slip.status),placedAt:slip.placedAt||slip.createdAt};}
 
