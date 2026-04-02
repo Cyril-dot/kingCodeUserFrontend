@@ -218,7 +218,7 @@ function buildCarousel(){
 
 async function fetchGames(){
   try{
-    const token=localStorage.getItem('gstake_token')||sessionStorage.getItem('gstake_token');
+    const token = localStorage.getItem('primestakes_token') || sessionStorage.getItem('primestakes_token');
     const headers={'Content-Type':'application/json'};
     if(token)headers['Authorization']=`Bearer ${token}`;
     const res=await fetch(`${API_BASE}/api/v1/games/public`,{headers});
