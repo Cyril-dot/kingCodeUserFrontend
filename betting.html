@@ -249,7 +249,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 /* ── SLIP ITEMS ── */
 .slip-items{padding:10px 12px;display:flex;flex-direction:column;gap:6px}
 .slip-item{background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:10px 12px;animation:cardIn .3s cubic-bezier(.22,.68,0,1.2) both;position:relative}
-/* ── slip item exit ── */
 .slip-item.removing{animation:slipItemOut .3s cubic-bezier(.4,0,1,1) forwards;pointer-events:none;overflow:hidden}
 @keyframes slipItemOut{0%{opacity:1;max-height:120px;margin-bottom:6px}100%{opacity:0;max-height:0;margin-bottom:0;padding:0;border-width:0}}
 .slip-item-top{display:flex;align-items:flex-start;justify-content:space-between;gap:7px;margin-bottom:7px}
@@ -266,7 +265,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .slip-item-odds-lbl{font-size:9px;color:var(--t3)}
 .slip-item-odds{font-family:var(--ffC);font-size:18px;font-weight:800;color:var(--accent)}
 
-/* ── SLIP HEADER ROW (picks count + clear all) ── */
+/* ── SLIP HEADER ROW ── */
 .slip-header-row{display:flex;align-items:center;justify-content:space-between;padding:10px 12px 6px}
 .slip-header-lbl{font-size:10px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.7px;display:flex;align-items:center;gap:5px}
 .slip-header-lbl svg{width:11px;height:11px;color:var(--accent)}
@@ -362,18 +361,49 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .bh-filter-btn.won{background:var(--greenBg);border-color:var(--borderGreen);color:var(--green)}
 .bh-filter-btn.lost{background:var(--redBg);border-color:rgba(239,68,68,0.3);color:var(--red)}
 .bh-filter-btn.pending{background:var(--purpleBg);border-color:rgba(167,139,250,0.3);color:var(--purple)}
+
+/* ── BET CARD ── */
 .bet-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rLg);overflow:hidden;margin-bottom:8px;animation:cardIn .3s cubic-bezier(.22,.68,0,1.2) both;transition:border-color .15s}
 .bet-card:hover{border-color:var(--borderHov)}
 .bet-card.won{border-color:rgba(34,197,94,0.25)}
 .bet-card.lost{border-color:rgba(239,68,68,0.15)}
 .bet-card.pending{border-color:rgba(167,139,250,0.2)}
+
+/* ── BET CARD HIDDEN (display none) ── */
+.bet-card.hidden{display:none}
+
+/* ── BET CARD EXIT ANIMATION ── */
+.bet-card.bet-exit{
+  animation:betCardExit 0.35s cubic-bezier(.4,0,1,1) forwards !important;
+  pointer-events:none;
+  overflow:hidden;
+}
+@keyframes betCardExit{
+  0%  {opacity:1;max-height:200px;margin-bottom:8px;}
+  40% {opacity:0;transform:translateX(12px);}
+  100%{opacity:0;max-height:0;margin-bottom:0;padding:0;border-width:0;}
+}
+
 .bet-card-head{padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--bg3);border-bottom:1px solid var(--border)}
 .bet-card-match{font-size:12px;font-weight:700;color:var(--t1);flex:1;line-height:1.3}
+.bet-card-head-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
 .bet-status-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;flex-shrink:0}
 .bet-status-pill.won{background:var(--greenBg);color:var(--green);border:1px solid var(--borderGreen)}
 .bet-status-pill.lost{background:var(--redBg);color:var(--red);border:1px solid rgba(239,68,68,0.3)}
 .bet-status-pill.pending{background:var(--purpleBg);color:var(--purple);border:1px solid rgba(167,139,250,0.3)}
 .bet-status-pill svg{width:8px;height:8px}
+
+/* ── BET CARD DELETE BUTTON ── */
+.bet-delete-btn{background:var(--redBg);border:1px solid rgba(239,68,68,0.25);width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0}
+.bet-delete-btn:hover{background:rgba(239,68,68,0.22);border-color:rgba(239,68,68,0.5)}
+.bet-delete-btn svg{width:12px;height:12px;color:var(--red)}
+
+/* ── BET HISTORY HEADER ── */
+.bh-header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px}
+.btn-clear-bets{display:inline-flex;align-items:center;gap:5px;background:var(--redBg);border:1px solid rgba(239,68,68,0.3);border-radius:20px;padding:4px 11px;font-size:10px;font-weight:700;color:var(--red);cursor:pointer;transition:all .15s;font-family:var(--ff)}
+.btn-clear-bets:hover{background:rgba(239,68,68,0.18);border-color:rgba(239,68,68,0.5)}
+.btn-clear-bets svg{width:11px;height:11px}
+
 .bet-card-body{padding:10px 12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .bet-pick-box{flex:1;min-width:0}
 .bet-pick-type{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--blue);margin-bottom:3px}
@@ -623,7 +653,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
     <div class="bets-sheet-handle"></div>
     <div class="bets-sheet-head">
       <div class="bets-sheet-title"><svg data-lucide="receipt"></svg>My Bets</div>
-      <div class="bets-sheet-close" onclick="closeBetsSheet()"><svg data-lucide="x"></svg></div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button class="btn-clear-bets" id="btnClearBetsMobile" onclick="clearAllBets('mobile')" style="display:none">
+          <svg data-lucide="trash-2"></svg>Clear All
+        </button>
+        <div class="bets-sheet-close" onclick="closeBetsSheet()"><svg data-lucide="x"></svg></div>
+      </div>
     </div>
     <div class="bets-sheet-body">
       <div class="bh-stats-row" id="bhStatsMobile">
@@ -670,27 +705,21 @@ const CS_BASE  = 'https://kingcodebackendgames.onrender.com/api/correct-score';
 
 // ── HIDDEN GAMES PERSISTENCE ──────────────────────────────────────────────────
 const HIDDEN_GAMES_KEY = 'cashbet_hidden_games';
+function getHiddenGames(){try{return new Set(JSON.parse(localStorage.getItem(HIDDEN_GAMES_KEY)||'[]'));}catch{return new Set();}}
+function hideGame(gameId){const hidden=getHiddenGames();hidden.add(String(gameId));localStorage.setItem(HIDDEN_GAMES_KEY,JSON.stringify([...hidden]));}
+function isGameHidden(gameId){return getHiddenGames().has(String(gameId));}
+function clearAllHiddenGames(){localStorage.removeItem(HIDDEN_GAMES_KEY);}
 
-function getHiddenGames(){
-  try{return new Set(JSON.parse(localStorage.getItem(HIDDEN_GAMES_KEY)||'[]'));}
-  catch{return new Set();}
-}
-function hideGame(gameId){
-  const hidden=getHiddenGames();
-  hidden.add(String(gameId));
-  localStorage.setItem(HIDDEN_GAMES_KEY,JSON.stringify([...hidden]));
-}
-function isGameHidden(gameId){
-  return getHiddenGames().has(String(gameId));
-}
-function clearAllHiddenGames(){
-  localStorage.removeItem(HIDDEN_GAMES_KEY);
-}
+// ── HIDDEN BETS (UI only — just tracks which bet IDs are hidden) ──────────────
+const HIDDEN_BETS_KEY = 'cashbet_hidden_bets';
+function getHiddenBets(){try{return new Set(JSON.parse(localStorage.getItem(HIDDEN_BETS_KEY)||'[]'));}catch{return new Set();}}
+function hideBet(betId){const h=getHiddenBets();h.add(String(betId));localStorage.setItem(HIDDEN_BETS_KEY,JSON.stringify([...h]));}
+function isBetHidden(betId){return getHiddenBets().has(String(betId));}
+function clearAllHiddenBets(){localStorage.removeItem(HIDDEN_BETS_KEY);}
 
 // ── TOKEN HELPERS ─────────────────────────────────────────────────────────────
 const TOKEN_KEY = 'primestakes_token';
 const USER_KEY  = 'primestakes_user';
-
 function getToken(){return localStorage.getItem(TOKEN_KEY)||sessionStorage.getItem(TOKEN_KEY)||null;}
 function getUser(){const raw=localStorage.getItem(USER_KEY)||sessionStorage.getItem(USER_KEY);try{return raw?JSON.parse(raw):null;}catch{return null;}}
 function logout(){[TOKEN_KEY,USER_KEY].forEach(k=>{localStorage.removeItem(k);sessionStorage.removeItem(k);});window.location.href='/';}
@@ -759,10 +788,7 @@ async function fetchGames(silent=false){
           const scoreChanged=(prev.homeScore!==curH||prev.awayScore!==curA)&&curH!==null;
           const justSettled=(curS==='FINISHED'||curS==='CANCELLED')&&prev.status!==curS;
           if(scoreChanged||justSettled)showScoreUpdatePopup(g);
-          if(justSettled&&!scheduledRemoval.has(g.id)){
-            scheduledRemoval.add(g.id);
-            scheduleCardRemoval(g.id);
-          }
+          if(justSettled&&!scheduledRemoval.has(g.id)){scheduledRemoval.add(g.id);scheduleCardRemoval(g.id);}
         }
         scoreSnapshot[g.id]={homeScore:curH,awayScore:curA,status:curS};
       });
@@ -772,10 +798,7 @@ async function fetchGames(silent=false){
       filtered.forEach(g=>{
         scoreSnapshot[g.id]={homeScore:g.homeScore??null,awayScore:g.awayScore??null,status:g.status};
         const isSettled=g.status==='FINISHED'||g.status==='CANCELLED';
-        if(isSettled&&!scheduledRemoval.has(g.id)){
-          scheduledRemoval.add(g.id);
-          scheduleCardRemoval(g.id);
-        }
+        if(isSettled&&!scheduledRemoval.has(g.id)){scheduledRemoval.add(g.id);scheduleCardRemoval(g.id);}
       });
       gamesData=filtered;
       renderGames();
@@ -793,29 +816,17 @@ async function fetchGames(silent=false){
 
 function scheduleCardRemoval(gameId){
   const game=gamesData.find(g=>g.id===gameId);
-  if(game){
-    const label=game.status==='CANCELLED'?'cancelled':'settled';
-    showToast(`${short(game.homeTeam)} vs ${short(game.awayTeam)} — ${label}, removing in 10s`,'info');
-  }
-  setTimeout(()=>{
-    hideGame(gameId);
-    removeGameCard(gameId);
-  },REMOVAL_DELAY);
+  if(game){const label=game.status==='CANCELLED'?'cancelled':'settled';showToast(`${short(game.homeTeam)} vs ${short(game.awayTeam)} — ${label}, removing in 10s`,'info');}
+  setTimeout(()=>{hideGame(gameId);removeGameCard(gameId);},REMOVAL_DELAY);
 }
 
-function deleteGameCard(gameId){
-  hideGame(gameId);
-  removeGameCard(gameId);
-}
+function deleteGameCard(gameId){hideGame(gameId);removeGameCard(gameId);}
 
 function deleteAllGames(){
   const ids=gamesData.map(g=>g.id);
   if(!ids.length)return;
   ids.forEach(id=>hideGame(id));
-  ids.forEach(id=>{
-    const card=document.getElementById(`card-${id}`);
-    if(card)card.classList.add('card-exit');
-  });
+  ids.forEach(id=>{const card=document.getElementById(`card-${id}`);if(card)card.classList.add('card-exit');});
   setTimeout(()=>{
     betSlip=betSlip.filter(s=>!ids.includes(s.gameId));
     gamesData=[];
@@ -861,13 +872,10 @@ function renderGames(){
   const grid=document.getElementById('gamesGrid');
   if(!gamesData.length){
     grid.innerHTML=`<div class="empty-state"><div class="empty-icon"><svg data-lucide="calendar-x"></svg></div><div class="empty-t">No Games</div><div class="empty-s">No upcoming games right now.</div></div>`;
-    lucide.createIcons();
-    updateDeleteAllBtn();
-    return;
+    lucide.createIcons();updateDeleteAllBtn();return;
   }
   grid.innerHTML=gamesData.map((g,i)=>buildCard(g,i)).join('');
-  lucide.createIcons();
-  updateDeleteAllBtn();
+  lucide.createIcons();updateDeleteAllBtn();
 }
 
 function short(n){return n.replace('Manchester ','Man ').replace('Borussia ','').replace(' Milan','');}
@@ -996,12 +1004,9 @@ function toggle1X2(gameId,homeTeam,awayTeam,marketKey,marketLabel,odds){
   renderSlip();
 }
 
-// ── REMOVE ONE SLIP PICK (with animation) ─────────────────────────────────────
+// ── REMOVE ONE SLIP PICK ──────────────────────────────────────────────────────
 function removeFromSlip(gameId,type){
-  // animate the item out in the sheet / sidebar before removing
-  document.querySelectorAll(`[data-slip-key="${gameId}-${type}"]`).forEach(el=>{
-    el.classList.add('removing');
-  });
+  document.querySelectorAll(`[data-slip-key="${gameId}-${type}"]`).forEach(el=>{el.classList.add('removing');});
   setTimeout(()=>{
     betSlip=betSlip.filter(s=>!(s.gameId===gameId&&s.type===type));
     rerenderCard(gameId);
@@ -1011,7 +1016,6 @@ function removeFromSlip(gameId,type){
 
 // ── CLEAR ENTIRE SLIP ─────────────────────────────────────────────────────────
 function clearAllSlip(){
-  // animate all items out
   document.querySelectorAll('.slip-item').forEach(el=>el.classList.add('removing'));
   setTimeout(()=>{
     betSlip=[];
@@ -1040,12 +1044,11 @@ function buildSlipHTML(count,totalOdds,payout){
 
   if(count===0)return successEl+`<div class="slip-empty"><div class="slip-empty-icon"><svg data-lucide="crosshair"></svg></div><div class="slip-empty-t">No picks yet</div><div class="slip-empty-s">Tap any score or 1X2 odds to add a selection.</div></div>`;
 
-  // header row with pick count + clear-all button
   const headerRow=`<div class="slip-header-row"><div class="slip-header-lbl"><svg data-lucide="list"></svg>${count} pick${count!==1?'s':''}</div><button class="btn-clear-slip" onclick="clearAllSlip()"><svg data-lucide="trash-2"></svg>Clear All</button></div>`;
 
   const items=betSlip.map(s=>{
     const isCS=s.type==='CS';
-    return`<div class="slip-item" data-slip-key="${s.gameId}-${s.type}"><div class="slip-item-top"><div class="slip-item-match">${esc(s.homeTeam)} vs ${esc(s.awayTeam)}</div><button class="slip-item-rm" onclick="removeFromSlip('${s.gameId}','${s.type}')" title="Remove pick"><svg data-lucide="x"></svg></button></div><div class="slip-item-bot"><div><div class="slip-item-type ${isCS?'cs':'x1'}">${isCS?'Correct Score':fmtMkt(s.label)}</div>${isCS?`<div style="font-size:9px;color:var(--t3);margin-top:2px">@${s.odds.toFixed(2)}</div>`:''}</div>${isCS?`<div class="slip-item-score">${s.label}</div>`:`<div class="slip-item-odds-wrap"><div class="slip-item-odds-lbl">odds</div><div class="slip-item-odds">${s.odds.toFixed(2)}</div></div>`}</div></div>`;
+    return`<div class="slip-item" data-slip-key="${s.gameId}-${s.type}"><div class="slip-item-top"><div class="slip-item-match">${esc(s.homeTeam)} vs ${esc(s.awayTeam)}</div><button class="slip-item-rm" onclick="removeFromSlip('${s.gameId}','${s.type}')" title="Remove pick"><svg data-lucide="trash-2"></svg></button></div><div class="slip-item-bot"><div><div class="slip-item-type ${isCS?'cs':'x1'}">${isCS?'Correct Score':fmtMkt(s.label)}</div>${isCS?`<div style="font-size:9px;color:var(--t3);margin-top:2px">@${s.odds.toFixed(2)}</div>`:''}</div>${isCS?`<div class="slip-item-score">${s.label}</div>`:`<div class="slip-item-odds-wrap"><div class="slip-item-odds-lbl">odds</div><div class="slip-item-odds">${s.odds.toFixed(2)}</div></div>`}</div></div>`;
   }).join('');
 
   const presets=[200,500,1000,2000,5000].map(v=>`<button class="preset-btn${_stakeVal===v?' active':''}" onclick="setStake(${v})">${v}</button>`).join('');
@@ -1075,6 +1078,70 @@ function openBetsSheet(){
 }
 function closeBetsSheet(){document.getElementById('betsSheetOverlay').classList.remove('open');document.body.style.overflow='';document.querySelectorAll('.bn-item').forEach(b=>b.classList.remove('active'));document.getElementById('bnMarkets').classList.add('active');}
 function closeBetsSheetOnBg(e){if(e.target===document.getElementById('betsSheetOverlay'))closeBetsSheet();}
+
+// ── DELETE SINGLE BET (UI only — sets display:none) ───────────────────────────
+function deleteBet(betId, context){
+  // Find and animate out the card in whichever container
+  const containers = context === 'mobile'
+    ? [document.getElementById('betsContainerMobile')]
+    : [document.getElementById('betsContainer')];
+
+  containers.forEach(c => {
+    if(!c) return;
+    const card = c.querySelector(`[data-bet-id="${betId}"]`);
+    if(!card) return;
+    card.classList.add('bet-exit');
+    setTimeout(() => {
+      card.style.display = 'none';
+      card.classList.remove('bet-exit');
+    }, 350);
+  });
+
+  // persist as hidden
+  hideBet(betId);
+  updateClearBetsBtn(context);
+}
+
+// ── CLEAR ALL BETS (UI only — hides all visible cards) ────────────────────────
+function clearAllBets(context){
+  const containerId = context === 'mobile' ? 'betsContainerMobile' : 'betsContainer';
+  const container = document.getElementById(containerId);
+  if(!container) return;
+
+  const cards = container.querySelectorAll('.bet-card:not([style*="display: none"])');
+  if(!cards.length) return;
+
+  cards.forEach(card => { card.classList.add('bet-exit'); });
+
+  setTimeout(() => {
+    cards.forEach(card => {
+      card.style.display = 'none';
+      card.classList.remove('bet-exit');
+      const id = card.getAttribute('data-bet-id');
+      if(id) hideBet(id);
+    });
+    updateClearBetsBtn(context);
+  }, 350);
+
+  showToast('All bets hidden','info');
+}
+
+function updateClearBetsBtn(context){
+  if(context === 'mobile'){
+    const btn = document.getElementById('btnClearBetsMobile');
+    if(!btn) return;
+    const container = document.getElementById('betsContainerMobile');
+    const visible = container ? container.querySelectorAll('.bet-card:not([style*="display: none"])').length : 0;
+    btn.style.display = visible > 0 ? 'inline-flex' : 'none';
+  } else {
+    // desktop section header — we'll just toggle a button if it exists
+    const btn = document.getElementById('btnClearBetsDesktop');
+    if(!btn) return;
+    const container = document.getElementById('betsContainer');
+    const visible = container ? container.querySelectorAll('.bet-card:not([style*="display: none"])').length : 0;
+    btn.style.display = visible > 0 ? 'inline-flex' : 'none';
+  }
+}
 
 async function placeBet(){
   if(!betSlip.length){showToast('Add at least one pick','error');return;}
@@ -1158,7 +1225,8 @@ function normaliseStatus(s){if(!s)return'PENDING';const u=String(s).toUpperCase(
 function filterBets(filter,btn){currentBetFilter=filter;document.querySelectorAll('#bhFilterRow .bh-filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderMyBets();}
 function filterBetsMobile(filter,btn){currentBetFilterMob=filter;document.querySelectorAll('#bhFilterRowMobile .bh-filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderMyBetsMobile();}
 
-function buildBetCards(bets){
+function buildBetCards(bets, context){
+  const hidden = getHiddenBets();
   if(!bets.length)return`<div class="empty-state"><div class="empty-icon"><svg data-lucide="filter-x"></svg></div><div class="empty-t">No bets here</div><div class="empty-s">Nothing to show for this filter.</div></div>`;
   return bets.map((b,i)=>{
     const st=b.status.toLowerCase();
@@ -1167,7 +1235,33 @@ function buildBetCards(bets){
     const isCS=b.type==='CS';
     const payoutStr=b.status==='WON'?`GHS ${parseFloat(b.actualPayout??b.payout??0).toFixed(2)}`:b.status==='PENDING'&&b.payout?`GHS ${parseFloat(b.payout).toFixed(2)}`:b.status==='LOST'?`–GHS ${parseFloat(b.stake??0).toFixed(2)}`:'—';
     const payoutClass=b.status==='WON'?'':b.status==='LOST'?'lost':'pending';
-    return`<div class="bet-card ${st}" style="animation-delay:${i*.04}s"><div class="bet-card-head"><div class="bet-card-match">${esc(b.match)}</div><div class="bet-status-pill ${st}"><svg data-lucide="${stIcon}"></svg>${stLabel}</div></div><div class="bet-card-body"><div class="bet-pick-box"><div class="bet-pick-type ${isCS?'cs':'x1'}">${isCS?'Correct Score':'1X2'}</div><div class="bet-pick-val ${st}">${esc(b.pick)}</div></div><div class="bet-money-col"><div class="bet-money-lbl">${b.status==='WON'?'Won':b.status==='LOST'?'Lost':'Potential'}</div><div class="bet-money-win ${payoutClass}">${payoutStr}</div><div class="bet-money-stake">Stake: GHS ${parseFloat(b.stake??0).toFixed(2)}</div></div></div><div class="bet-card-foot"><span class="bet-ref">${esc(String(b.ref).slice(0,16))}</span><span class="bet-date">${b.placedAt?fmtDate(b.placedAt):'—'}</span></div></div>`;
+    const isHidden = hidden.has(String(b.id));
+    const hiddenStyle = isHidden ? 'style="display:none"' : '';
+
+    return`<div class="bet-card ${st}" data-bet-id="${esc(String(b.id))}" style="animation-delay:${i*.04}s${isHidden?';display:none':''}" >
+      <div class="bet-card-head">
+        <div class="bet-card-match">${esc(b.match)}</div>
+        <div class="bet-card-head-right">
+          <div class="bet-status-pill ${st}"><svg data-lucide="${stIcon}"></svg>${stLabel}</div>
+          <button class="bet-delete-btn" onclick="deleteBet('${esc(String(b.id))}','${context}')" title="Hide this bet"><svg data-lucide="trash-2"></svg></button>
+        </div>
+      </div>
+      <div class="bet-card-body">
+        <div class="bet-pick-box">
+          <div class="bet-pick-type ${isCS?'cs':'x1'}">${isCS?'Correct Score':'1X2'}</div>
+          <div class="bet-pick-val ${st}">${esc(b.pick)}</div>
+        </div>
+        <div class="bet-money-col">
+          <div class="bet-money-lbl">${b.status==='WON'?'Won':b.status==='LOST'?'Lost':'Potential'}</div>
+          <div class="bet-money-win ${payoutClass}">${payoutStr}</div>
+          <div class="bet-money-stake">Stake: GHS ${parseFloat(b.stake??0).toFixed(2)}</div>
+        </div>
+      </div>
+      <div class="bet-card-foot">
+        <span class="bet-ref">${esc(String(b.ref).slice(0,16))}</span>
+        <span class="bet-date">${b.placedAt?fmtDate(b.placedAt):'—'}</span>
+      </div>
+    </div>`;
   }).join('');
 }
 
@@ -1179,8 +1273,27 @@ function renderMyBets(){
   const filtered=currentBetFilter==='ALL'?allMyBets:currentBetFilter==='PENDING'?pending:currentBetFilter==='WON'?won:lost;
   const container=document.getElementById('betsContainer');
   if(!allMyBets.length){container.innerHTML=`<div class="empty-state"><div class="empty-icon"><svg data-lucide="receipt"></svg></div><div class="empty-t">No Bets Yet</div><div class="empty-s">Place your first bet!</div></div>`;lucide.createIcons();return;}
-  container.innerHTML=buildBetCards(filtered);
+  container.innerHTML=buildBetCards(filtered,'desktop');
   lucide.createIcons();
+  // inject clear-all btn into section header area dynamically if not present
+  injectDesktopClearBetsBtn();
+}
+
+function injectDesktopClearBetsBtn(){
+  // If already injected, just update visibility
+  let btn = document.getElementById('btnClearBetsDesktop');
+  if(!btn){
+    const hd = document.querySelector('#panel-mybets .section-hd');
+    if(!hd) return;
+    btn = document.createElement('button');
+    btn.id = 'btnClearBetsDesktop';
+    btn.className = 'btn-clear-bets';
+    btn.innerHTML = '<svg data-lucide="trash-2"></svg>Clear All';
+    btn.onclick = () => clearAllBets('desktop');
+    hd.appendChild(btn);
+    lucide.createIcons();
+  }
+  updateClearBetsBtn('desktop');
 }
 
 function renderMyBetsMobile(){
@@ -1193,8 +1306,9 @@ function renderMyBetsMobile(){
   const container=document.getElementById('betsContainerMobile');
   if(!container)return;
   if(!allMyBets.length){container.innerHTML=`<div class="empty-state"><div class="empty-icon"><svg data-lucide="receipt"></svg></div><div class="empty-t">No Bets Yet</div><div class="empty-s">Place your first bet!</div></div>`;lucide.createIcons();return;}
-  container.innerHTML=buildBetCards(filtered);
+  container.innerHTML=buildBetCards(filtered,'mobile');
   lucide.createIcons();
+  updateClearBetsBtn('mobile');
 }
 
 function updateBetTabBadge(){
