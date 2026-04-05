@@ -39,7 +39,7 @@ body{font-family:var(--ff);background:var(--bg0);color:var(--t1);min-height:100v
 body::before{content:'';position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(33,150,243,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(33,150,243,0.02) 1px,transparent 1px);background-size:44px 44px;pointer-events:none}
 [data-theme="light"] body::before{background-image:linear-gradient(rgba(0,0,0,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.025) 1px,transparent 1px)}
 
-/* ── NAV ── */
+/* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background:rgba(7,9,15,0.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:8px}
 [data-theme="light"] nav{background:rgba(240,246,255,0.97)}
 .nav-logo{font-family:var(--ffC);font-size:24px;font-weight:800;letter-spacing:1px;color:var(--t1);text-decoration:none;flex-shrink:0}
@@ -53,7 +53,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .nav-avatar{width:36px;height:36px;border-radius:9px;border:1px solid var(--borderAcc);background:var(--accentBg);display:flex;align-items:center;justify-content:center;font-family:var(--ffC);font-size:13px;font-weight:800;color:var(--accent);text-decoration:none;flex-shrink:0;transition:all .15s;letter-spacing:.5px}
 .nav-avatar:hover{background:var(--accentBg2);border-color:var(--accent);box-shadow:0 0 10px rgba(33,150,243,0.2)}
 
-/* ── HERO ── */
+/* HERO */
 .hero{position:relative;z-index:1;margin-top:var(--nav);overflow:hidden;display:flex;align-items:center;justify-content:center;padding:20px 16px 24px}
 .hero-bg{position:absolute;inset:0;background:#07090F;background-image:radial-gradient(ellipse 80% 120% at 50% 130%,rgba(33,150,243,0.14) 0%,transparent 70%),radial-gradient(ellipse 35% 60% at 10% 50%,rgba(33,150,243,0.08) 0%,transparent 60%);background-size:cover}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(7,9,15,0.96) 0%,rgba(7,9,15,0.92) 50%,rgba(7,9,15,0.88) 100%)}
@@ -67,7 +67,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .hero-title em{color:var(--accent);font-style:normal;text-shadow:0 0 32px rgba(33,150,243,0.5);display:block}
 .hero-sub{font-size:clamp(12px,1.4vw,14px);color:var(--t2);margin-top:8px;line-height:1.5;font-weight:500}
 
-/* ── BOTTOM NAV ── */
+/* BOTTOM NAV */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:400;height:var(--bottomNav);background:rgba(7,9,15,0.97);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid var(--border);display:flex;align-items:stretch;padding-bottom:env(safe-area-inset-bottom)}
 [data-theme="light"] .bottom-nav{background:rgba(240,246,255,0.98)}
 .bn-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;transition:all .15s;border:none;background:none;font-family:var(--ff);padding:6px 4px;position:relative;text-decoration:none}
@@ -81,49 +81,40 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .bn-slip svg{color:#fff !important}
 .bn-slip .bn-item-lbl{color:#fff !important;font-size:9px}
 
-/* ── LAYOUT ── */
+/* LAYOUT */
 .desktop-layout{position:relative;z-index:1;display:block}
-.main-col{}
 .main-content{padding:14px 16px 0}
 .section-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px}
 .section-title{font-family:var(--ffC);font-size:16px;font-weight:800;letter-spacing:.5px;display:flex;align-items:center;gap:6px}
 .section-title svg{width:15px;height:15px;color:var(--accent)}
 .section-badge{background:var(--accentBg);border:1px solid var(--borderAcc);border-radius:20px;padding:4px 11px;font-size:10px;font-weight:700;color:var(--accent)}
 
-/* ── DELETE ALL BUTTON ── */
+/* DELETE ALL BUTTON */
 .btn-delete-all{display:inline-flex;align-items:center;gap:5px;background:var(--redBg);border:1px solid rgba(239,68,68,0.3);border-radius:20px;padding:4px 11px;font-size:10px;font-weight:700;color:var(--red);cursor:pointer;transition:all .15s;font-family:var(--ff)}
 .btn-delete-all:hover{background:rgba(239,68,68,0.18);border-color:rgba(239,68,68,0.5)}
 .btn-delete-all svg{width:11px;height:11px}
 
-/* ── VIEW PANELS ── */
+/* VIEW PANELS */
 .view-panel{display:none}
 .view-panel.active{display:block}
 
-/* ── GAME CARD ── */
+/* GAME CARD */
 .game-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rLg);overflow:hidden;margin-bottom:10px;animation:cardIn .35s cubic-bezier(.22,.68,0,1.2) both;transition:border-color .15s}
 @keyframes cardIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .game-card:hover{border-color:var(--borderHov)}
 .game-card.finished{border-color:rgba(34,197,94,0.2)}
 .game-card.cancelled{border-color:rgba(239,68,68,0.15);opacity:.7}
 
-/* ── CARD EXIT ANIMATION ── */
-.card-exit{
-  animation:cardExit 0.5s cubic-bezier(.4,0,1,1) forwards !important;
-  pointer-events:none;
-  overflow:hidden;
-}
-@keyframes cardExit{
-  0%  {opacity:1;transform:translateY(0) scale(1);max-height:600px;margin-bottom:10px;}
-  40% {opacity:0;transform:translateY(-10px) scale(.97);}
-  100%{opacity:0;transform:translateY(-10px) scale(.97);max-height:0;margin-bottom:0;padding:0;border-width:0;}
-}
+/* CARD EXIT ANIMATION */
+.card-exit{animation:cardExit 0.5s cubic-bezier(.4,0,1,1) forwards !important;pointer-events:none;overflow:hidden}
+@keyframes cardExit{0%{opacity:1;transform:translateY(0) scale(1);max-height:600px;margin-bottom:10px}40%{opacity:0;transform:translateY(-10px) scale(.97)}100%{opacity:0;transform:translateY(-10px) scale(.97);max-height:0;margin-bottom:0;padding:0;border-width:0}}
 
-/* ── DELETE BUTTON ON CARD ── */
+/* DELETE BUTTON ON CARD */
 .gc-delete-btn{background:var(--redBg);border:1px solid rgba(239,68,68,0.25);width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0}
 .gc-delete-btn:hover{background:rgba(239,68,68,0.22);border-color:rgba(239,68,68,0.5)}
 .gc-delete-btn svg{width:13px;height:13px;color:var(--red)}
 
-/* ── COUNTDOWN BADGE ── */
+/* COUNTDOWN BADGE */
 .gc-countdown{display:inline-flex;align-items:center;gap:4px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);border-radius:20px;padding:2px 8px;font-size:9px;font-weight:700;color:var(--red);flex-shrink:0}
 .gc-countdown svg{width:9px;height:9px}
 
@@ -144,7 +135,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .gc-status-badge.live span{width:5px;height:5px;border-radius:50%;background:var(--red);display:inline-block;animation:pulse 1s ease-in-out infinite}
 .gc-status-badge svg{width:8px;height:8px}
 
-/* ── LIVE SCORE DISPLAY ── */
+/* LIVE SCORE DISPLAY */
 .gc-score-board{display:flex;align-items:center;gap:6px;background:var(--bg0);border:1px solid var(--borderGreen);border-radius:10px;padding:4px 10px}
 .gc-score-num{font-family:var(--ffC);font-size:20px;font-weight:800;color:var(--green);line-height:1;letter-spacing:1px}
 .gc-score-sep{font-family:var(--ffC);font-size:14px;font-weight:800;color:var(--t3)}
@@ -152,7 +143,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .gc-score-board.new-score{animation:scorePop .5s cubic-bezier(.22,.68,0,1.4) both}
 @keyframes scorePop{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
 
-/* ── 1X2 ── */
+/* 1X2 */
 .gc-1x2{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;padding:10px 12px;border-bottom:1px solid var(--border)}
 .odds-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:8px 6px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden;min-height:52px;gap:2px}
 .odds-btn::before{content:'';position:absolute;inset:0;background:var(--accentBg2);opacity:0;transition:opacity .15s}
@@ -167,7 +158,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .odds-team{font-size:9px;color:var(--t3);position:relative;max-width:80px;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .odds-btn.selected .odds-team{color:var(--accent)}
 
-/* ── SCORE SECTION ── */
+/* SCORE SECTION */
 .gc-cs{padding:10px 12px 12px}
 .gc-cs-lbl{font-size:9px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px;display:flex;align-items:center;gap:5px}
 .gc-cs-lbl svg{width:10px;height:10px;color:var(--accent)}
@@ -182,7 +173,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .score-btn .so{font-size:8px;color:var(--t3);position:relative}
 .score-btn.selected .so{color:var(--accent)}
 
-/* ── FINISHED BANNER ── */
+/* FINISHED BANNER */
 .gc-finished-banner{margin:0 12px 12px;background:var(--greenBg);border:1px solid var(--borderGreen);border-radius:10px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .gc-finished-banner svg{width:14px;height:14px;color:var(--green);flex-shrink:0}
 .gc-finished-txt{font-size:11px;font-weight:700;color:var(--green)}
@@ -191,13 +182,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .gc-cancelled-banner svg{width:14px;height:14px;color:var(--red);flex-shrink:0}
 .gc-cancelled-txt{font-size:11px;font-weight:700;color:var(--red)}
 
-/* ── SHOW MORE ── */
+/* SHOW MORE */
 .score-show-more{width:100%;padding:8px 0;margin-top:6px;text-align:center}
 .score-show-more-btn{background:transparent;border:1px solid var(--borderAcc);color:var(--accent);padding:8px 14px;border-radius:8px;font-size:11px;font-weight:700;font-family:var(--ff);cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:5px}
 .score-show-more-btn:hover{background:var(--accentBg);border-color:var(--accent)}
 .score-show-more-btn svg{width:12px;height:12px}
 
-/* ── SCORE MODAL ── */
+/* SCORE MODAL */
 .score-modal-overlay{position:fixed;inset:0;z-index:700;background:rgba(0,0,0,0.72);backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center;animation:fadeIn .25s ease-out}
 .score-modal-overlay.open{display:flex}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -222,7 +213,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .score-modal-btn .so{font-size:9px;color:var(--t3);position:relative}
 .score-modal-btn.selected .so{color:var(--accent)}
 
-/* ── FLOATING BAR ── */
+/* FLOATING BAR */
 .slip-float{position:fixed;bottom:calc(var(--bottomNav) + 6px);left:12px;right:12px;z-index:350;padding:10px 14px;background:var(--bg1);border:1px solid rgba(33,150,243,0.3);border-radius:14px;display:none;align-items:center;gap:10px;box-shadow:0 -4px 24px rgba(0,0,0,0.5),0 0 0 1px rgba(33,150,243,0.1)}
 .slip-float.visible{display:flex}
 .float-badge{width:24px;height:24px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;font-family:var(--ffC)}
@@ -233,7 +224,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .float-btn:hover{filter:brightness(1.1)}
 .float-btn svg{width:13px;height:13px}
 
-/* ── SHEET ── */
+/* SHEET */
 .sheet-overlay{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,0.72);backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center}
 .sheet-overlay.open{display:flex}
 .sheet{width:100%;max-width:560px;background:var(--bg1);border-radius:20px 20px 0 0;border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom,16px);max-height:92vh;overflow-y:auto;transform:translateY(100%);transition:transform .35s cubic-bezier(.22,.68,0,1.2)}
@@ -246,7 +237,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .sheet-close:hover{border-color:var(--borderHov);background:var(--bg2)}
 .sheet-close svg{width:14px;height:14px;color:var(--t2)}
 
-/* ── SLIP ITEMS ── */
+/* SLIP ITEMS */
 .slip-items{padding:10px 12px;display:flex;flex-direction:column;gap:6px}
 .slip-item{background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:10px 12px;animation:cardIn .3s cubic-bezier(.22,.68,0,1.2) both;position:relative}
 .slip-item.removing{animation:slipItemOut .3s cubic-bezier(.4,0,1,1) forwards;pointer-events:none;overflow:hidden}
@@ -265,7 +256,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .slip-item-odds-lbl{font-size:9px;color:var(--t3)}
 .slip-item-odds{font-family:var(--ffC);font-size:18px;font-weight:800;color:var(--accent)}
 
-/* ── SLIP HEADER ROW ── */
+/* SLIP HEADER ROW */
 .slip-header-row{display:flex;align-items:center;justify-content:space-between;padding:10px 12px 6px}
 .slip-header-lbl{font-size:10px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.7px;display:flex;align-items:center;gap:5px}
 .slip-header-lbl svg{width:11px;height:11px;color:var(--accent)}
@@ -273,7 +264,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .btn-clear-slip:hover{background:rgba(239,68,68,0.2);border-color:rgba(239,68,68,0.5)}
 .btn-clear-slip svg{width:11px;height:11px}
 
-/* ── STAKE ── */
+/* STAKE */
 .slip-stake-section{padding:0 12px 12px}
 .slip-stake-lbl{font-size:10px;font-weight:700;color:var(--t2);letter-spacing:.7px;text-transform:uppercase;margin-bottom:6px}
 .stake-field{background:var(--bg0);border:1px solid var(--borderAcc);border-radius:11px;display:flex;align-items:center;gap:5px;padding:10px 14px;margin-bottom:8px;transition:box-shadow .2s}
@@ -298,7 +289,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 @keyframes spin{to{transform:rotate(360deg)}}
 .spin{animation:spin .7s linear infinite}
 
-/* ── EMPTY + SUCCESS ── */
+/* EMPTY + SUCCESS */
 .slip-empty{padding:28px 16px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:9px}
 .slip-empty-icon{width:48px;height:48px;background:var(--bg3);border:1px solid var(--border);border-radius:13px;display:flex;align-items:center;justify-content:center}
 .slip-empty-icon svg{width:21px;height:21px;color:var(--t3)}
@@ -311,11 +302,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .success-ref{font-family:monospace;font-size:10px;color:var(--accent);font-weight:600;background:var(--accentBg);border:1px solid var(--borderAcc);border-radius:8px;padding:4px 10px}
 .btn-new{background:var(--accentBg);border:1px solid var(--borderAcc);border-radius:8px;padding:9px 20px;color:var(--accent);font-weight:700;font-size:13px;cursor:pointer;margin-top:1px}
 
-/* ── SKELETON ── */
+/* SKELETON */
 .skeleton{background:linear-gradient(90deg,var(--bg2) 25%,var(--bg3) 50%,var(--bg2) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:var(--rLg);height:200px;margin-bottom:10px}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-/* ── TOAST ── */
+/* TOAST */
 .toast-c{position:fixed;bottom:calc(var(--bottomNav) + 76px);left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;gap:6px;pointer-events:none}
 .toast{display:flex;align-items:center;gap:9px;background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:10px 16px;box-shadow:var(--shadow);font-size:13px;font-weight:600;color:var(--t1);animation:tIn .3s cubic-bezier(.22,.68,0,1.2) both;pointer-events:all;min-width:180px;max-width:320px;white-space:nowrap}
 @keyframes tIn{from{opacity:0;transform:translateY(12px) scale(.95)}to{opacity:1;transform:none}}
@@ -327,21 +318,21 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .toast.info{border-color:var(--borderAcc)}.toast.info svg{color:var(--accent)}
 .toast.score-update{border-color:rgba(96,165,250,0.4);background:var(--bg1)}.toast.score-update svg{color:var(--blue)}
 
-/* ── EMPTY STATE ── */
+/* EMPTY STATE */
 .empty-state{text-align:center;padding:48px 20px;display:flex;flex-direction:column;align-items:center;gap:12px}
 .empty-icon{width:56px;height:56px;background:var(--bg2);border:1px solid var(--border);border-radius:16px;display:flex;align-items:center;justify-content:center}
 .empty-icon svg{width:24px;height:24px;color:var(--t3)}
 .empty-t{font-family:var(--ffC);font-size:18px;font-weight:800;color:var(--t2)}
 .empty-s{font-size:13px;color:var(--t3);max-width:220px;line-height:1.6}
 
-/* ── SIDEBAR ── */
+/* SIDEBAR */
 .sidebar-slip{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rXl);overflow:hidden;position:sticky;top:calc(var(--nav) + 16px)}
 .sidebar-slip-head{background:linear-gradient(135deg,var(--accent) 0%,#1565C0 100%);padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
 .ss-head-title{font-family:var(--ffC);font-size:16px;font-weight:800;color:#fff;display:flex;align-items:center;gap:7px}
 .ss-head-title svg{width:15px;height:15px}
 .ss-count{background:rgba(255,255,255,0.2);border-radius:20px;padding:2px 8px;font-size:11px;font-weight:800;color:#fff}
 
-/* ── INSUFFICIENT FUNDS ── */
+/* INSUFFICIENT FUNDS */
 .funds-card{padding:32px 20px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
 .funds-icon{width:56px;height:56px;background:var(--redBg);border:1px solid rgba(239,68,68,0.3);border-radius:16px;display:flex;align-items:center;justify-content:center}
 .funds-icon svg{width:24px;height:24px;color:var(--red)}
@@ -353,7 +344,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .funds-back{background:transparent;border:1px solid var(--border);border-radius:9px;padding:9px 20px;font-size:13px;font-weight:600;color:var(--t2);cursor:pointer;transition:all .15s;font-family:var(--ff)}
 .funds-back:hover{border-color:var(--borderHov);color:var(--t1)}
 
-/* ── BET HISTORY ── */
+/* ── BET HISTORY FILTERS ── */
 .bh-filter-row{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
 .bh-filter-btn{padding:6px 14px;border-radius:20px;font-size:11px;font-weight:700;border:1px solid var(--border);background:var(--bg3);color:var(--t2);cursor:pointer;transition:all .15s;font-family:var(--ff)}
 .bh-filter-btn:hover{border-color:var(--borderHov);color:var(--t1)}
@@ -362,28 +353,19 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .bh-filter-btn.lost{background:var(--redBg);border-color:rgba(239,68,68,0.3);color:var(--red)}
 .bh-filter-btn.pending{background:var(--purpleBg);border-color:rgba(167,139,250,0.3);color:var(--purple)}
 
-/* ── BET CARD ── */
+/* ── BET CARD BASE ── */
 .bet-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rLg);overflow:hidden;margin-bottom:8px;animation:cardIn .3s cubic-bezier(.22,.68,0,1.2) both;transition:border-color .15s}
 .bet-card:hover{border-color:var(--borderHov)}
 .bet-card.won{border-color:rgba(34,197,94,0.25)}
 .bet-card.lost{border-color:rgba(239,68,68,0.15)}
 .bet-card.pending{border-color:rgba(167,139,250,0.2)}
-
-/* ── BET CARD HIDDEN (display none) ── */
 .bet-card.hidden{display:none}
 
-/* ── BET CARD EXIT ANIMATION ── */
-.bet-card.bet-exit{
-  animation:betCardExit 0.35s cubic-bezier(.4,0,1,1) forwards !important;
-  pointer-events:none;
-  overflow:hidden;
-}
-@keyframes betCardExit{
-  0%  {opacity:1;max-height:200px;margin-bottom:8px;}
-  40% {opacity:0;transform:translateX(12px);}
-  100%{opacity:0;max-height:0;margin-bottom:0;padding:0;border-width:0;}
-}
+/* BET CARD EXIT ANIMATION */
+.bet-card.bet-exit{animation:betCardExit 0.35s cubic-bezier(.4,0,1,1) forwards !important;pointer-events:none;overflow:hidden}
+@keyframes betCardExit{0%{opacity:1;max-height:200px;margin-bottom:8px}40%{opacity:0;transform:translateX(12px)}100%{opacity:0;max-height:0;margin-bottom:0;padding:0;border-width:0}}
 
+/* BET CARD HEAD */
 .bet-card-head{padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--bg3);border-bottom:1px solid var(--border)}
 .bet-card-match{font-size:12px;font-weight:700;color:var(--t1);flex:1;line-height:1.3}
 .bet-card-head-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
@@ -393,34 +375,41 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .bet-status-pill.pending{background:var(--purpleBg);color:var(--purple);border:1px solid rgba(167,139,250,0.3)}
 .bet-status-pill svg{width:8px;height:8px}
 
-/* ── BET CARD DELETE BUTTON ── */
+/* BET CARD DELETE BUTTON */
 .bet-delete-btn{background:var(--redBg);border:1px solid rgba(239,68,68,0.25);width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0}
 .bet-delete-btn:hover{background:rgba(239,68,68,0.22);border-color:rgba(239,68,68,0.5)}
 .bet-delete-btn svg{width:12px;height:12px;color:var(--red)}
 
-/* ── BET HISTORY HEADER ── */
-.bh-header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px}
-.btn-clear-bets{display:inline-flex;align-items:center;gap:5px;background:var(--redBg);border:1px solid rgba(239,68,68,0.3);border-radius:20px;padding:4px 11px;font-size:10px;font-weight:700;color:var(--red);cursor:pointer;transition:all .15s;font-family:var(--ff)}
-.btn-clear-bets:hover{background:rgba(239,68,68,0.18);border-color:rgba(239,68,68,0.5)}
-.btn-clear-bets svg{width:11px;height:11px}
-
-.bet-card-body{padding:10px 12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.bet-pick-box{flex:1;min-width:0}
-.bet-pick-type{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--blue);margin-bottom:3px}
+/* ── NEW BET CARD BODY ── */
+.bet-card-body{padding:12px 13px}
+.bc-pick-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.bc-pick-left{flex:1;min-width:0}
+.bet-pick-type{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
 .bet-pick-type.cs{color:var(--blue)}
 .bet-pick-type.x1{color:var(--purple)}
-.bet-pick-val{font-family:var(--ffC);font-size:20px;font-weight:800;color:var(--t1);line-height:1}
-.bet-pick-val.won{color:var(--green)}
-.bet-pick-val.lost{color:var(--red);opacity:.7}
-.bet-money-col{text-align:right;flex-shrink:0}
-.bet-money-lbl{font-size:9px;color:var(--t3);margin-bottom:2px}
-.bet-money-stake{font-family:var(--ffC);font-size:13px;font-weight:700;color:var(--t2)}
-.bet-money-win{font-family:var(--ffC);font-size:16px;font-weight:800;color:var(--green)}
-.bet-money-win.lost{color:var(--red);opacity:.7}
-.bet-money-win.pending{color:var(--accent)}
+.bc-pick-val{font-family:var(--ffC);font-size:24px;font-weight:800;line-height:1}
+.bc-pick-val.won{color:var(--green)}
+.bc-pick-val.lost{color:var(--red);opacity:.7}
+.bc-pick-val.pending{color:var(--t1)}
+.bc-odds-wrap{text-align:right;flex-shrink:0}
+.bc-odds-lbl{font-size:9px;color:var(--t3);margin-bottom:3px;text-transform:uppercase;letter-spacing:.4px}
+.bc-odds-num{font-family:var(--ffC);font-size:22px;font-weight:800;color:var(--t1);line-height:1}
+/* ── MONEY ROW: 3-column grid ── */
+.bc-money-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;background:var(--bg3);border:1px solid var(--border);border-radius:9px;overflow:hidden}
+.bc-money-cell{padding:8px 10px;text-align:center}
+.bc-money-cell+.bc-money-cell{border-left:1px solid var(--border)}
+.bc-money-lbl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
+.bc-money-val{font-family:var(--ffC);font-size:13px;font-weight:800;color:var(--t1);line-height:1}
+.bc-money-val.win{color:var(--green)}
+.bc-money-val.loss{color:var(--red);opacity:.7}
+.bc-money-val.pot{color:var(--accent)}
+
+/* BET CARD FOOTER */
 .bet-card-foot{padding:7px 12px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:6px}
 .bet-ref{font-family:monospace;font-size:10px;color:var(--t3)}
 .bet-date{font-size:10px;color:var(--t3)}
+
+/* BET HISTORY STATS */
 .bh-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
 .bh-stat{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center}
 .bh-stat-val{font-family:var(--ffC);font-size:20px;font-weight:800;color:var(--t1);line-height:1}
@@ -431,7 +420,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .bh-loading{display:flex;align-items:center;justify-content:center;gap:8px;padding:32px;color:var(--t3);font-size:13px}
 .bh-loading svg{width:16px;height:16px;animation:spin .7s linear infinite}
 
-/* ── WIN POPUP ── */
+/* BET HISTORY HEADER */
+.bh-header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px}
+.btn-clear-bets{display:inline-flex;align-items:center;gap:5px;background:var(--redBg);border:1px solid rgba(239,68,68,0.3);border-radius:20px;padding:4px 11px;font-size:10px;font-weight:700;color:var(--red);cursor:pointer;transition:all .15s;font-family:var(--ff)}
+.btn-clear-bets:hover{background:rgba(239,68,68,0.18);border-color:rgba(239,68,68,0.5)}
+.btn-clear-bets svg{width:11px;height:11px}
+
+/* WIN POPUP */
 .win-overlay{position:fixed;inset:0;z-index:900;display:none;align-items:center;justify-content:center;padding:20px}
 .win-overlay.show{display:flex}
 .win-backdrop{position:absolute;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px)}
@@ -455,7 +450,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .win-dismiss{width:100%;padding:13px;border:none;border-radius:12px;background:var(--green);color:#000;font-family:var(--ffC);font-size:16px;font-weight:800;letter-spacing:.5px;cursor:pointer;transition:all .2s;box-shadow:0 4px 20px rgba(34,197,94,0.35)}
 .win-dismiss:hover{filter:brightness(1.08);transform:translateY(-1px)}
 
-/* ── SCORE UPDATE POPUP ── */
+/* SCORE UPDATE POPUP */
 .score-popup-overlay{position:fixed;top:calc(var(--nav) + 10px);left:50%;transform:translateX(-50%);z-index:800;pointer-events:none;display:flex;flex-direction:column;gap:8px;align-items:center;width:calc(100% - 32px);max-width:400px}
 .score-popup{background:var(--bg1);border:1px solid rgba(96,165,250,0.4);border-radius:14px;padding:12px 16px;box-shadow:0 8px 32px rgba(0,0,0,0.6),0 0 0 1px rgba(96,165,250,0.1);display:flex;align-items:center;gap:12px;animation:scorePopIn .4s cubic-bezier(.22,.68,0,1.3) both;width:100%}
 @keyframes scorePopIn{from{opacity:0;transform:translateY(-16px) scale(.95)}to{opacity:1;transform:none}}
@@ -468,7 +463,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .score-popup-label{font-size:10px;color:var(--t3)}
 .score-popup-score{font-family:var(--ffC);font-size:24px;font-weight:800;color:var(--blue);letter-spacing:2px;line-height:1}
 
-/* ── RESPONSIVE ── */
+/* RESPONSIVE */
 @media(min-width:600px){.main-content{padding:16px 18px 0}.game-card{margin-bottom:12px}}
 @media(min-width:900px){
   body{padding-bottom:0}
@@ -487,7 +482,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 @media(min-width:1100px){.desktop-layout{grid-template-columns:1fr 360px}.main-content{padding:18px 24px 0}}
 @media(max-width:899px){.sidebar-col{display:none}.score-btns-grid .score-btn:nth-child(n+6){display:none}}
 
-/* ── BET HISTORY SHEET ── */
+/* BET HISTORY SHEET */
 .bets-sheet-overlay{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,0.78);backdrop-filter:blur(6px);display:none;align-items:flex-end;justify-content:center}
 .bets-sheet-overlay.open{display:flex}
 .bets-sheet{width:100%;max-width:600px;background:var(--bg1);border-radius:22px 22px 0 0;border-top:1px solid var(--border);padding-bottom:calc(env(safe-area-inset-bottom,0px) + var(--bottomNav));max-height:92vh;overflow-y:auto;transform:translateY(100%);transition:transform .35s cubic-bezier(.22,.68,0,1.2);display:flex;flex-direction:column}
@@ -692,7 +687,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
       <div class="win-payout-lbl">Total Winnings Credited</div>
       <div class="win-payout-amt" id="winPayoutAmt">GHS 0.00</div>
     </div>
-    <button class="win-dismiss" onclick="dismissWin()">Collect & Continue</button>
+    <button class="win-dismiss" onclick="dismissWin()">Collect &amp; Continue</button>
   </div>
 </div>
 
@@ -703,38 +698,36 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 const API_BASE = 'https://kingcodebackendgames.onrender.com/api/v1';
 const CS_BASE  = 'https://kingcodebackendgames.onrender.com/api/correct-score';
 
-// ── HIDDEN GAMES PERSISTENCE ──────────────────────────────────────────────────
+// HIDDEN GAMES PERSISTENCE
 const HIDDEN_GAMES_KEY = 'cashbet_hidden_games';
 function getHiddenGames(){try{return new Set(JSON.parse(localStorage.getItem(HIDDEN_GAMES_KEY)||'[]'));}catch{return new Set();}}
 function hideGame(gameId){const hidden=getHiddenGames();hidden.add(String(gameId));localStorage.setItem(HIDDEN_GAMES_KEY,JSON.stringify([...hidden]));}
 function isGameHidden(gameId){return getHiddenGames().has(String(gameId));}
 function clearAllHiddenGames(){localStorage.removeItem(HIDDEN_GAMES_KEY);}
 
-// ── HIDDEN BETS (UI only — just tracks which bet IDs are hidden) ──────────────
+// HIDDEN BETS
 const HIDDEN_BETS_KEY = 'cashbet_hidden_bets';
 function getHiddenBets(){try{return new Set(JSON.parse(localStorage.getItem(HIDDEN_BETS_KEY)||'[]'));}catch{return new Set();}}
 function hideBet(betId){const h=getHiddenBets();h.add(String(betId));localStorage.setItem(HIDDEN_BETS_KEY,JSON.stringify([...h]));}
 function isBetHidden(betId){return getHiddenBets().has(String(betId));}
 function clearAllHiddenBets(){localStorage.removeItem(HIDDEN_BETS_KEY);}
 
-// ── TOKEN HELPERS ─────────────────────────────────────────────────────────────
+// TOKEN HELPERS
 const TOKEN_KEY = 'primestakes_token';
 const USER_KEY  = 'primestakes_user';
 function getToken(){return localStorage.getItem(TOKEN_KEY)||sessionStorage.getItem(TOKEN_KEY)||null;}
 function getUser(){const raw=localStorage.getItem(USER_KEY)||sessionStorage.getItem(USER_KEY);try{return raw?JSON.parse(raw):null;}catch{return null;}}
 function logout(){[TOKEN_KEY,USER_KEY].forEach(k=>{localStorage.removeItem(k);sessionStorage.removeItem(k);});window.location.href='/';}
 
-// ── STATE ─────────────────────────────────────────────────────────────────────
+// STATE
 let betSlip=[],gamesData=[],_stakeVal=200,allMyBets=[],currentBetFilter='ALL',currentBetFilterMob='ALL',pollInterval=null,scoreSnapshot={};
 const MIN_STAKE=200;
 const SEEN_WINS_KEY='gstake_seen_wins';
 
-// ── SETTLEMENT REMOVAL STATE ──────────────────────────────────────────────────
+// SETTLEMENT REMOVAL STATE
 const scheduledRemoval = new Set();
 const REMOVAL_DELAY    = 10000;
 const EXIT_ANIM_MS     = 500;
-
-// ─────────────────────────────────────────────────────────────────────────────
 
 window.addEventListener('load',()=>{
   lucide.createIcons();
@@ -764,7 +757,7 @@ async function apiFetch(path,opts={}){
 
 async function fetchBalance(){try{const d=await apiFetch(`${API_BASE}/wallet/balance`);const b=d?.balance??d??null;if(b!==null)document.getElementById('balanceDisplay').textContent=`GHS ${parseFloat(b).toFixed(2)}`;}catch{}}
 
-// ── FETCH GAMES ───────────────────────────────────────────────────────────────
+// FETCH GAMES
 async function fetchGames(silent=false){
   try{
     const rawGames=await apiFetch(`${API_BASE}/games/public`);
@@ -964,7 +957,7 @@ function showScoreUpdatePopup(game){
   popup.className='score-popup';
   const h=game.homeScore??0,a=game.awayScore??0;
   const isFinished=game.status==='FINISHED';
-  popup.innerHTML=`<div class="score-popup-icon"><svg data-lucide="activity"></svg></div><div class="score-popup-body"><div class="score-popup-match">${esc(game.homeTeam)} vs ${esc(game.awayTeam)}</div><div class="score-popup-label">${isFinished?'✅ Full time result':'⚽ Score updated'}</div></div><div class="score-popup-score">${h} – ${a}</div>`;
+  popup.innerHTML=`<div class="score-popup-icon"><svg data-lucide="activity"></svg></div><div class="score-popup-body"><div class="score-popup-match">${esc(game.homeTeam)} vs ${esc(game.awayTeam)}</div><div class="score-popup-label">${isFinished?'Full time result':'Score updated'}</div></div><div class="score-popup-score">${h} – ${a}</div>`;
   container.appendChild(popup);
   lucide.createIcons();
   setTimeout(()=>{popup.classList.add('fadeOut');setTimeout(()=>popup.remove(),320);},5000);
@@ -1004,7 +997,6 @@ function toggle1X2(gameId,homeTeam,awayTeam,marketKey,marketLabel,odds){
   renderSlip();
 }
 
-// ── REMOVE ONE SLIP PICK ──────────────────────────────────────────────────────
 function removeFromSlip(gameId,type){
   document.querySelectorAll(`[data-slip-key="${gameId}-${type}"]`).forEach(el=>{el.classList.add('removing');});
   setTimeout(()=>{
@@ -1014,7 +1006,6 @@ function removeFromSlip(gameId,type){
   },300);
 }
 
-// ── CLEAR ENTIRE SLIP ─────────────────────────────────────────────────────────
 function clearAllSlip(){
   document.querySelectorAll('.slip-item').forEach(el=>el.classList.add('removing'));
   setTimeout(()=>{
@@ -1041,16 +1032,12 @@ function renderSlip(){
 
 function buildSlipHTML(count,totalOdds,payout){
   const successEl=`<div class="slip-success" id="slipSuccessEl"><div class="success-icon"><svg data-lucide="check-circle-2"></svg></div><div style="font-family:var(--ffC);font-size:18px;font-weight:800;color:var(--green)">Bet Placed!</div><div style="font-size:13px;color:var(--t2);line-height:1.6">Your score slip is live. Good luck!</div><div class="success-ref" id="slipRefEl">—</div><button class="btn-new" onclick="resetSlip()">New Slip</button></div>`;
-
   if(count===0)return successEl+`<div class="slip-empty"><div class="slip-empty-icon"><svg data-lucide="crosshair"></svg></div><div class="slip-empty-t">No picks yet</div><div class="slip-empty-s">Tap any score or 1X2 odds to add a selection.</div></div>`;
-
   const headerRow=`<div class="slip-header-row"><div class="slip-header-lbl"><svg data-lucide="list"></svg>${count} pick${count!==1?'s':''}</div><button class="btn-clear-slip" onclick="clearAllSlip()"><svg data-lucide="trash-2"></svg>Clear All</button></div>`;
-
   const items=betSlip.map(s=>{
     const isCS=s.type==='CS';
     return`<div class="slip-item" data-slip-key="${s.gameId}-${s.type}"><div class="slip-item-top"><div class="slip-item-match">${esc(s.homeTeam)} vs ${esc(s.awayTeam)}</div><button class="slip-item-rm" onclick="removeFromSlip('${s.gameId}','${s.type}')" title="Remove pick"><svg data-lucide="trash-2"></svg></button></div><div class="slip-item-bot"><div><div class="slip-item-type ${isCS?'cs':'x1'}">${isCS?'Correct Score':fmtMkt(s.label)}</div>${isCS?`<div style="font-size:9px;color:var(--t3);margin-top:2px">@${s.odds.toFixed(2)}</div>`:''}</div>${isCS?`<div class="slip-item-score">${s.label}</div>`:`<div class="slip-item-odds-wrap"><div class="slip-item-odds-lbl">odds</div><div class="slip-item-odds">${s.odds.toFixed(2)}</div></div>`}</div></div>`;
   }).join('');
-
   const presets=[200,500,1000,2000,5000].map(v=>`<button class="preset-btn${_stakeVal===v?' active':''}" onclick="setStake(${v})">${v}</button>`).join('');
   return successEl+headerRow+`<div class="slip-items">${items}</div><div class="slip-stake-section"><div class="slip-stake-lbl">Stake (GHS) — Min: 200</div><div class="stake-field"><div class="stake-sym">¢</div><input class="stake-input" type="number" value="${_stakeVal}" min="200" step="1" oninput="_stakeVal=Math.max(${MIN_STAKE},parseFloat(this.value)||${MIN_STAKE});updateFloatBar()"></div><div class="stake-presets">${presets}</div><div class="slip-summary"><div class="sum-row"><span class="sum-lbl">Picks</span><span class="sum-val">${count}</span></div><div class="sum-row"><span class="sum-lbl">Total Odds</span><span class="sum-val">${totalOdds.toFixed(2)}</span></div><div class="sum-row"><span class="sum-lbl">Stake</span><span class="sum-val">GHS ${_stakeVal.toFixed(2)}</span></div><div class="sum-div"></div><div class="sum-row"><span class="sum-win-lbl">Potential Win</span><span class="sum-win-val">GHS ${payout.toFixed(2)}</span></div></div><button class="btn-place" onclick="placeBet()"><svg data-lucide="zap"></svg><span>Place Bet</span></button></div>`;
 }
@@ -1079,67 +1066,53 @@ function openBetsSheet(){
 function closeBetsSheet(){document.getElementById('betsSheetOverlay').classList.remove('open');document.body.style.overflow='';document.querySelectorAll('.bn-item').forEach(b=>b.classList.remove('active'));document.getElementById('bnMarkets').classList.add('active');}
 function closeBetsSheetOnBg(e){if(e.target===document.getElementById('betsSheetOverlay'))closeBetsSheet();}
 
-// ── DELETE SINGLE BET (UI only — sets display:none) ───────────────────────────
-function deleteBet(betId, context){
-  // Find and animate out the card in whichever container
-  const containers = context === 'mobile'
-    ? [document.getElementById('betsContainerMobile')]
-    : [document.getElementById('betsContainer')];
-
-  containers.forEach(c => {
-    if(!c) return;
-    const card = c.querySelector(`[data-bet-id="${betId}"]`);
-    if(!card) return;
+// DELETE SINGLE BET
+function deleteBet(betId,context){
+  const containers=context==='mobile'?[document.getElementById('betsContainerMobile')]:[document.getElementById('betsContainer')];
+  containers.forEach(c=>{
+    if(!c)return;
+    const card=c.querySelector(`[data-bet-id="${betId}"]`);
+    if(!card)return;
     card.classList.add('bet-exit');
-    setTimeout(() => {
-      card.style.display = 'none';
-      card.classList.remove('bet-exit');
-    }, 350);
+    setTimeout(()=>{card.style.display='none';card.classList.remove('bet-exit');},350);
   });
-
-  // persist as hidden
   hideBet(betId);
   updateClearBetsBtn(context);
 }
 
-// ── CLEAR ALL BETS (UI only — hides all visible cards) ────────────────────────
+// CLEAR ALL BETS
 function clearAllBets(context){
-  const containerId = context === 'mobile' ? 'betsContainerMobile' : 'betsContainer';
-  const container = document.getElementById(containerId);
-  if(!container) return;
-
-  const cards = container.querySelectorAll('.bet-card:not([style*="display: none"])');
-  if(!cards.length) return;
-
-  cards.forEach(card => { card.classList.add('bet-exit'); });
-
-  setTimeout(() => {
-    cards.forEach(card => {
-      card.style.display = 'none';
+  const containerId=context==='mobile'?'betsContainerMobile':'betsContainer';
+  const container=document.getElementById(containerId);
+  if(!container)return;
+  const cards=container.querySelectorAll('.bet-card:not([style*="display: none"])');
+  if(!cards.length)return;
+  cards.forEach(card=>{card.classList.add('bet-exit');});
+  setTimeout(()=>{
+    cards.forEach(card=>{
+      card.style.display='none';
       card.classList.remove('bet-exit');
-      const id = card.getAttribute('data-bet-id');
-      if(id) hideBet(id);
+      const id=card.getAttribute('data-bet-id');
+      if(id)hideBet(id);
     });
     updateClearBetsBtn(context);
-  }, 350);
-
+  },350);
   showToast('All bets hidden','info');
 }
 
 function updateClearBetsBtn(context){
-  if(context === 'mobile'){
-    const btn = document.getElementById('btnClearBetsMobile');
-    if(!btn) return;
-    const container = document.getElementById('betsContainerMobile');
-    const visible = container ? container.querySelectorAll('.bet-card:not([style*="display: none"])').length : 0;
-    btn.style.display = visible > 0 ? 'inline-flex' : 'none';
-  } else {
-    // desktop section header — we'll just toggle a button if it exists
-    const btn = document.getElementById('btnClearBetsDesktop');
-    if(!btn) return;
-    const container = document.getElementById('betsContainer');
-    const visible = container ? container.querySelectorAll('.bet-card:not([style*="display: none"])').length : 0;
-    btn.style.display = visible > 0 ? 'inline-flex' : 'none';
+  if(context==='mobile'){
+    const btn=document.getElementById('btnClearBetsMobile');
+    if(!btn)return;
+    const container=document.getElementById('betsContainerMobile');
+    const visible=container?container.querySelectorAll('.bet-card:not([style*="display: none"])').length:0;
+    btn.style.display=visible>0?'inline-flex':'none';
+  }else{
+    const btn=document.getElementById('btnClearBetsDesktop');
+    if(!btn)return;
+    const container=document.getElementById('betsContainer');
+    const visible=container?container.querySelectorAll('.bet-card:not([style*="display: none"])').length:0;
+    btn.style.display=visible>0?'inline-flex':'none';
   }
 }
 
@@ -1225,20 +1198,35 @@ function normaliseStatus(s){if(!s)return'PENDING';const u=String(s).toUpperCase(
 function filterBets(filter,btn){currentBetFilter=filter;document.querySelectorAll('#bhFilterRow .bh-filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderMyBets();}
 function filterBetsMobile(filter,btn){currentBetFilterMob=filter;document.querySelectorAll('#bhFilterRowMobile .bh-filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderMyBetsMobile();}
 
-function buildBetCards(bets, context){
-  const hidden = getHiddenBets();
+// ── UPDATED buildBetCards ─────────────────────────────────────────────────────
+function buildBetCards(bets,context){
+  const hidden=getHiddenBets();
   if(!bets.length)return`<div class="empty-state"><div class="empty-icon"><svg data-lucide="filter-x"></svg></div><div class="empty-t">No bets here</div><div class="empty-s">Nothing to show for this filter.</div></div>`;
+
   return bets.map((b,i)=>{
     const st=b.status.toLowerCase();
     const stLabel=st==='pending'?'Active':b.status;
     const stIcon=st==='won'?'trophy':st==='lost'?'x-circle':'clock';
     const isCS=b.type==='CS';
-    const payoutStr=b.status==='WON'?`GHS ${parseFloat(b.actualPayout??b.payout??0).toFixed(2)}`:b.status==='PENDING'&&b.payout?`GHS ${parseFloat(b.payout).toFixed(2)}`:b.status==='LOST'?`–GHS ${parseFloat(b.stake??0).toFixed(2)}`:'—';
-    const payoutClass=b.status==='WON'?'':b.status==='LOST'?'lost':'pending';
-    const isHidden = hidden.has(String(b.id));
-    const hiddenStyle = isHidden ? 'style="display:none"' : '';
+    const isHidden=hidden.has(String(b.id));
 
-    return`<div class="bet-card ${st}" data-bet-id="${esc(String(b.id))}" style="animation-delay:${i*.04}s${isHidden?';display:none':''}" >
+    const stake=parseFloat(b.stake??0).toFixed(2);
+    const potentialRaw=b.payout?parseFloat(b.payout).toFixed(2):null;
+    const potential=potentialRaw?`GHS ${potentialRaw}`:'—';
+    const actualWin=b.actualPayout?`GHS ${parseFloat(b.actualPayout).toFixed(2)}`:potential;
+
+    let moneyThirdLabel,moneyThirdVal,moneyThirdClass;
+    if(st==='won'){
+      moneyThirdLabel='Won';moneyThirdVal=actualWin;moneyThirdClass='win';
+    }else if(st==='lost'){
+      moneyThirdLabel='Lost';moneyThirdVal=`-GHS ${stake}`;moneyThirdClass='loss';
+    }else{
+      moneyThirdLabel='Status';moneyThirdVal='Pending';moneyThirdClass='pot';
+    }
+
+    const oddsDisplay=b.odds&&b.odds!=='—'?parseFloat(b.odds).toFixed(2):'—';
+
+    return`<div class="bet-card ${st}" data-bet-id="${esc(String(b.id))}" style="animation-delay:${i*.04}s${isHidden?';display:none':''}">
       <div class="bet-card-head">
         <div class="bet-card-match">${esc(b.match)}</div>
         <div class="bet-card-head-right">
@@ -1247,14 +1235,29 @@ function buildBetCards(bets, context){
         </div>
       </div>
       <div class="bet-card-body">
-        <div class="bet-pick-box">
-          <div class="bet-pick-type ${isCS?'cs':'x1'}">${isCS?'Correct Score':'1X2'}</div>
-          <div class="bet-pick-val ${st}">${esc(b.pick)}</div>
+        <div class="bc-pick-row">
+          <div class="bc-pick-left">
+            <div class="bet-pick-type ${isCS?'cs':'x1'}">${isCS?'Correct Score':'1X2'}</div>
+            <div class="bc-pick-val ${st}">${esc(b.pick)}</div>
+          </div>
+          <div class="bc-odds-wrap">
+            <div class="bc-odds-lbl">odds</div>
+            <div class="bc-odds-num">${oddsDisplay}</div>
+          </div>
         </div>
-        <div class="bet-money-col">
-          <div class="bet-money-lbl">${b.status==='WON'?'Won':b.status==='LOST'?'Lost':'Potential'}</div>
-          <div class="bet-money-win ${payoutClass}">${payoutStr}</div>
-          <div class="bet-money-stake">Stake: GHS ${parseFloat(b.stake??0).toFixed(2)}</div>
+        <div class="bc-money-row">
+          <div class="bc-money-cell">
+            <div class="bc-money-lbl">Stake</div>
+            <div class="bc-money-val">GHS ${stake}</div>
+          </div>
+          <div class="bc-money-cell">
+            <div class="bc-money-lbl">Potential</div>
+            <div class="bc-money-val">${potential}</div>
+          </div>
+          <div class="bc-money-cell">
+            <div class="bc-money-lbl">${moneyThirdLabel}</div>
+            <div class="bc-money-val ${moneyThirdClass}">${moneyThirdVal}</div>
+          </div>
         </div>
       </div>
       <div class="bet-card-foot">
@@ -1275,21 +1278,19 @@ function renderMyBets(){
   if(!allMyBets.length){container.innerHTML=`<div class="empty-state"><div class="empty-icon"><svg data-lucide="receipt"></svg></div><div class="empty-t">No Bets Yet</div><div class="empty-s">Place your first bet!</div></div>`;lucide.createIcons();return;}
   container.innerHTML=buildBetCards(filtered,'desktop');
   lucide.createIcons();
-  // inject clear-all btn into section header area dynamically if not present
   injectDesktopClearBetsBtn();
 }
 
 function injectDesktopClearBetsBtn(){
-  // If already injected, just update visibility
-  let btn = document.getElementById('btnClearBetsDesktop');
+  let btn=document.getElementById('btnClearBetsDesktop');
   if(!btn){
-    const hd = document.querySelector('#panel-mybets .section-hd');
-    if(!hd) return;
-    btn = document.createElement('button');
-    btn.id = 'btnClearBetsDesktop';
-    btn.className = 'btn-clear-bets';
-    btn.innerHTML = '<svg data-lucide="trash-2"></svg>Clear All';
-    btn.onclick = () => clearAllBets('desktop');
+    const hd=document.querySelector('#panel-mybets .section-hd');
+    if(!hd)return;
+    btn=document.createElement('button');
+    btn.id='btnClearBetsDesktop';
+    btn.className='btn-clear-bets';
+    btn.innerHTML='<svg data-lucide="trash-2"></svg>Clear All';
+    btn.onclick=()=>clearAllBets('desktop');
     hd.appendChild(btn);
     lucide.createIcons();
   }
