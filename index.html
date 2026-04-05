@@ -9,29 +9,17 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 <style>
 :root {
-  --bg0:#000D1A;
-  --bg1:#001022;
-  --bg2:#00152D;
-  --bg3:#001D3D;
-  --accent:#1565C0;
-  --accentBright:#2196F3;
-  --accentBg:rgba(33,150,243,0.13);
-  --accentBg2:rgba(33,150,243,0.22);
-  --white:#FFFFFF;
-  --whiteBg:rgba(255,255,255,0.07);
-  --whiteBg2:rgba(255,255,255,0.14);
-  --whiteBorder:rgba(255,255,255,0.18);
-  --whiteBorderHov:rgba(255,255,255,0.32);
+  --bg0:#000D1A;--bg1:#001022;--bg2:#00152D;--bg3:#001D3D;
+  --accent:#1565C0;--accentBright:#2196F3;
+  --accentBg:rgba(33,150,243,0.13);--accentBg2:rgba(33,150,243,0.22);
+  --white:#FFFFFF;--whiteBg:rgba(255,255,255,0.07);--whiteBg2:rgba(255,255,255,0.14);
+  --whiteBorder:rgba(255,255,255,0.18);--whiteBorderHov:rgba(255,255,255,0.32);
   --green:#22C55E;--greenBg:rgba(34,197,94,0.12);
   --red:#EF4444;--redBg:rgba(239,68,68,0.12);
   --blue:#60A5FA;--blueBg:rgba(96,165,250,0.08);
   --gold:#F59E0B;--goldBg:rgba(245,158,11,0.12);
-  --t1:#FFFFFF;
-  --t2:#B0C4DE;
-  --t3:#5F7FA0;
-  --border:rgba(255,255,255,0.09);
-  --borderHov:rgba(255,255,255,0.18);
-  --borderAcc:rgba(33,150,243,0.50);
+  --t1:#FFFFFF;--t2:#B0C4DE;--t3:#5F7FA0;
+  --border:rgba(255,255,255,0.09);--borderHov:rgba(255,255,255,0.18);--borderAcc:rgba(33,150,243,0.50);
   --shadow:0 8px 40px rgba(0,0,0,0.55);
   --r:10px;--rLg:14px;
   --ff:'DM Sans',sans-serif;--ffC:'Barlow Condensed',sans-serif;
@@ -154,6 +142,54 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);background
 .lc-no-live{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--t3);padding:4px 12px}
 .lc-no-live .mi{font-size:16px}
 @keyframes lcpulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ═══════════════════════════════════════════════
+   HOT GAMES SECTION
+═══════════════════════════════════════════════ */
+.hot-games-section{background:var(--bg0);border-bottom:1px solid var(--border);padding:20px 0 24px}
+.hot-games-inner{max-width:1260px;margin:0 auto;padding:0 24px}
+.hot-games-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:10px}
+.hot-games-title-wrap{display:flex;flex-direction:column;gap:2px}
+.hot-games-title{font-family:var(--ffC);font-size:20px;font-weight:700;display:inline-flex;align-items:center;gap:8px;color:var(--t1)}
+.hot-games-title .mi{font-size:18px;color:var(--gold)}
+.hot-games-sub{font-size:12px;color:var(--t3)}
+.hot-games-see-all{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:var(--accentBright);text-decoration:none;border:1px solid var(--borderAcc);border-radius:8px;padding:6px 13px;transition:all .15s;background:var(--accentBg);flex-shrink:0}
+.hot-games-see-all:hover{background:var(--accentBg2)}
+.hot-games-see-all .mi{font-size:13px}
+/* Scroll wrapper */
+.hg-scroll-wrap{overflow-x:auto;overflow-y:visible;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px;margin:0 -4px;padding-left:4px;padding-right:4px}
+.hg-scroll-wrap::-webkit-scrollbar{display:none}
+.hg-track{display:flex;gap:12px;width:max-content}
+/* Hot game card */
+.hg-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rLg);width:240px;flex-shrink:0;overflow:hidden;position:relative;cursor:pointer;transition:all .18s;display:flex;flex-direction:column}
+.hg-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.hg-card:hover{border-color:rgba(245,158,11,0.4);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.4)}
+.hg-card-head{padding:10px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--bg3)}
+.hg-league{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.hg-hot-badge{display:inline-flex;align-items:center;gap:3px;background:var(--goldBg);border:1px solid rgba(245,158,11,0.25);border-radius:4px;padding:2px 7px;font-size:9px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.3px;flex-shrink:0}
+.hg-hot-badge .mi{font-size:10px}
+.hg-card-body{padding:12px}
+.hg-teams{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.hg-team-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;min-width:0}
+.hg-crest{width:32px;height:32px;border-radius:50%;background:var(--accentBg);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--accentBright);overflow:hidden}
+.hg-crest img{width:100%;height:100%;object-fit:contain;border-radius:50%}
+.hg-tname{font-size:12px;font-weight:600;color:var(--t1);text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%}
+.hg-vs{font-family:var(--ffC);font-size:16px;font-weight:700;color:var(--t3);flex-shrink:0}
+.hg-time{display:flex;align-items:center;justify-content:center;gap:4px;font-size:11px;color:var(--t3);margin-bottom:12px}
+.hg-time .mi{font-size:12px}
+.hg-odds{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:12px}
+.hg-odd-btn{background:var(--whiteBg);border:1px solid var(--whiteBorder);border-radius:8px;padding:7px 4px;text-align:center;cursor:pointer;transition:all .15s}
+.hg-odd-btn:hover{background:var(--accentBg);border-color:var(--borderAcc)}
+.hg-odd-lbl{font-size:9px;color:var(--t3);display:block;font-weight:600;text-transform:uppercase;letter-spacing:.3px;margin-bottom:2px}
+.hg-odd-val{font-family:var(--ffC);font-size:15px;font-weight:700;color:var(--t1);display:block}
+.hg-bet-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:9px;background:linear-gradient(90deg,var(--accent),var(--accentBright));border:none;border-radius:8px;font-family:var(--ffC);font-size:13px;font-weight:700;color:#fff;cursor:pointer;letter-spacing:.4px;transition:all .15s}
+.hg-bet-btn:hover{filter:brightness(1.1)}
+.hg-bet-btn .mi{font-size:14px}
+/* Loading / empty states */
+.hg-loading{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--t3);padding:30px 0}
+.hg-loading .spinner{width:20px;height:20px;border:2px solid var(--whiteBg2);border-top-color:var(--accentBright);border-radius:50%;animation:spin .75s linear infinite;flex-shrink:0}
+.hg-empty{font-size:13px;color:var(--t3);padding:24px 0;display:flex;align-items:center;gap:8px}
+.hg-empty .mi{font-size:18px}
 
 /* FEED SECTION */
 .feed-section{background:var(--bg0);border-bottom:1px solid var(--border)}
@@ -339,6 +375,7 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
   .sponsor-divider{width:80%;height:1px;margin:12px 0}.sponsor-stats{justify-content:center}
   .footer-inner{grid-template-columns:1fr 1fr;gap:24px}.footer-legal{text-align:left}
   .footer-bottom{flex-direction:column;align-items:flex-start}
+  .hot-games-inner{padding:0 14px}
 }
 @media(max-width:1059px){
   .nav-auth{gap:6px}.btn-signin{padding:7px 12px;font-size:12px}.btn-register{padding:7px 12px;font-size:12px}
@@ -350,6 +387,7 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
   .sportybet-logo-wrap{flex-direction:column;gap:10px;align-items:center}
   .sstat-val{font-size:18px}.sponsor-stats{gap:18px}
   .lc-card{width:180px}
+  .hg-card{width:210px}
 }
 @media(max-width:640px){
   nav{padding:0 12px}.hero-inner{padding:36px 14px 34px}.hero-title{font-size:36px}
@@ -357,6 +395,7 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
   .mcard{padding:12px 13px}.tname{font-size:13px}.api-bar{padding:6px 14px}
   .sponsors-title{font-size:20px}.footer-inner{grid-template-columns:1fr 1fr;gap:20px}
   .footer-top-inner{justify-content:flex-start;gap:6px}.footer-quick-link{font-size:10px;padding:4px 9px}
+  .hot-games-section{padding:16px 0 18px}
 }
 @media(max-width:480px){
   .hero-title{font-size:30px}.hbtn{padding:10px 16px;font-size:13px}
@@ -364,6 +403,7 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
   .score-box{min-width:56px;padding:5px 10px;font-size:18px}.tname{font-size:12px}
   .footer-inner{grid-template-columns:1fr}
   .footer-bottom{flex-direction:column;align-items:flex-start}
+  .hg-card{width:195px}
 }
 </style>
 </head>
@@ -443,7 +483,7 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
   </div>
 </div>
 
-<!-- LIVE GAMES CAROUSEL — auto-scroll, no buttons, blue/white theme -->
+<!-- LIVE GAMES CAROUSEL -->
 <div class="live-carousel-section" id="liveCarouselSection">
   <div class="lc-inner">
     <div class="lc-viewport" id="lcViewport">
@@ -456,6 +496,26 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
     </div>
   </div>
 </div>
+
+<!-- ══════════════════════════════════════════
+     HOT GAMES SECTION
+═══════════════════════════════════════════ -->
+<section class="hot-games-section" id="hotGamesSection">
+  <div class="hot-games-inner">
+    <div class="hot-games-header">
+      <div class="hot-games-title-wrap">
+        <div class="hot-games-title"><span class="mi">local_fire_department</span>Hot &amp; Active Games</div>
+        <div class="hot-games-sub">Handpicked by our team — place your bets now</div>
+      </div>
+      <a href="correct-score.html" class="hot-games-see-all"><span class="mi">arrow_forward</span>See All Markets</a>
+    </div>
+    <div class="hg-scroll-wrap">
+      <div class="hg-track" id="hgTrack">
+        <div class="hg-loading"><div class="spinner"></div>Loading hot games…</div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- FIXTURES FEED -->
 <div class="feed-section">
@@ -545,7 +605,7 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
     <div class="footer-top-inner">
       <a href="#" class="footer-quick-link"><span class="mi">bolt</span>Live Betting</a>
       <a href="#" class="footer-quick-link"><span class="mi">shield</span>Football</a>
-      <a href="#" class="footer-quick-link"><span class="mi">gps_fixed</span>Correct Score</a>
+      <a href="correct-score.html" class="footer-quick-link"><span class="mi">gps_fixed</span>Correct Score</a>
       <a href="wallet.html" class="footer-quick-link"><span class="mi">add_circle</span>Deposit</a>
       <a href="wallet.html" class="footer-quick-link"><span class="mi">arrow_circle_down</span>Withdraw</a>
       <a href="#" class="footer-quick-link"><span class="mi">help_outline</span>How to Bet</a>
@@ -579,7 +639,7 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
           <li><a href="#"><span class="mi">chevron_right</span>Basketball</a></li>
           <li><a href="#"><span class="mi">chevron_right</span>Tennis</a></li>
           <li><a href="#"><span class="mi">chevron_right</span>Live Betting</a></li>
-          <li><a href="#"><span class="mi">chevron_right</span>Correct Score</a></li>
+          <li><a href="correct-score.html"><span class="mi">chevron_right</span>Correct Score</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -626,6 +686,8 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
 const BASE_URL = 'https://kingcodebackendgames.onrender.com';
 const FIXTURES_URL = `${BASE_URL}/api/v1/football/fixtures`;
 const LIVE_URL = `${BASE_URL}/api/v1/football/live`;
+const GAMES_URL = `${BASE_URL}/api/v1/games/public`;
+const CS_BASE = `${BASE_URL}/api/correct-score`;
 
 function getToken(){return localStorage.getItem('primestakes_token')||sessionStorage.getItem('primestakes_token')||null;}
 function getUser(){try{const r=localStorage.getItem('primestakes_user')||sessionStorage.getItem('primestakes_user');return r?JSON.parse(r):null;}catch{return null;}}
@@ -634,6 +696,7 @@ function logout(){['primestakes_token','primestakes_user'].forEach(k=>{localStor
 window.addEventListener('load', () => {
   applyAuthState();
   loadMatches().then(() => loadLiveCarousel());
+  loadHotGames();
   startWinnerPopups();
 });
 
@@ -670,9 +733,8 @@ async function fetchBalance(){
 let lcGames = [];
 let lcAnimId = null;
 let lcPos = 0;
-const LC_SPEED = 0.6; // px per frame
+const LC_SPEED = 0.6;
 
-// Hardcoded fallback fixtures shown when backend is down
 const FALLBACK_MATCHES = [
   {homeTeam:'Arsenal',awayTeam:'Chelsea',_upcoming:true,_date:'2026-04-04T18:45:00Z'},
   {homeTeam:'Real Madrid',awayTeam:'Barcelona',_upcoming:true,_date:'2026-04-05T19:00:00Z'},
@@ -691,17 +753,13 @@ async function loadLiveCarousel() {
     const res = await fetch(LIVE_URL);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
-    // /api/v1/football/live returns { total, matches: [...] }
-    // also handle flat array or other shapes defensively
     let games = [];
     if (Array.isArray(data)) games = data;
     else if (Array.isArray(data.matches)) games = data.matches;
     else if (Array.isArray(data.data)) games = data.data;
     else if (Array.isArray(data.games)) games = data.games;
     lcGames = games;
-    console.log(`[LiveCarousel] ${games.length} live games loaded`);
   } catch(e) {
-    console.warn('[LiveCarousel] Fetch failed:', e.message);
     lcGames = [];
   }
   renderCarousel();
@@ -718,17 +776,11 @@ function renderCarousel() {
       homeScore: m._hs, awayScore: m._as,
       elapsed: m._isLive ? (m._min || 'LIVE') : '',
       status: m._isLive ? 'LIVE' : '',
-      _upcoming: !m._isLive,
-      _date: m._date,
+      _upcoming: !m._isLive, _date: m._date,
     }));
     isLive = false;
   }
-  // Final fallback: use hardcoded data if both API and allMatches are empty
-  if (!cards.length) {
-    cards = FALLBACK_MATCHES;
-    isLive = false;
-  }
-  // Duplicate cards for seamless infinite loop
+  if (!cards.length) { cards = FALLBACK_MATCHES; isLive = false; }
   const cardHtml = cards.map(g => buildLcCard(g, isLive)).join('');
   track.innerHTML = cardHtml + cardHtml;
   track.style.transform = 'translateX(0)';
@@ -747,14 +799,12 @@ function buildLcCard(g, isLive) {
   const awayCrest = g.awayLogo ?? g.awayCrest ?? g.away_logo ?? g.teams?.away?.crest ?? '';
   const homeInitial = (homeName[0] || 'H').toUpperCase();
   const awayInitial = (awayName[0] || 'A').toUpperCase();
-
   const homeCrestHtml = homeCrest
     ? `<img src="${homeCrest}" style="width:20px;height:20px;border-radius:50%;object-fit:contain;flex-shrink:0" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt=""><div class="lc-init" style="display:none">${homeInitial}</div>`
     : `<div class="lc-init">${homeInitial}</div>`;
   const awayCrestHtml = awayCrest
     ? `<img src="${awayCrest}" style="width:20px;height:20px;border-radius:50%;object-fit:contain;flex-shrink:0" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt=""><div class="lc-init" style="display:none">${awayInitial}</div>`
     : `<div class="lc-init">${awayInitial}</div>`;
-
   let scoreHtml, bottomHtml;
   if (hs !== null && as !== null) {
     scoreHtml = `<div class="lc-score">${hs}–${as}</div>`;
@@ -767,7 +817,6 @@ function buildLcCard(g, isLive) {
     scoreHtml = `<div class="lc-score" style="font-size:16px;color:var(--t3)">VS</div>`;
     bottomHtml = '';
   }
-
   return `<div class="lc-card">
     <div class="lc-teams">
       <div class="lc-team">${homeCrestHtml}<span class="lc-tname">${homeName}</span></div>
@@ -783,11 +832,9 @@ function startCarouselAuto(track) {
   const vp = document.getElementById('lcViewport');
   vp.onmouseenter = () => { paused = true; };
   vp.onmouseleave = () => { paused = false; };
-
   function step() {
     if (!paused) {
       lcPos += LC_SPEED;
-      // half = width of one set of cards (total/2 since we duplicated)
       const half = track.scrollWidth / 2;
       if (lcPos >= half) lcPos = 0;
       track.style.transform = `translateX(-${lcPos}px)`;
@@ -799,11 +846,139 @@ function startCarouselAuto(track) {
 
 setInterval(loadLiveCarousel, 60 * 1000);
 
+// ── HOT GAMES SECTION ─────────────────────────────────────────────────────────
+async function loadHotGames() {
+  const track = document.getElementById('hgTrack');
+  try {
+    // Fetch games from public games API (same endpoint as correct-score page)
+    const res = await fetch(GAMES_URL);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const rawGames = await res.json();
+    const gamesList = Array.isArray(rawGames) ? rawGames : (rawGames.data || rawGames.games || []);
+
+    if (!gamesList.length) {
+      track.innerHTML = `<div class="hg-empty"><span class="mi">sports_soccer</span>No hot games right now — check back soon.</div>`;
+      return;
+    }
+
+    // Fetch correct-score options for each game
+    const games = await Promise.all(gamesList.slice(0, 12).map(async (g) => {
+      try {
+        const csRes = await fetch(`${CS_BASE}/${g.id}`);
+        const csData = csRes.ok ? await csRes.json() : null;
+        return { ...g, csOptions: csData?.options ?? [], csMarketStatus: csData?.marketStatus ?? g.correctScoreMarketStatus ?? 'OPEN' };
+      } catch {
+        return { ...g, csOptions: [], csMarketStatus: g.correctScoreMarketStatus ?? 'OPEN' };
+      }
+    }));
+
+    const activeGames = games.filter(g => g.status !== 'CANCELLED');
+    if (!activeGames.length) {
+      track.innerHTML = `<div class="hg-empty"><span class="mi">sports_soccer</span>No active games right now.</div>`;
+      return;
+    }
+
+    track.innerHTML = activeGames.map(g => buildHotGameCard(g)).join('');
+  } catch (e) {
+    console.warn('[HotGames] Failed:', e.message);
+    track.innerHTML = `<div class="hg-empty"><span class="mi">wifi_off</span>Could not load hot games.</div>`;
+  }
+}
+
+function buildHotGameCard(g) {
+  const ht = g.homeTeam || 'Home';
+  const at = g.awayTeam || 'Away';
+  const league = g.competition || g.league || 'Football';
+  const matchDate = g.matchDate || g.utcDate || '';
+  const timeStr = matchDate ? fmtHotTime(matchDate) : 'Upcoming';
+  const isLive = g.status === 'LIVE';
+  const isFinished = g.status === 'FINISHED';
+
+  // Odds — use backend odds or fallback generated ones
+  const oid = hashStr(String(g.id || ht+at)) % 900000 + 100000;
+  const od = g.oddsHomeWin ? {
+    home: parseFloat(g.oddsHomeWin).toFixed(2),
+    draw: parseFloat(g.oddsDraw || 3.10).toFixed(2),
+    away: parseFloat(g.oddsAwayWin).toFixed(2)
+  } : genOdds(oid);
+
+  // Crest initials
+  const hInit = (ht[0]||'H').toUpperCase();
+  const aInit = (at[0]||'A').toUpperCase();
+  const hCrest = g.homeCrest || '';
+  const aCrest = g.awayCrest || '';
+  const hCrestHtml = hCrest
+    ? `<img src="${hCrest}" style="width:100%;height:100%;object-fit:contain;border-radius:50%" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt=""><span style="display:none;font-size:11px;font-weight:700;color:var(--accentBright)">${hInit}</span>`
+    : `<span style="font-size:11px;font-weight:700;color:var(--accentBright)">${hInit}</span>`;
+  const aCrestHtml = aCrest
+    ? `<img src="${aCrest}" style="width:100%;height:100%;object-fit:contain;border-radius:50%" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt=""><span style="display:none;font-size:11px;font-weight:700;color:var(--accentBright)">${aInit}</span>`
+    : `<span style="font-size:11px;font-weight:700;color:var(--accentBright)">${aInit}</span>`;
+
+  const liveDot = isLive ? `<span style="display:inline-block;width:5px;height:5px;background:var(--green);border-radius:50%;animation:lcpulse 1.6s infinite;margin-right:3px;vertical-align:middle"></span>` : '';
+  const statusBadge = isFinished
+    ? `<span style="font-size:9px;font-weight:700;color:var(--t3);background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:2px 6px;text-transform:uppercase">FT</span>`
+    : isLive
+    ? `<span style="display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;color:var(--green);background:var(--greenBg);border:1px solid rgba(34,197,94,.2);border-radius:4px;padding:2px 7px;text-transform:uppercase">${liveDot}Live</span>`
+    : '';
+
+  // Score display for live/finished games
+  const hasScore = g.homeScore !== null && g.homeScore !== undefined && g.awayScore !== null && g.awayScore !== undefined;
+  const scoreDisplay = hasScore
+    ? `<div style="font-family:var(--ffC);font-size:13px;font-weight:800;color:var(--green);letter-spacing:1px;margin-bottom:10px;text-align:center">${g.homeScore} – ${g.awayScore}</div>`
+    : '';
+
+  // Redirect to correct-score page with game preloaded
+  const gameId = g.id || '';
+  const betTarget = `correct-score.html?highlight=${encodeURIComponent(gameId)}`;
+
+  return `<div class="hg-card" onclick="window.location='${betTarget}'">
+    <div class="hg-card-head">
+      <span class="hg-league">${league}</span>
+      ${statusBadge || `<span class="hg-hot-badge"><span class="mi" style="font-size:10px">local_fire_department</span>Hot</span>`}
+    </div>
+    <div class="hg-card-body">
+      <div class="hg-teams">
+        <div class="hg-team-col">
+          <div class="hg-crest">${hCrestHtml}</div>
+          <div class="hg-tname">${ht}</div>
+        </div>
+        <div class="hg-vs">VS</div>
+        <div class="hg-team-col">
+          <div class="hg-crest">${aCrestHtml}</div>
+          <div class="hg-tname">${at}</div>
+        </div>
+      </div>
+      ${scoreDisplay}
+      <div class="hg-time"><span class="mi">schedule</span>${timeStr}</div>
+      <div class="hg-odds">
+        <div class="hg-odd-btn"><span class="hg-odd-lbl">1</span><span class="hg-odd-val">${od.home}</span></div>
+        <div class="hg-odd-btn"><span class="hg-odd-lbl">X</span><span class="hg-odd-val">${od.draw}</span></div>
+        <div class="hg-odd-btn"><span class="hg-odd-lbl">2</span><span class="hg-odd-val">${od.away}</span></div>
+      </div>
+      <button class="hg-bet-btn"><span class="mi" style="font-size:14px">gps_fixed</span>Bet Now</button>
+    </div>
+  </div>`;
+}
+
+function fmtHotTime(iso) {
+  const d = new Date(iso), n = new Date();
+  const t = d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  if (d.toDateString() === n.toDateString()) return 'Today ' + t;
+  const tm = new Date(); tm.setDate(n.getDate()+1);
+  if (d.toDateString() === tm.toDateString()) return 'Tomorrow ' + t;
+  return d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'}) + ' ' + t;
+}
+
+function hashStr(s){let h=0;for(let i=0;i<s.length;i++)h=(Math.imul(31,h)+s.charCodeAt(i))|0;return Math.abs(h);}
+function sr(n){let s=n;s^=s<<13;s^=s>>17;s^=s<<5;return(s>>>0)/4294967296;}
+function genOdds(id){return{home:+(1.35+sr(id)*2.5).toFixed(2),draw:+(2.60+sr(id*7919)*1.5).toFixed(2),away:+(1.35+sr(id*6271)*2.5).toFixed(2)};}
+
+// Refresh hot games every 3 minutes
+setInterval(loadHotGames, 3 * 60 * 1000);
+
 // ── FIXTURES FEED ─────────────────────────────────────────────────────────────
 let allMatches = [];
-function sr(n){let s=n;s^=s<<13;s^=s>>17;s^=s<<5;return(s>>>0)/4294967296;}
 function odds(id){return{home:+(1.35+sr(id)*2.5).toFixed(2),draw:+(2.60+sr(id*7919)*1.5).toFixed(2),away:+(1.35+sr(id*6271)*2.5).toFixed(2),o15:+(1.12+sr(id+1)*0.4).toFixed(2),o25:+(1.55+sr(id+2)*0.7).toFixed(2),o35:+(2.10+sr(id+3)*1.4).toFixed(2)};}
-function hashStr(s){let h=0;for(let i=0;i<s.length;i++)h=(Math.imul(31,h)+s.charCodeAt(i))|0;return Math.abs(h);}
 
 async function loadMatches(){
   showLoad();
@@ -829,9 +1004,6 @@ async function loadMatches(){
 function isWC(m){const c=(m.competition||'').toLowerCase();return c.includes('world cup')||c.includes('wc')||m.category==='wc';}
 
 function normalise(m){
-  // Handles MatchDTO from /api/v1/football/fixtures:
-  // { uid, competition, category, live, status, minute, utcDate,
-  //   homeTeam, awayTeam, homeCrest, awayCrest, homeScore, awayScore, odds }
   return{
     _uid:m.uid||`m-${Math.random()}`,
     _comp:m.competition||m.league||'Football',
