@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Bet Cash - BET</title>
+<title>GStake – Correct Score</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
@@ -90,6 +90,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .section-title svg{width:15px;height:15px;color:var(--accent)}
 .section-badge{background:var(--accentBg);border:1px solid var(--borderAcc);border-radius:20px;padding:4px 11px;font-size:10px;font-weight:700;color:var(--accent)}
 
+/* ── DELETE ALL BUTTON ── */
+.btn-delete-all{display:inline-flex;align-items:center;gap:5px;background:var(--redBg);border:1px solid rgba(239,68,68,0.3);border-radius:20px;padding:4px 11px;font-size:10px;font-weight:700;color:var(--red);cursor:pointer;transition:all .15s;font-family:var(--ff)}
+.btn-delete-all:hover{background:rgba(239,68,68,0.18);border-color:rgba(239,68,68,0.5)}
+.btn-delete-all svg{width:11px;height:11px}
+
 /* ── VIEW PANELS ── */
 .view-panel{display:none}
 .view-panel.active{display:block}
@@ -101,7 +106,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .game-card.finished{border-color:rgba(34,197,94,0.2)}
 .game-card.cancelled{border-color:rgba(239,68,68,0.15);opacity:.7}
 
-/* ── CARD EXIT ANIMATION (settlement removal) ── */
+/* ── CARD EXIT ANIMATION ── */
 .card-exit{
   animation:cardExit 0.5s cubic-bezier(.4,0,1,1) forwards !important;
   pointer-events:none;
@@ -113,6 +118,15 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
   100%{opacity:0;transform:translateY(-10px) scale(.97);max-height:0;margin-bottom:0;padding:0;border-width:0;}
 }
 
+/* ── DELETE BUTTON ON CARD ── */
+.gc-delete-btn{background:var(--redBg);border:1px solid rgba(239,68,68,0.25);width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0}
+.gc-delete-btn:hover{background:rgba(239,68,68,0.22);border-color:rgba(239,68,68,0.5)}
+.gc-delete-btn svg{width:13px;height:13px;color:var(--red)}
+
+/* ── COUNTDOWN BADGE ── */
+.gc-countdown{display:inline-flex;align-items:center;gap:4px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);border-radius:20px;padding:2px 8px;font-size:9px;font-weight:700;color:var(--red);flex-shrink:0}
+.gc-countdown svg{width:9px;height:9px}
+
 .gc-head{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--bg3);border-bottom:1px solid var(--border)}
 .gc-teams{flex:1;min-width:0}
 .gc-matchup{font-size:13px;font-weight:700;color:var(--t1);display:flex;align-items:center;gap:5px;flex-wrap:wrap;line-height:1.3}
@@ -121,6 +135,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .gc-meta svg{width:10px;height:10px;color:var(--t3)}
 .gc-meta-txt{font-size:10px;color:var(--t3)}
 .gc-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.gc-right-row{display:flex;align-items:center;gap:6px}
 .gc-status-badge{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:20px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
 .gc-status-badge.open{background:var(--greenBg);color:var(--green);border:1px solid var(--borderGreen)}
 .gc-status-badge.locked{background:var(--redBg);color:var(--red);border:1px solid rgba(239,68,68,0.3)}
@@ -482,7 +497,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
       <div class="view-panel active" id="panel-markets">
         <div class="section-hd">
           <div class="section-title"><svg data-lucide="flame"></svg>Live Markets</div>
-          <span class="section-badge" id="gameCountBadge">Loading…</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <button class="btn-delete-all" id="btnDeleteAll" onclick="deleteAllGames()" style="display:none">
+              <svg data-lucide="trash-2"></svg>Clear All
+            </button>
+            <span class="section-badge" id="gameCountBadge">Loading…</span>
+          </div>
         </div>
         <div id="gamesGrid">
           <div class="skeleton"></div>
@@ -637,6 +657,25 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 const API_BASE = 'https://kingcodebackendgames.onrender.com/api/v1';
 const CS_BASE  = 'https://kingcodebackendgames.onrender.com/api/correct-score';
 
+// ── HIDDEN GAMES PERSISTENCE ──────────────────────────────────────────────────
+const HIDDEN_GAMES_KEY = 'cashbet_hidden_games';
+
+function getHiddenGames(){
+  try{return new Set(JSON.parse(localStorage.getItem(HIDDEN_GAMES_KEY)||'[]'));}
+  catch{return new Set();}
+}
+function hideGame(gameId){
+  const hidden=getHiddenGames();
+  hidden.add(String(gameId));
+  localStorage.setItem(HIDDEN_GAMES_KEY,JSON.stringify([...hidden]));
+}
+function isGameHidden(gameId){
+  return getHiddenGames().has(String(gameId));
+}
+function clearAllHiddenGames(){
+  localStorage.removeItem(HIDDEN_GAMES_KEY);
+}
+
 // ── TOKEN HELPERS ─────────────────────────────────────────────────────────────
 const TOKEN_KEY = 'primestakes_token';
 const USER_KEY  = 'primestakes_user';
@@ -651,9 +690,9 @@ const MIN_STAKE=200;
 const SEEN_WINS_KEY='gstake_seen_wins';
 
 // ── SETTLEMENT REMOVAL STATE ──────────────────────────────────────────────────
-const scheduledRemoval = new Set(); // gameIds already queued for auto-removal
-const REMOVAL_DELAY    = 10000;     // 10 seconds
-const EXIT_ANIM_MS     = 500;       // matches .card-exit animation duration
+const scheduledRemoval = new Set();
+const REMOVAL_DELAY    = 10000; // 10 seconds
+const EXIT_ANIM_MS     = 500;
 
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -685,7 +724,7 @@ async function apiFetch(path,opts={}){
 
 async function fetchBalance(){try{const d=await apiFetch(`${API_BASE}/wallet/balance`);const b=d?.balance??d??null;if(b!==null)document.getElementById('balanceDisplay').textContent=`GHS ${parseFloat(b).toFixed(2)}`;}catch{}}
 
-// ── FETCH GAMES (with settlement detection) ───────────────────────────────────
+// ── FETCH GAMES ───────────────────────────────────────────────────────────────
 async function fetchGames(silent=false){
   try{
     const rawGames=await apiFetch(`${API_BASE}/games/public`);
@@ -699,33 +738,38 @@ async function fetchGames(silent=false){
       }catch{return{...g,csOptions:[],correctScoreMarketStatus:g.correctScoreMarketStatus??'OPEN'};}
     }));
 
+    // Filter out already-hidden games
+    const filtered=newGames.filter(g=>!isGameHidden(g.id));
+
     if(silent){
-      newGames.forEach(g=>{
+      filtered.forEach(g=>{
         const prev=scoreSnapshot[g.id];
         const curH=g.homeScore??null,curA=g.awayScore??null,curS=g.status;
-
         if(prev){
           const scoreChanged=(prev.homeScore!==curH||prev.awayScore!==curA)&&curH!==null;
           const justSettled=(curS==='FINISHED'||curS==='CANCELLED')&&prev.status!==curS;
-
           if(scoreChanged||justSettled)showScoreUpdatePopup(g);
-
-          // ── Schedule auto-removal once on first settlement detection ──
           if(justSettled&&!scheduledRemoval.has(g.id)){
             scheduledRemoval.add(g.id);
             scheduleCardRemoval(g.id);
           }
         }
-
         scoreSnapshot[g.id]={homeScore:curH,awayScore:curA,status:curS};
       });
-      gamesData=newGames;
+      gamesData=filtered;
       renderGames();
     }else{
-      gamesData=newGames;
-      gamesData.forEach(g=>{
+      // On initial load: immediately schedule removal for already-settled games
+      // (games that were settled before page load — not already hidden)
+      filtered.forEach(g=>{
         scoreSnapshot[g.id]={homeScore:g.homeScore??null,awayScore:g.awayScore??null,status:g.status};
+        const isSettled=g.status==='FINISHED'||g.status==='CANCELLED';
+        if(isSettled&&!scheduledRemoval.has(g.id)){
+          scheduledRemoval.add(g.id);
+          scheduleCardRemoval(g.id);
+        }
       });
+      gamesData=filtered;
       renderGames();
       updateCounts(gamesData.length);
     }
@@ -739,60 +783,89 @@ async function fetchGames(silent=false){
   }
 }
 
-// ── SCHEDULE CARD REMOVAL ─────────────────────────────────────────────────────
+// ── SCHEDULE CARD REMOVAL (auto, after 10s) ───────────────────────────────────
 function scheduleCardRemoval(gameId){
   const game=gamesData.find(g=>g.id===gameId);
   if(game){
     const label=game.status==='CANCELLED'?'cancelled':'settled';
-    showToast(`${short(game.homeTeam)} vs ${short(game.awayTeam)} — game ${label}, removing in 10s`,'info');
+    showToast(`${short(game.homeTeam)} vs ${short(game.awayTeam)} — ${label}, removing in 10s`,'info');
   }
-
   setTimeout(()=>{
+    hideGame(gameId); // persist to localStorage
     removeGameCard(gameId);
   },REMOVAL_DELAY);
 }
 
-// ── REMOVE A GAME CARD WITH EXIT ANIMATION ────────────────────────────────────
+// ── MANUAL DELETE: single card ────────────────────────────────────────────────
+function deleteGameCard(gameId){
+  hideGame(gameId); // persist immediately
+  removeGameCard(gameId);
+}
+
+// ── DELETE ALL visible games ──────────────────────────────────────────────────
+function deleteAllGames(){
+  const ids=gamesData.map(g=>g.id);
+  if(!ids.length)return;
+  ids.forEach(id=>hideGame(id));
+  // Animate all out
+  ids.forEach(id=>{
+    const card=document.getElementById(`card-${id}`);
+    if(card)card.classList.add('card-exit');
+  });
+  // Clean up after animation
+  setTimeout(()=>{
+    betSlip=betSlip.filter(s=>!ids.includes(s.gameId));
+    gamesData=[];
+    renderGames();
+    renderSlip();
+    updateCounts(0);
+  },EXIT_ANIM_MS);
+  showToast('All games cleared','info');
+}
+
+// ── REMOVE A SINGLE GAME CARD ─────────────────────────────────────────────────
 function removeGameCard(gameId){
-  // 1. Remove from betSlip if user had a pick on this game
   const hadPick=betSlip.some(s=>s.gameId===gameId);
   betSlip=betSlip.filter(s=>s.gameId!==gameId);
-
-  // 2. Animate card out
   const card=document.getElementById(`card-${gameId}`);
   if(card){
     card.classList.add('card-exit');
     setTimeout(()=>{
       card.remove();
-      // 3. Remove from gamesData array
       gamesData=gamesData.filter(g=>g.id!==gameId);
-      // 4. Update game count badge
       updateCounts(gamesData.length);
-      // 5. Re-render slip if user had a pick on this game
-      if(hadPick){
-        renderSlip();
-        showToast('A game on your slip was settled and removed','info');
-      }
+      updateDeleteAllBtn();
+      if(hadPick){renderSlip();showToast('A game on your slip was removed','info');}
     },EXIT_ANIM_MS);
   }else{
-    // Card not in DOM (e.g. already gone), still clean up data
     gamesData=gamesData.filter(g=>g.id!==gameId);
     updateCounts(gamesData.length);
+    updateDeleteAllBtn();
     if(hadPick)renderSlip();
   }
 }
 
-function updateCounts(n){document.getElementById('gameCountBadge').textContent=`${n} game${n!==1?'s':''}`;}
+function updateCounts(n){
+  document.getElementById('gameCountBadge').textContent=`${n} game${n!==1?'s':''}`; 
+  updateDeleteAllBtn();
+}
+
+function updateDeleteAllBtn(){
+  const btn=document.getElementById('btnDeleteAll');
+  if(btn)btn.style.display=gamesData.length>0?'inline-flex':'none';
+}
 
 function renderGames(){
   const grid=document.getElementById('gamesGrid');
   if(!gamesData.length){
     grid.innerHTML=`<div class="empty-state"><div class="empty-icon"><svg data-lucide="calendar-x"></svg></div><div class="empty-t">No Games</div><div class="empty-s">No upcoming games right now.</div></div>`;
     lucide.createIcons();
+    updateDeleteAllBtn();
     return;
   }
   grid.innerHTML=gamesData.map((g,i)=>buildCard(g,i)).join('');
   lucide.createIcons();
+  updateDeleteAllBtn();
 }
 
 function short(n){return n.replace('Manchester ','Man ').replace('Borussia ','').replace(' Milan','');}
@@ -800,6 +873,7 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 
 function buildCard(g,idx){
   const isFinished=g.status==='FINISHED',isCancelled=g.status==='CANCELLED',isLive=g.status==='LIVE',isOpen=!isFinished&&!isCancelled,csOpen=g.correctScoreMarketStatus==='OPEN',csLocked=g.correctScoreMarketStatus==='LOCKED';
+
   let statusBadge='';
   if(isFinished)statusBadge=`<div class="gc-status-badge settled"><svg data-lucide="check-circle"></svg>Finished</div>`;
   else if(isCancelled)statusBadge=`<div class="gc-status-badge locked"><svg data-lucide="x-circle"></svg>Cancelled</div>`;
@@ -811,6 +885,10 @@ function buildCard(g,idx){
   let scoreBoard='';
   const hasScore=g.homeScore!==null&&g.homeScore!==undefined&&g.awayScore!==null&&g.awayScore!==undefined;
   if(hasScore||isFinished){const h=g.homeScore??0,a=g.awayScore??0;scoreBoard=`<div class="gc-score-board${isFinished?' finished':''}" id="scoreboard-${g.id}"><span class="gc-score-num">${h}</span><span class="gc-score-sep">–</span><span class="gc-score-num">${a}</span></div>`;}
+
+  // Countdown badge for settled/cancelled games
+  const isSettled=isFinished||isCancelled;
+  const countdownBadge=isSettled?`<div class="gc-countdown"><svg data-lucide="clock"></svg>Hiding in 10s</div>`:'';
 
   const mkts=[{key:'HOME_WIN',lbl:'1',sub:short(g.homeTeam),odds:g.oddsHomeWin},{key:'DRAW',lbl:'X',sub:'Draw',odds:g.oddsDraw},{key:'AWAY_WIN',lbl:'2',sub:short(g.awayTeam),odds:g.oddsAwayWin}];
   const x1html=mkts.map(m=>{
@@ -842,7 +920,23 @@ function buildCard(g,idx){
     bottomSection=`<div class="gc-cs"><div style="padding:10px 0;font-size:12px;color:var(--t3);display:flex;align-items:center;gap:6px"><svg data-lucide="lock" style="width:12px;height:12px;color:var(--red)"></svg>Score market locked.</div></div>`;
   }
 
-  return`<div class="game-card${isFinished?' finished':''}${isCancelled?' cancelled':''}" style="animation-delay:${idx*.045}s" id="card-${g.id}"><div class="gc-head"><div class="gc-teams"><div class="gc-matchup">${esc(g.homeTeam)}<span class="gc-vs">vs</span>${esc(g.awayTeam)}</div><div class="gc-meta"><svg data-lucide="clock"></svg><span class="gc-meta-txt">${fmtDate(g.matchDate)}</span></div></div><div class="gc-right">${statusBadge}${scoreBoard}</div></div><div class="gc-1x2">${x1html}</div>${bottomSection}</div>`;
+  // Delete button — always visible on every card
+  const deleteBtn=`<button class="gc-delete-btn" onclick="deleteGameCard('${g.id}')" title="Hide this game"><svg data-lucide="trash-2"></svg></button>`;
+
+  return`<div class="game-card${isFinished?' finished':''}${isCancelled?' cancelled':''}" style="animation-delay:${idx*.045}s" id="card-${g.id}">
+    <div class="gc-head">
+      <div class="gc-teams">
+        <div class="gc-matchup">${esc(g.homeTeam)}<span class="gc-vs">vs</span>${esc(g.awayTeam)}</div>
+        <div class="gc-meta"><svg data-lucide="clock"></svg><span class="gc-meta-txt">${fmtDate(g.matchDate)}</span></div>
+      </div>
+      <div class="gc-right">
+        <div class="gc-right-row">${countdownBadge}${statusBadge}${deleteBtn}</div>
+        ${scoreBoard}
+      </div>
+    </div>
+    <div class="gc-1x2">${x1html}</div>
+    ${bottomSection}
+  </div>`;
 }
 
 function rerenderCard(gameId){
