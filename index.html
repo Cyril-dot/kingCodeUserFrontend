@@ -929,7 +929,7 @@ function buildHotGameCard(g) {
 
   // Redirect to correct-score page with game preloaded
   const gameId = g.id || '';
-  const betTarget = `correct-score.html?highlight=${encodeURIComponent(gameId)}`;
+  const betTarget = `betting.html?gameId=${encodeURIComponent(gameId)}`;
 
   return `<div class="hg-card" onclick="window.location='${betTarget}'">
     <div class="hg-card-head">
