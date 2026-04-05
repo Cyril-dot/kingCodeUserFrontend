@@ -143,9 +143,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);background
 .lc-no-live .mi{font-size:16px}
 @keyframes lcpulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* ═══════════════════════════════════════════════
-   HOT GAMES SECTION
-═══════════════════════════════════════════════ */
+/* HOT GAMES SECTION */
 .hot-games-section{background:var(--bg0);border-bottom:1px solid var(--border);padding:20px 0 24px}
 .hot-games-inner{max-width:1260px;margin:0 auto;padding:0 24px}
 .hot-games-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:10px}
@@ -156,11 +154,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);background
 .hot-games-see-all{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:var(--accentBright);text-decoration:none;border:1px solid var(--borderAcc);border-radius:8px;padding:6px 13px;transition:all .15s;background:var(--accentBg);flex-shrink:0}
 .hot-games-see-all:hover{background:var(--accentBg2)}
 .hot-games-see-all .mi{font-size:13px}
-/* Scroll wrapper */
 .hg-scroll-wrap{overflow-x:auto;overflow-y:visible;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px;margin:0 -4px;padding-left:4px;padding-right:4px}
 .hg-scroll-wrap::-webkit-scrollbar{display:none}
 .hg-track{display:flex;gap:12px;width:max-content}
-/* Hot game card */
 .hg-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rLg);width:240px;flex-shrink:0;overflow:hidden;position:relative;cursor:pointer;transition:all .18s;display:flex;flex-direction:column}
 .hg-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
 .hg-card:hover{border-color:rgba(245,158,11,0.4);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.4)}
@@ -185,7 +181,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav);background
 .hg-bet-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:9px;background:linear-gradient(90deg,var(--accent),var(--accentBright));border:none;border-radius:8px;font-family:var(--ffC);font-size:13px;font-weight:700;color:#fff;cursor:pointer;letter-spacing:.4px;transition:all .15s}
 .hg-bet-btn:hover{filter:brightness(1.1)}
 .hg-bet-btn .mi{font-size:14px}
-/* Loading / empty states */
 .hg-loading{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--t3);padding:30px 0}
 .hg-loading .spinner{width:20px;height:20px;border:2px solid var(--whiteBg2);border-top-color:var(--accentBright);border-radius:50%;animation:spin .75s linear infinite;flex-shrink:0}
 .hg-empty{font-size:13px;color:var(--t3);padding:24px 0;display:flex;align-items:center;gap:8px}
@@ -497,9 +492,7 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     HOT GAMES SECTION
-═══════════════════════════════════════════ -->
+<!-- HOT GAMES SECTION -->
 <section class="hot-games-section" id="hotGamesSection">
   <div class="hot-games-inner">
     <div class="hot-games-header">
@@ -683,12 +676,22 @@ footer{background:var(--bg1);border-top:3px solid var(--accent);padding:0}
 <div class="wpop-container" id="wpopContainer"></div>
 
 <script>
-const BASE_URL = 'https://kingcodebackendgames.onrender.com';
-const FIXTURES_URL = `${BASE_URL}/api/v1/football/fixtures`;
-const LIVE_URL = `${BASE_URL}/api/v1/football/live`;
-const GAMES_URL = `${BASE_URL}/api/v1/games/public`;
-const CS_BASE = `${BASE_URL}/api/correct-score`;
+// ═══════════════════════════════════════════════════════════════════
+//  API CONFIGURATION
+//  CashBet now uses GStake's backend for live + today's fixtures
+// ═══════════════════════════════════════════════════════════════════
+const GSTAKE_BASE = 'https://kikiwebbackend.onrender.com';
 
+// GStake endpoints (football data)
+const GSTAKE_TODAY_URL  = `${GSTAKE_BASE}/api/v1/football/games/today`;
+const GSTAKE_LIVE_URL   = `${GSTAKE_BASE}/api/v1/football/games/live`;
+
+// CashBet's own backend (hot games / correct-score markets)
+const CASHBET_BASE = 'https://kingcodebackendgames.onrender.com';
+const GAMES_URL    = `${CASHBET_BASE}/api/v1/games/public`;
+const CS_BASE      = `${CASHBET_BASE}/api/correct-score`;
+
+// ── Auth helpers ───────────────────────────────────────────────────
 function getToken(){return localStorage.getItem('primestakes_token')||sessionStorage.getItem('primestakes_token')||null;}
 function getUser(){try{const r=localStorage.getItem('primestakes_user')||sessionStorage.getItem('primestakes_user');return r?JSON.parse(r):null;}catch{return null;}}
 function logout(){['primestakes_token','primestakes_user'].forEach(k=>{localStorage.removeItem(k);sessionStorage.removeItem(k);});window.location.href='/';}
@@ -722,47 +725,61 @@ function applyAuthState(){
 
 async function fetchBalance(){
   try{
-    const res=await fetch(`${BASE_URL}/api/v1/wallet/balance`,{headers:{Authorization:`Bearer ${getToken()}`}});
+    const res=await fetch(`${CASHBET_BASE}/api/v1/wallet/balance`,{headers:{Authorization:`Bearer ${getToken()}`}});
     const d=await res.json();
     const bal=d.data?.balance??d.balance??null;
     if(bal!==null) document.getElementById('navBalance').textContent=`GHS ${parseFloat(bal).toFixed(2)}`;
   }catch{}
 }
 
-// ── LIVE CAROUSEL ─────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════
+//  LIVE CAROUSEL  — powered by GStake /api/v1/football/games/live
+// ═══════════════════════════════════════════════════════════════════
 let lcGames = [];
 let lcAnimId = null;
 let lcPos = 0;
 const LC_SPEED = 0.6;
 
 const FALLBACK_MATCHES = [
-  {homeTeam:'Arsenal',awayTeam:'Chelsea',_upcoming:true,_date:'2026-04-04T18:45:00Z'},
-  {homeTeam:'Real Madrid',awayTeam:'Barcelona',_upcoming:true,_date:'2026-04-05T19:00:00Z'},
-  {homeTeam:'Bayern',awayTeam:'Dortmund',_upcoming:true,_date:'2026-04-05T13:30:00Z'},
-  {homeTeam:'PSG',awayTeam:'Marseille',_upcoming:true,_date:'2026-04-06T18:45:00Z'},
-  {homeTeam:'Inter',awayTeam:'Juventus',_upcoming:true,_date:'2026-04-06T19:00:00Z'},
-  {homeTeam:'Man City',awayTeam:'Liverpool',_upcoming:true,_date:'2026-04-07T19:00:00Z'},
-  {homeTeam:'Atlético',awayTeam:'Villarreal',_upcoming:true,_date:'2026-04-07T19:00:00Z'},
-  {homeTeam:'Leverkusen',awayTeam:'RB Leipzig',_upcoming:true,_date:'2026-04-05T13:30:00Z'},
-  {homeTeam:'Sporting CP',awayTeam:'Arsenal',_upcoming:true,_date:'2026-04-08T19:00:00Z'},
-  {homeTeam:'Real Madrid',awayTeam:'Bayern',_upcoming:true,_date:'2026-04-08T19:00:00Z'},
+  {homeTeam:'Arsenal',awayTeam:'Chelsea',_upcoming:true,_date:'2026-04-10T18:45:00Z'},
+  {homeTeam:'Real Madrid',awayTeam:'Barcelona',_upcoming:true,_date:'2026-04-11T19:00:00Z'},
+  {homeTeam:'Bayern',awayTeam:'Dortmund',_upcoming:true,_date:'2026-04-12T13:30:00Z'},
+  {homeTeam:'PSG',awayTeam:'Marseille',_upcoming:true,_date:'2026-04-12T18:45:00Z'},
+  {homeTeam:'Inter',awayTeam:'Juventus',_upcoming:true,_date:'2026-04-13T19:00:00Z'},
+  {homeTeam:'Man City',awayTeam:'Liverpool',_upcoming:true,_date:'2026-04-14T19:00:00Z'},
+  {homeTeam:'Atlético',awayTeam:'Villarreal',_upcoming:true,_date:'2026-04-14T19:00:00Z'},
+  {homeTeam:'Leverkusen',awayTeam:'RB Leipzig',_upcoming:true,_date:'2026-04-15T13:30:00Z'},
 ];
 
 async function loadLiveCarousel() {
   try {
-    const res = await fetch(LIVE_URL);
+    const res = await fetch(GSTAKE_LIVE_URL, { signal: AbortSignal.timeout(15000) });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    let games = [];
-    if (Array.isArray(data)) games = data;
-    else if (Array.isArray(data.matches)) games = data.matches;
-    else if (Array.isArray(data.data)) games = data.data;
-    else if (Array.isArray(data.games)) games = data.games;
-    lcGames = games;
+    const json = await res.json();
+    // GStake returns { data: [...] } or plain array
+    let games = Array.isArray(json) ? json : (json.data || json.games || json.matches || []);
+    lcGames = games.map(normaliseGStake);
   } catch(e) {
+    console.warn('[Carousel] GStake live fetch failed:', e.message);
     lcGames = [];
   }
   renderCarousel();
+}
+
+// Normalise a GStake match object to a common shape for the carousel
+function normaliseGStake(m) {
+  return {
+    homeTeam:  m.homeTeam  || m.home_team  || 'Home',
+    awayTeam:  m.awayTeam  || m.away_team  || 'Away',
+    homeLogo:  m.homeLogo  || m.homeCrest  || m.home_logo  || '',
+    awayLogo:  m.awayLogo  || m.awayCrest  || m.away_logo  || '',
+    homeScore: m.homeScore ?? m.home_score ?? null,
+    awayScore: m.awayScore ?? m.away_score ?? null,
+    elapsed:   m.elapsedMinutes ?? m.elapsed ?? m.minute ?? '',
+    status:    m.status || '',
+    _upcoming: !m.status || m.status === 'SCHEDULED' || m.status === 'UPCOMING',
+    _date:     m.kickoffTime || m.utcDate || m.matchDate || new Date().toISOString(),
+  };
 }
 
 function renderCarousel() {
@@ -782,21 +799,21 @@ function renderCarousel() {
   }
   if (!cards.length) { cards = FALLBACK_MATCHES; isLive = false; }
   const cardHtml = cards.map(g => buildLcCard(g, isLive)).join('');
-  track.innerHTML = cardHtml + cardHtml;
+  track.innerHTML = cardHtml + cardHtml; // duplicate for seamless loop
   track.style.transform = 'translateX(0)';
   lcPos = 0;
   startCarouselAuto(track);
 }
 
 function buildLcCard(g, isLive) {
-  const hs = g.homeScore ?? g.home_score ?? g.scores?.home ?? null;
-  const as = g.awayScore ?? g.away_score ?? g.scores?.away ?? null;
-  const elapsed = g.elapsed ?? g.minute ?? g.time ?? '';
-  const min = elapsed ? `${elapsed}'` : (g.statusShort ?? g.status ?? '');
-  const homeName = g.homeTeam ?? g.home_team ?? g.teams?.home?.name ?? 'Home';
-  const awayName = g.awayTeam ?? g.away_team ?? g.teams?.away?.name ?? 'Away';
-  const homeCrest = g.homeLogo ?? g.homeCrest ?? g.home_logo ?? g.teams?.home?.crest ?? '';
-  const awayCrest = g.awayLogo ?? g.awayCrest ?? g.away_logo ?? g.teams?.away?.crest ?? '';
+  const hs = g.homeScore ?? null;
+  const as = g.awayScore ?? null;
+  const elapsed = g.elapsed ?? '';
+  const min = elapsed ? `${elapsed}'` : (g.status || '');
+  const homeName = g.homeTeam || 'Home';
+  const awayName = g.awayTeam || 'Away';
+  const homeCrest = g.homeLogo || g.homeCrest || '';
+  const awayCrest = g.awayLogo || g.awayCrest || '';
   const homeInitial = (homeName[0] || 'H').toUpperCase();
   const awayInitial = (awayName[0] || 'A').toUpperCase();
   const homeCrestHtml = homeCrest
@@ -844,13 +861,15 @@ function startCarouselAuto(track) {
   lcAnimId = requestAnimationFrame(step);
 }
 
+// Refresh live carousel every 60 seconds
 setInterval(loadLiveCarousel, 60 * 1000);
 
-// ── HOT GAMES SECTION ─────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════
+//  HOT GAMES SECTION — CashBet's own games API (unchanged)
+// ═══════════════════════════════════════════════════════════════════
 async function loadHotGames() {
   const track = document.getElementById('hgTrack');
   try {
-    // Fetch games from public games API (same endpoint as correct-score page)
     const res = await fetch(GAMES_URL);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const rawGames = await res.json();
@@ -861,7 +880,6 @@ async function loadHotGames() {
       return;
     }
 
-    // Fetch correct-score options for each game
     const games = await Promise.all(gamesList.slice(0, 12).map(async (g) => {
       try {
         const csRes = await fetch(`${CS_BASE}/${g.id}`);
@@ -894,7 +912,6 @@ function buildHotGameCard(g) {
   const isLive = g.status === 'LIVE';
   const isFinished = g.status === 'FINISHED';
 
-  // Odds — use backend odds or fallback generated ones
   const oid = hashStr(String(g.id || ht+at)) % 900000 + 100000;
   const od = g.oddsHomeWin ? {
     home: parseFloat(g.oddsHomeWin).toFixed(2),
@@ -902,7 +919,6 @@ function buildHotGameCard(g) {
     away: parseFloat(g.oddsAwayWin).toFixed(2)
   } : genOdds(oid);
 
-  // Crest initials
   const hInit = (ht[0]||'H').toUpperCase();
   const aInit = (at[0]||'A').toUpperCase();
   const hCrest = g.homeCrest || '';
@@ -921,13 +937,11 @@ function buildHotGameCard(g) {
     ? `<span style="display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;color:var(--green);background:var(--greenBg);border:1px solid rgba(34,197,94,.2);border-radius:4px;padding:2px 7px;text-transform:uppercase">${liveDot}Live</span>`
     : '';
 
-  // Score display for live/finished games
   const hasScore = g.homeScore !== null && g.homeScore !== undefined && g.awayScore !== null && g.awayScore !== undefined;
   const scoreDisplay = hasScore
     ? `<div style="font-family:var(--ffC);font-size:13px;font-weight:800;color:var(--green);letter-spacing:1px;margin-bottom:10px;text-align:center">${g.homeScore} – ${g.awayScore}</div>`
     : '';
 
-  // Redirect to correct-score page with game preloaded
   const gameId = g.id || '';
   const betTarget = `betting.html?gameId=${encodeURIComponent(gameId)}`;
 
@@ -969,116 +983,160 @@ function fmtHotTime(iso) {
   return d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'}) + ' ' + t;
 }
 
-function hashStr(s){let h=0;for(let i=0;i<s.length;i++)h=(Math.imul(31,h)+s.charCodeAt(i))|0;return Math.abs(h);}
-function sr(n){let s=n;s^=s<<13;s^=s>>17;s^=s<<5;return(s>>>0)/4294967296;}
-function genOdds(id){return{home:+(1.35+sr(id)*2.5).toFixed(2),draw:+(2.60+sr(id*7919)*1.5).toFixed(2),away:+(1.35+sr(id*6271)*2.5).toFixed(2)};}
-
 // Refresh hot games every 3 minutes
 setInterval(loadHotGames, 3 * 60 * 1000);
 
-// ── FIXTURES FEED ─────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════
+//  FIXTURES FEED — powered by GStake /api/v1/football/games/today
+// ═══════════════════════════════════════════════════════════════════
 let allMatches = [];
+
+function hashStr(s){let h=0;for(let i=0;i<s.length;i++)h=(Math.imul(31,h)+s.charCodeAt(i))|0;return Math.abs(h);}
+function sr(n){let s=n;s^=s<<13;s^=s>>17;s^=s<<5;return(s>>>0)/4294967296;}
+function genOdds(id){return{home:+(1.35+sr(id)*2.5).toFixed(2),draw:+(2.60+sr(id*7919)*1.5).toFixed(2),away:+(1.35+sr(id*6271)*2.5).toFixed(2)};}
 function odds(id){return{home:+(1.35+sr(id)*2.5).toFixed(2),draw:+(2.60+sr(id*7919)*1.5).toFixed(2),away:+(1.35+sr(id*6271)*2.5).toFixed(2),o15:+(1.12+sr(id+1)*0.4).toFixed(2),o25:+(1.55+sr(id+2)*0.7).toFixed(2),o35:+(2.10+sr(id+3)*1.4).toFixed(2)};}
 
-async function loadMatches(){
+async function loadMatches() {
   showLoad();
-  try{
-    const res=await fetch(FIXTURES_URL);
-    if(!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data=await res.json();
-    const club=[],wc=[];
-    (data.matches||[]).forEach(m=>{
-      if(isWC(m)) wc.push(normalise(m));
-      else club.push(normalise(m));
+  try {
+    // ── Use GStake's today endpoint ──────────────────────────────
+    const res = await fetch(GSTAKE_TODAY_URL, { signal: AbortSignal.timeout(20000) });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+
+    // GStake wraps results in { data: [...] }
+    const raw = Array.isArray(json) ? json : (json.data || json.matches || json.games || []);
+
+    const club = [], wc = [];
+    raw.forEach(m => {
+      const normalised = normaliseGStakeMatch(m);
+      if (isWC(normalised)) wc.push(normalised);
+      else club.push(normalised);
     });
-    allMatches=[...club,...wc];
-    updateApiBadge(club.length,wc.length);
+
+    allMatches = [...club, ...wc];
+    updateApiBadge(club.length, wc.length);
     renderFeed();
-  }catch(e){
-    console.error('Failed:',e);
+  } catch(e) {
+    console.error('[Fixtures] GStake fetch failed:', e);
     updateApiBadgeError();
     showError();
   }
 }
 
-function isWC(m){const c=(m.competition||'').toLowerCase();return c.includes('world cup')||c.includes('wc')||m.category==='wc';}
+function isWC(m) {
+  const c = (m._comp || '').toLowerCase();
+  return c.includes('world cup') || c.includes('wc') || m._cat === 'wc';
+}
 
-function normalise(m){
-  return{
-    _uid:m.uid||`m-${Math.random()}`,
-    _comp:m.competition||m.league||'Football',
-    _cat:m.category||(isWC(m)?'wc':'club'),
-    _isLive:m.live===true||m.status==='IN_PLAY'||m.status==='PAUSED',
-    _date:m.utcDate||m.kickoff||new Date().toISOString(),
-    _min:m.minute||'',
-    _ht:m.homeTeam||m.teams?.home?.name||'Home',
-    _at:m.awayTeam||m.teams?.away?.name||'Away',
-    _hc:m.homeCrest||m.crests?.home||m.teams?.home?.crest||'',
-    _ac:m.awayCrest||m.crests?.away||m.teams?.away?.crest||'',
-    _hs:m.homeScore??m.scores?.home??null,
-    _as:m.awayScore??m.scores?.away??null,
-    _venue:m.venue||'',
-    _odds:m.odds||null
+// Normalise a GStake "today" match to CashBet's internal shape
+function normaliseGStakeMatch(m) {
+  const isLive = m.status === 'LIVE' || m.status === 'IN_PLAY' || m.status === 'PAUSED';
+  const isWCMatch = (() => {
+    const c = (m.league || m.competition || '').toLowerCase();
+    return c.includes('world cup') || c.includes('wc') || m.category === 'wc';
+  })();
+
+  // Pull odds from GStake fields
+  const gstakeOdds = (m.homeWinOdds || m.drawOdds || m.awayWinOdds || m.over25Odds) ? {
+    home:  m.homeWinOdds  || null,
+    draw:  m.drawOdds     || null,
+    away:  m.awayWinOdds  || null,
+    o15:   m.over15Odds   || null,
+    o25:   m.over25Odds   || null,
+    o35:   m.over35Odds   || null,
+  } : null;
+
+  return {
+    _uid:    m.externalFixtureId || m.id || `m-${Math.random()}`,
+    _comp:   m.league   || m.competition || 'Football',
+    _cat:    isWCMatch ? 'wc' : 'club',
+    _isLive: isLive,
+    _date:   m.kickoffTime || m.utcDate || m.matchDate || new Date().toISOString(),
+    _min:    m.elapsedMinutes ? `${m.elapsedMinutes}'` : (m.matchPeriod || ''),
+    _ht:     m.homeTeam || 'Home',
+    _at:     m.awayTeam || 'Away',
+    _hc:     m.homeLogo || m.homeCrest || '',
+    _ac:     m.awayLogo || m.awayCrest || '',
+    _hs:     m.homeScore ?? null,
+    _as:     m.awayScore ?? null,
+    _venue:  m.venue || m.stadium || '',
+    _odds:   gstakeOdds,
   };
 }
 
-function updateApiBadge(c,w){
-  const now=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
-  document.getElementById('apiBar').innerHTML=
-    `<span class="api-badge ${c>0?'ok':'err'}"><span class="mi">${c>0?'check_circle':'cancel'}</span>${c>0?`✓ ${c} Club Fixtures`:'Club Leagues Offline'}</span>`+
-    `<span class="api-badge ${w>0?'ok':'err'}"><span class="mi">${w>0?'check_circle':'cancel'}</span>${w>0?`✓ ${w} WC 2026 Fixtures`:'WC 2026 Offline'}</span>`+
-    `<span class="last-updated"><span class="mi">refresh</span>Updated ${now}</span>`;
+function updateApiBadge(c, w) {
+  const now = new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('apiBar').innerHTML =
+    `<span class="api-badge ${c>0?'ok':'err'}"><span class="mi">${c>0?'check_circle':'cancel'}</span>${c>0?`✓ ${c} Club Fixtures`:'Club Leagues Offline'}</span>` +
+    (w > 0 ? `<span class="api-badge ok"><span class="mi">check_circle</span>✓ ${w} WC 2026 Fixtures</span>` : '') +
+    `<span style="font-size:10px;color:var(--t3);margin-left:auto;display:flex;align-items:center;gap:4px"><span class="mi" style="font-size:11px">sports_soccer</span>via GStake · ${now}</span>`;
 }
-function updateApiBadgeError(){document.getElementById('apiBar').innerHTML=`<span class="api-badge err"><span class="mi">cancel</span>Backend Unreachable</span>`;}
+function updateApiBadgeError() {
+  document.getElementById('apiBar').innerHTML = `<span class="api-badge err"><span class="mi">cancel</span>GStake Backend Unreachable</span>`;
+}
 function showLoad(){document.getElementById('feed').innerHTML='<div class="loading-wrap"><div class="spinner"></div><span style="font-size:13px;color:var(--t3)">Fetching fixtures…</span></div>';}
-function showError(){document.getElementById('feed').innerHTML=`<div class="empty-wrap"><span class="mi">wifi_off</span><span>Could not reach the server.</span><button onclick="loadMatches()" style="margin-top:8px;padding:8px 20px;border-radius:8px;background:var(--accent);color:#fff;border:none;font-weight:700;cursor:pointer;font-family:var(--ff)">Retry</button></div>`;}
+function showError(){document.getElementById('feed').innerHTML=`<div class="empty-wrap"><span class="mi">wifi_off</span><span>Could not reach GStake server.</span><button onclick="loadMatches()" style="margin-top:8px;padding:8px 20px;border-radius:8px;background:var(--accent);color:#fff;border:none;font-weight:700;cursor:pointer;font-family:var(--ff)">Retry</button></div>`;}
 
-function renderFeed(){
-  const feed=document.getElementById('feed');
-  const club=allMatches.filter(m=>m._cat==='club');
-  const wc=allMatches.filter(m=>m._cat==='wc');
-  const sortFn=(a,b)=>{if(a._isLive&&!b._isLive)return -1;if(!a._isLive&&b._isLive)return 1;return new Date(a._date)-new Date(b._date);};
+function renderFeed() {
+  const feed = document.getElementById('feed');
+  const club = allMatches.filter(m => m._cat === 'club');
+  const wc   = allMatches.filter(m => m._cat === 'wc');
+  const sortFn = (a, b) => {
+    if(a._isLive && !b._isLive) return -1;
+    if(!a._isLive && b._isLive) return 1;
+    return new Date(a._date) - new Date(b._date);
+  };
   club.sort(sortFn); wc.sort(sortFn);
-  let html='';
-  if(club.length) html+=mkSection('Top 6 European Leagues','shield','var(--accentBright)','',club,0);
-  if(wc.length) html+=mkSection('FIFA World Cup 2026','emoji_events','var(--green)','wc',wc,club.length);
-  feed.innerHTML=html||'<div class="empty-wrap"><span class="mi">calendar_today</span><span>No fixtures available right now.</span></div>';
+  let html = '';
+  if(club.length) html += mkSection('Today\'s Matches','sports_soccer','var(--accentBright)','', club, 0);
+  if(wc.length)   html += mkSection('FIFA World Cup 2026','emoji_events','var(--green)','wc', wc, club.length);
+  feed.innerHTML = html || '<div class="empty-wrap"><span class="mi">calendar_today</span><span>No fixtures available for today.</span></div>';
 }
 
-function mkSection(title,icon,color,type,arr,off){
-  const cls=type==='wc'?'sec-lbl wc':'sec-lbl';
-  let h=`<div class="${cls}" style="margin-top:${off>0?'24px':'0'}"><span><span class="mi" style="font-size:13px;color:${color}">${icon}</span>${title}</span><span style="font-family:var(--ffC);color:${color}">${arr.length}</span></div>`;
-  arr.forEach((m,i)=>{h+=buildCard(m,off+i);});
+function mkSection(title, icon, color, type, arr, off) {
+  const cls = type === 'wc' ? 'sec-lbl wc' : 'sec-lbl';
+  let h = `<div class="${cls}" style="margin-top:${off>0?'24px':'0'}"><span><span class="mi" style="font-size:13px;color:${color}">${icon}</span>${title}</span><span style="font-family:var(--ffC);color:${color}">${arr.length}</span></div>`;
+  arr.forEach((m, i) => { h += buildCard(m, off+i); });
   return h;
 }
 
-function fmtT(u){
-  const d=new Date(u),n=new Date();
-  const t=d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
-  const tm=new Date();tm.setDate(n.getDate()+1);
-  if(d.toDateString()===n.toDateString()) return'Today '+t;
-  if(d.toDateString()===tm.toDateString()) return'Tomorrow '+t;
-  return d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})+' '+t;
+function fmtT(u) {
+  const d = new Date(u), n = new Date();
+  const t = d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  const tm = new Date(); tm.setDate(n.getDate()+1);
+  if(d.toDateString() === n.toDateString()) return 'Today ' + t;
+  if(d.toDateString() === tm.toDateString()) return 'Tomorrow ' + t;
+  return d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'}) + ' ' + t;
 }
 
-function buildCard(m,idx){
-  const oid=hashStr(m._uid)%900000+100000;
-  const od=m._odds?{
-    home:m._odds.home??m._odds.homeWin??odds(oid).home,
-    draw:m._odds.draw??m._odds.drawWin??odds(oid).draw,
-    away:m._odds.away??m._odds.awayWin??odds(oid).away,
-    o15:m._odds.over15??m._odds.o15??odds(oid).o15,
-    o25:m._odds.over25??m._odds.o25??odds(oid).o25,
-    o35:m._odds.over35??m._odds.o35??odds(oid).o35
-  }:odds(oid);
-  const crest=src=>src?`<img src="${src}" class="tcrest" onerror="this.style.display='none'" alt="">`:'' ;
-  const scoreHtml=m._hs!=null?`<div class="score-box">${m._hs} – ${m._as}</div>`:m._isLive?`<div class="score-box">– –</div>`:`<div class="vs-box">VS</div>`;
-  const statusHtml=m._isLive?`<span class="live-badge"><div class="dot"></div>${m._min||'LIVE'}</span>`:`<span class="time-tag"><span class="mi">schedule</span>${fmtT(m._date)}</span>`;
-  const leagueCls=m._cat==='wc'?'league-tag wct':'league-tag';
-  const cardCls=`mcard${m._isLive?' live-card':''}${m._cat==='wc'?' wc-card':''}`;
+function buildCard(m, idx) {
+  const oid = hashStr(m._uid) % 900000 + 100000;
+  // Prefer real GStake odds, fall back to generated ones
+  const od = m._odds ? {
+    home: m._odds.home  ?? odds(oid).home,
+    draw: m._odds.draw  ?? odds(oid).draw,
+    away: m._odds.away  ?? odds(oid).away,
+    o15:  m._odds.o15   ?? odds(oid).o15,
+    o25:  m._odds.o25   ?? odds(oid).o25,
+    o35:  m._odds.o35   ?? odds(oid).o35,
+  } : odds(oid);
+
+  const crest = src => src ? `<img src="${src}" class="tcrest" onerror="this.style.display='none'" alt="">` : '';
+  const scoreHtml = m._hs != null
+    ? `<div class="score-box">${m._hs} – ${m._as}</div>`
+    : m._isLive
+      ? `<div class="score-box">– –</div>`
+      : `<div class="vs-box">VS</div>`;
+  const statusHtml = m._isLive
+    ? `<span class="live-badge"><div class="dot"></div>${m._min || 'LIVE'}</span>`
+    : `<span class="time-tag"><span class="mi">schedule</span>${fmtT(m._date)}</span>`;
+  const leagueCls = m._cat === 'wc' ? 'league-tag wct' : 'league-tag';
+  const cardCls = `mcard${m._isLive?' live-card':''}${m._cat==='wc'?' wc-card':''}`;
+
   return `<div class="${cardCls}" style="animation-delay:${idx*25}ms">
-    <div class="ctop"><div class="${leagueCls}">${m._comp||'Football'}</div><div class="ctop-right">${statusHtml}</div></div>
-    ${m._venue?`<div style="font-size:11px;color:var(--t3);margin-bottom:8px;display:flex;align-items:center;gap:4px"><span class="mi" style="font-size:12px">location_on</span>${m._venue}</div>`:''}
+    <div class="ctop"><div class="${leagueCls}">${m._comp || 'Football'}</div><div class="ctop-right">${statusHtml}</div></div>
+    ${m._venue ? `<div style="font-size:11px;color:var(--t3);margin-bottom:8px;display:flex;align-items:center;gap:4px"><span class="mi" style="font-size:12px">location_on</span>${m._venue}</div>` : ''}
     <div class="trow">
       <div class="team-blk">${crest(m._hc)}<div class="tname">${m._ht}</div></div>
       ${scoreHtml}
@@ -1097,20 +1155,24 @@ function buildCard(m,idx){
   </div>`;
 }
 
+// Refresh fixtures every hour
+setInterval(loadMatches, 60 * 60 * 1000);
+
+// ── UI helpers ─────────────────────────────────────────────────────
 function toggleTheme(){
-  const dark=document.documentElement.getAttribute('data-theme')==='dark';
-  document.documentElement.setAttribute('data-theme',dark?'light':'dark');
-  const i=document.getElementById('themeIco');
-  if(i) i.textContent=dark?'light_mode':'dark_mode';
+  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
+  const i = document.getElementById('themeIco');
+  if(i) i.textContent = dark ? 'light_mode' : 'dark_mode';
 }
 function toggleMobNav(){
   document.getElementById('mobNav').classList.toggle('open');
   document.getElementById('hamBtn').classList.toggle('open');
 }
 
-setInterval(loadMatches, 60*60*1000);
-
-// ── WINNER POPUPS ─────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════
+//  WINNER POPUPS
+// ═══════════════════════════════════════════════════════════════════
 const WINNER_DATA=[
   {name:'Kwame Asante',amt:'GH₵ 48,200',review:"Couldn't believe it — placed a 5-fold and it landed!"},
   {name:'Ama Serwah',amt:'GH₵ 92,400',review:"BetCash paid out within minutes. Absolutely mad!"},
@@ -1131,7 +1193,7 @@ const MALE_SEEDS=[10,20,30,40,50,60,70,80,11,21,31,41,51,61,71,81];
 const FEMALE_SEEDS=[1,2,3,4,5,6,7,8,9,13,14,15,16,17,18,19];
 let wpopShuffled=[],wpopIdx=0;
 function shuffleArr(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-function getAvatarUrl(name,idx){const female=['Ama','Akosua','Efua','Adwoa'].some(f=>name.startsWith(f));const pool=female?FEMALE_SEEDS:MALE_SEEDS;const seed=pool[Math.abs(idx)%pool.length];return `https://randomuser.me/api/portraits/${female?'women':'men'}/${seed}.jpg`;}
+function getAvatarUrl(name,idx){const female=['Ama','Akosua','Efua','Adwoa'].some(f=>name.startsWith(f));const pool=female?FEMALE_SEEDS:MALE_SEEDS;const seed=pool[Math.abs(idx)%pool.length];return`https://randomuser.me/api/portraits/${female?'women':'men'}/${seed}.jpg`;}
 function startWinnerPopups(){wpopShuffled=shuffleArr(WINNER_DATA);wpopIdx=0;setTimeout(showNextWinnerPop,4000+Math.random()*5000);}
 function showNextWinnerPop(){if(wpopIdx>=wpopShuffled.length){wpopShuffled=shuffleArr(WINNER_DATA);wpopIdx=0;}const winner=wpopShuffled[wpopIdx++];createWinnerPop(winner,wpopIdx);setTimeout(showNextWinnerPop,8000+Math.random()*10000);}
 function createWinnerPop(winner,idx){
