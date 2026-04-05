@@ -248,11 +248,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 
 /* ── SLIP ITEMS ── */
 .slip-items{padding:10px 12px;display:flex;flex-direction:column;gap:6px}
-.slip-item{background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:10px 12px;animation:cardIn .3s cubic-bezier(.22,.68,0,1.2) both}
+.slip-item{background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:10px 12px;animation:cardIn .3s cubic-bezier(.22,.68,0,1.2) both;position:relative}
+/* ── slip item exit ── */
+.slip-item.removing{animation:slipItemOut .3s cubic-bezier(.4,0,1,1) forwards;pointer-events:none;overflow:hidden}
+@keyframes slipItemOut{0%{opacity:1;max-height:120px;margin-bottom:6px}100%{opacity:0;max-height:0;margin-bottom:0;padding:0;border-width:0}}
 .slip-item-top{display:flex;align-items:flex-start;justify-content:space-between;gap:7px;margin-bottom:7px}
 .slip-item-match{font-size:12px;font-weight:700;color:var(--t1);flex:1;line-height:1.3}
-.slip-item-rm{background:none;border:none;color:var(--t3);cursor:pointer;width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:6px;transition:color .15s;flex-shrink:0}
-.slip-item-rm:hover{color:var(--red)}
+.slip-item-rm{background:var(--redBg);border:1px solid rgba(239,68,68,0.22);color:var(--red);cursor:pointer;width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:8px;transition:all .15s;flex-shrink:0}
+.slip-item-rm:hover{background:rgba(239,68,68,0.22);border-color:rgba(239,68,68,0.5)}
 .slip-item-rm svg{width:12px;height:12px}
 .slip-item-bot{display:flex;align-items:center;justify-content:space-between}
 .slip-item-type{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
@@ -262,6 +265,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:300;height:var(--nav);background
 .slip-item-odds-wrap{text-align:right}
 .slip-item-odds-lbl{font-size:9px;color:var(--t3)}
 .slip-item-odds{font-family:var(--ffC);font-size:18px;font-weight:800;color:var(--accent)}
+
+/* ── SLIP HEADER ROW (picks count + clear all) ── */
+.slip-header-row{display:flex;align-items:center;justify-content:space-between;padding:10px 12px 6px}
+.slip-header-lbl{font-size:10px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.7px;display:flex;align-items:center;gap:5px}
+.slip-header-lbl svg{width:11px;height:11px;color:var(--accent)}
+.btn-clear-slip{display:inline-flex;align-items:center;gap:5px;background:var(--redBg);border:1px solid rgba(239,68,68,0.28);border-radius:20px;padding:5px 12px;font-size:10px;font-weight:700;color:var(--red);cursor:pointer;transition:all .15s;font-family:var(--ff)}
+.btn-clear-slip:hover{background:rgba(239,68,68,0.2);border-color:rgba(239,68,68,0.5)}
+.btn-clear-slip svg{width:11px;height:11px}
 
 /* ── STAKE ── */
 .slip-stake-section{padding:0 12px 12px}
@@ -691,7 +702,7 @@ const SEEN_WINS_KEY='gstake_seen_wins';
 
 // ── SETTLEMENT REMOVAL STATE ──────────────────────────────────────────────────
 const scheduledRemoval = new Set();
-const REMOVAL_DELAY    = 10000; // 10 seconds
+const REMOVAL_DELAY    = 10000;
 const EXIT_ANIM_MS     = 500;
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -738,7 +749,6 @@ async function fetchGames(silent=false){
       }catch{return{...g,csOptions:[],correctScoreMarketStatus:g.correctScoreMarketStatus??'OPEN'};}
     }));
 
-    // Filter out already-hidden games
     const filtered=newGames.filter(g=>!isGameHidden(g.id));
 
     if(silent){
@@ -759,8 +769,6 @@ async function fetchGames(silent=false){
       gamesData=filtered;
       renderGames();
     }else{
-      // On initial load: immediately schedule removal for already-settled games
-      // (games that were settled before page load — not already hidden)
       filtered.forEach(g=>{
         scoreSnapshot[g.id]={homeScore:g.homeScore??null,awayScore:g.awayScore??null,status:g.status};
         const isSettled=g.status==='FINISHED'||g.status==='CANCELLED';
@@ -783,7 +791,6 @@ async function fetchGames(silent=false){
   }
 }
 
-// ── SCHEDULE CARD REMOVAL (auto, after 10s) ───────────────────────────────────
 function scheduleCardRemoval(gameId){
   const game=gamesData.find(g=>g.id===gameId);
   if(game){
@@ -791,28 +798,24 @@ function scheduleCardRemoval(gameId){
     showToast(`${short(game.homeTeam)} vs ${short(game.awayTeam)} — ${label}, removing in 10s`,'info');
   }
   setTimeout(()=>{
-    hideGame(gameId); // persist to localStorage
+    hideGame(gameId);
     removeGameCard(gameId);
   },REMOVAL_DELAY);
 }
 
-// ── MANUAL DELETE: single card ────────────────────────────────────────────────
 function deleteGameCard(gameId){
-  hideGame(gameId); // persist immediately
+  hideGame(gameId);
   removeGameCard(gameId);
 }
 
-// ── DELETE ALL visible games ──────────────────────────────────────────────────
 function deleteAllGames(){
   const ids=gamesData.map(g=>g.id);
   if(!ids.length)return;
   ids.forEach(id=>hideGame(id));
-  // Animate all out
   ids.forEach(id=>{
     const card=document.getElementById(`card-${id}`);
     if(card)card.classList.add('card-exit');
   });
-  // Clean up after animation
   setTimeout(()=>{
     betSlip=betSlip.filter(s=>!ids.includes(s.gameId));
     gamesData=[];
@@ -823,7 +826,6 @@ function deleteAllGames(){
   showToast('All games cleared','info');
 }
 
-// ── REMOVE A SINGLE GAME CARD ─────────────────────────────────────────────────
 function removeGameCard(gameId){
   const hadPick=betSlip.some(s=>s.gameId===gameId);
   betSlip=betSlip.filter(s=>s.gameId!==gameId);
@@ -846,7 +848,7 @@ function removeGameCard(gameId){
 }
 
 function updateCounts(n){
-  document.getElementById('gameCountBadge').textContent=`${n} game${n!==1?'s':''}`; 
+  document.getElementById('gameCountBadge').textContent=`${n} game${n!==1?'s':''}`;
   updateDeleteAllBtn();
 }
 
@@ -886,7 +888,6 @@ function buildCard(g,idx){
   const hasScore=g.homeScore!==null&&g.homeScore!==undefined&&g.awayScore!==null&&g.awayScore!==undefined;
   if(hasScore||isFinished){const h=g.homeScore??0,a=g.awayScore??0;scoreBoard=`<div class="gc-score-board${isFinished?' finished':''}" id="scoreboard-${g.id}"><span class="gc-score-num">${h}</span><span class="gc-score-sep">–</span><span class="gc-score-num">${a}</span></div>`;}
 
-  // Countdown badge for settled/cancelled games
   const isSettled=isFinished||isCancelled;
   const countdownBadge=isSettled?`<div class="gc-countdown"><svg data-lucide="clock"></svg>Hiding in 10s</div>`:'';
 
@@ -920,7 +921,6 @@ function buildCard(g,idx){
     bottomSection=`<div class="gc-cs"><div style="padding:10px 0;font-size:12px;color:var(--t3);display:flex;align-items:center;gap:6px"><svg data-lucide="lock" style="width:12px;height:12px;color:var(--red)"></svg>Score market locked.</div></div>`;
   }
 
-  // Delete button — always visible on every card
   const deleteBtn=`<button class="gc-delete-btn" onclick="deleteGameCard('${g.id}')" title="Hide this game"><svg data-lucide="trash-2"></svg></button>`;
 
   return`<div class="game-card${isFinished?' finished':''}${isCancelled?' cancelled':''}" style="animation-delay:${idx*.045}s" id="card-${g.id}">
@@ -996,7 +996,30 @@ function toggle1X2(gameId,homeTeam,awayTeam,marketKey,marketLabel,odds){
   renderSlip();
 }
 
-function removeFromSlip(gameId,type){betSlip=betSlip.filter(s=>!(s.gameId===gameId&&s.type===type));rerenderCard(gameId);renderSlip();}
+// ── REMOVE ONE SLIP PICK (with animation) ─────────────────────────────────────
+function removeFromSlip(gameId,type){
+  // animate the item out in the sheet / sidebar before removing
+  document.querySelectorAll(`[data-slip-key="${gameId}-${type}"]`).forEach(el=>{
+    el.classList.add('removing');
+  });
+  setTimeout(()=>{
+    betSlip=betSlip.filter(s=>!(s.gameId===gameId&&s.type===type));
+    rerenderCard(gameId);
+    renderSlip();
+  },300);
+}
+
+// ── CLEAR ENTIRE SLIP ─────────────────────────────────────────────────────────
+function clearAllSlip(){
+  // animate all items out
+  document.querySelectorAll('.slip-item').forEach(el=>el.classList.add('removing'));
+  setTimeout(()=>{
+    betSlip=[];
+    gamesData.forEach(g=>rerenderCard(g.id));
+    renderSlip();
+    showToast('Slip cleared','info');
+  },300);
+}
 
 function renderSlip(){
   const count=betSlip.length,totalOdds=betSlip.reduce((a,s)=>a*s.odds,1),payout=_stakeVal*totalOdds;
@@ -1014,13 +1037,19 @@ function renderSlip(){
 
 function buildSlipHTML(count,totalOdds,payout){
   const successEl=`<div class="slip-success" id="slipSuccessEl"><div class="success-icon"><svg data-lucide="check-circle-2"></svg></div><div style="font-family:var(--ffC);font-size:18px;font-weight:800;color:var(--green)">Bet Placed!</div><div style="font-size:13px;color:var(--t2);line-height:1.6">Your score slip is live. Good luck!</div><div class="success-ref" id="slipRefEl">—</div><button class="btn-new" onclick="resetSlip()">New Slip</button></div>`;
+
   if(count===0)return successEl+`<div class="slip-empty"><div class="slip-empty-icon"><svg data-lucide="crosshair"></svg></div><div class="slip-empty-t">No picks yet</div><div class="slip-empty-s">Tap any score or 1X2 odds to add a selection.</div></div>`;
+
+  // header row with pick count + clear-all button
+  const headerRow=`<div class="slip-header-row"><div class="slip-header-lbl"><svg data-lucide="list"></svg>${count} pick${count!==1?'s':''}</div><button class="btn-clear-slip" onclick="clearAllSlip()"><svg data-lucide="trash-2"></svg>Clear All</button></div>`;
+
   const items=betSlip.map(s=>{
     const isCS=s.type==='CS';
-    return`<div class="slip-item"><div class="slip-item-top"><div class="slip-item-match">${esc(s.homeTeam)} vs ${esc(s.awayTeam)}</div><button class="slip-item-rm" onclick="removeFromSlip('${s.gameId}','${s.type}')"><svg data-lucide="x"></svg></button></div><div class="slip-item-bot"><div><div class="slip-item-type ${isCS?'cs':'x1'}">${isCS?'Correct Score':fmtMkt(s.label)}</div>${isCS?`<div style="font-size:9px;color:var(--t3);margin-top:2px">@${s.odds.toFixed(2)}</div>`:''}</div>${isCS?`<div class="slip-item-score">${s.label}</div>`:`<div class="slip-item-odds-wrap"><div class="slip-item-odds-lbl">odds</div><div class="slip-item-odds">${s.odds.toFixed(2)}</div></div>`}</div></div>`;
+    return`<div class="slip-item" data-slip-key="${s.gameId}-${s.type}"><div class="slip-item-top"><div class="slip-item-match">${esc(s.homeTeam)} vs ${esc(s.awayTeam)}</div><button class="slip-item-rm" onclick="removeFromSlip('${s.gameId}','${s.type}')" title="Remove pick"><svg data-lucide="x"></svg></button></div><div class="slip-item-bot"><div><div class="slip-item-type ${isCS?'cs':'x1'}">${isCS?'Correct Score':fmtMkt(s.label)}</div>${isCS?`<div style="font-size:9px;color:var(--t3);margin-top:2px">@${s.odds.toFixed(2)}</div>`:''}</div>${isCS?`<div class="slip-item-score">${s.label}</div>`:`<div class="slip-item-odds-wrap"><div class="slip-item-odds-lbl">odds</div><div class="slip-item-odds">${s.odds.toFixed(2)}</div></div>`}</div></div>`;
   }).join('');
+
   const presets=[200,500,1000,2000,5000].map(v=>`<button class="preset-btn${_stakeVal===v?' active':''}" onclick="setStake(${v})">${v}</button>`).join('');
-  return successEl+`<div class="slip-items">${items}</div><div class="slip-stake-section"><div class="slip-stake-lbl">Stake (GHS) — Min: 200</div><div class="stake-field"><div class="stake-sym">¢</div><input class="stake-input" type="number" value="${_stakeVal}" min="200" step="1" oninput="_stakeVal=Math.max(${MIN_STAKE},parseFloat(this.value)||${MIN_STAKE});updateFloatBar()"></div><div class="stake-presets">${presets}</div><div class="slip-summary"><div class="sum-row"><span class="sum-lbl">Picks</span><span class="sum-val">${count}</span></div><div class="sum-row"><span class="sum-lbl">Total Odds</span><span class="sum-val">${totalOdds.toFixed(2)}</span></div><div class="sum-row"><span class="sum-lbl">Stake</span><span class="sum-val">GHS ${_stakeVal.toFixed(2)}</span></div><div class="sum-div"></div><div class="sum-row"><span class="sum-win-lbl">Potential Win</span><span class="sum-win-val">GHS ${payout.toFixed(2)}</span></div></div><button class="btn-place" onclick="placeBet()"><svg data-lucide="zap"></svg><span>Place Bet</span></button></div>`;
+  return successEl+headerRow+`<div class="slip-items">${items}</div><div class="slip-stake-section"><div class="slip-stake-lbl">Stake (GHS) — Min: 200</div><div class="stake-field"><div class="stake-sym">¢</div><input class="stake-input" type="number" value="${_stakeVal}" min="200" step="1" oninput="_stakeVal=Math.max(${MIN_STAKE},parseFloat(this.value)||${MIN_STAKE});updateFloatBar()"></div><div class="stake-presets">${presets}</div><div class="slip-summary"><div class="sum-row"><span class="sum-lbl">Picks</span><span class="sum-val">${count}</span></div><div class="sum-row"><span class="sum-lbl">Total Odds</span><span class="sum-val">${totalOdds.toFixed(2)}</span></div><div class="sum-row"><span class="sum-lbl">Stake</span><span class="sum-val">GHS ${_stakeVal.toFixed(2)}</span></div><div class="sum-div"></div><div class="sum-row"><span class="sum-win-lbl">Potential Win</span><span class="sum-win-val">GHS ${payout.toFixed(2)}</span></div></div><button class="btn-place" onclick="placeBet()"><svg data-lucide="zap"></svg><span>Place Bet</span></button></div>`;
 }
 
 function updateFloatBar(){const tot=betSlip.reduce((a,s)=>a*s.odds,1);document.getElementById('floatWinTxt').textContent=`GHS ${(_stakeVal*tot).toFixed(2)} potential`;}
